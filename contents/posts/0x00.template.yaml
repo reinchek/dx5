@@ -1,0 +1,59 @@
+---
+id: "0x00"
+#slug: "readable-url" # @todo
+lang: "en"
+title: "Post title"
+summary: "The content summary"
+category: "MEM_ARCH"
+created: "2026-04-15"
+updated: "2026-04-15"
+status: true
+cover: "/static/images/cover.jpg" # optional - cover image
+author: "Nino Marrazzo aka reinchek" # optional - global author override
+---
+
+body_fields:
+
+  # --- Free text ---
+  - type: text
+    value: |
+      Paragrafo di testo libero.
+      Può andare su più righe.
+  # --- Some and useless glitched hero header :) ---
+  - type: hero_title
+    value: Lorem ipsum dolor silent
+    value_glitch: Lorem ipsum dolor silent # often it's the same as the value
+    env: true # if env is enabled, will be shown a background environment with an image (random if no env_id specified)
+    env_id: 16 # image id (look at /static/images/post/assets/env<env_id>.jpg
+  # --- INLINE quote ---
+  - type: cite
+    value: |
+      Testo della citazione breve.
+
+  # --- BLOCKQUOTE Simple ---
+  - type: blockquote
+    value: "Quote's text."
+    author: "Author's name"          # optional
+    reference: "Source / From"     # optional
+
+  # --- BLOCKQUOTE with figure ---
+  - type: blockquote_figure
+    value: "QUote's text."
+    author: "Author's name"
+    reference: "Source / From"
+    figure: "/images/posts/0x00/avatar.webp"   # optional
+
+  # --- Image ---
+  - type: image
+    value: "/images/posts/0x00/image-name.webp"
+    alt: "Alt text"   # opzionale
+    caption: "Figure's caption - standard HTML <figure> one" # optional
+
+  # --- DATE / TIMESTAMP INLINE ---
+  - type: date
+    value: "2026-04-15"
+
+  # --- Break line ---
+  - type: eol
+    value: ""
+---

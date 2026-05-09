@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="TabGroupService">
+    <option name="groups">
+      <list>
+        <GroupBean>
+          <option name="color" value="#4FC3F7" />
+          <option name="id" value="d1cb582d-58c8-47e4-a8bd-e338e92eda3d" />
+          <option name="name" value="main" />
+          <option name="tabs">
+            <list>
+              <TabBean>
+                <option name="displayName" value="config.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/config.rs" />
+                <option name="id" value="aa140c5a-86a7-4772-ac62-8a8916e56d42" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="menu_item.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/menu_item.rs" />
+                <option name="id" value="f38010c6-38d5-477d-967b-f4624fd46926" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="routes.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/routes.rs" />
+                <option name="id" value="0a3e1dec-ec8c-43a8-8c6c-8c1e5bc85bd0" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="state.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/state.rs" />
+                <option name="id" value="b2f8d8e5-f693-487e-9cc1-46fbe3546c5f" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="error.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/error.rs" />
+                <option name="id" value="f9874c3a-37fe-4cb1-9364-dcd587edb4bd" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="fields.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/fields.rs" />
+                <option name="id" value="7e138d9f-d862-4900-b200-8c0566c64b60" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="guard.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/guard.rs" />
+                <option name="id" value="08cbe677-a72b-4bb6-b541-dcfd16002aa2" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="locales.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/locales.rs" />
+                <option name="id" value="b2aeb7d7-9ee3-4450-b7c3-d85031b2d722" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="main.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/main.rs" />
+                <option name="id" value="050b8310-c458-4164-b0c0-def1b448ea1a" />
+              </TabBean>
+              <TabBean>
+                <option name="displayName" value="admin.rs" />
+                <option name="fileUrl" value="file://$PROJECT_DIR$/src/admin.rs" />
+                <option name="id" value="7465c103-4471-42af-8f2b-af72c856272d" />
+              </TabBean>
+            </list>
+          </option>
+        </GroupBean>
+      </list>
+    </option>
+  </component>
+</project>

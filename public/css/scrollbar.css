@@ -1,0 +1,17 @@
+body {
+    background-color: #120d1a;
+    color: #d1d5db;
+    font-family: 'JetBrains Mono', monospace;
+}
+/* Scrollbar custom stile cyberpunk */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: #1a1325; }
+::-webkit-scrollbar-thumb { background: #b7410e; }
+
+#visualizer div {
+    box-shadow: 0 0 10px rgba(183, 65, 14, 0.2);
+    transition: all 0.3s ease;
+}
+.streaming #visualizer div {
+    box-shadow: 0 0 15px rgba(74, 222, 128, 0.5); /* Verde terminale quando attivo */
+}

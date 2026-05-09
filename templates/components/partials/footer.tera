@@ -1,0 +1,7 @@
+{# FOOTER #}
+<footer class="border-t border-zinc-800 py-6 mt-auto">
+    <div class="max-w-5xl mx-auto px-4 flex items-center justify-between text-[11px] text-zinc-600 tracking-wider">
+        <span>{{ app.author }} // {{ app.title }}</span>
+        <span class="text-zinc-700">{{ globals.now }}</span>
+    </div>
+</footer>

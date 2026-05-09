@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>dx5 // {status_str}</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root{{
+            --bg:#080b0d;--surface:#0e1317;--border:#1e2a32;
+            --red:#ff4444;--amber:#ffb347;--green:#00e5a0;
+            --text:#c8d8e0;--dim:#5a7080;--mono:'JetBrains Mono',monospace;
+        }}
+        *{{box-sizing:border-box;margin:0;padding:0;}}
+        body{{font-family:var(--mono);background:var(--bg);color:var(--text);min-height:100vh;}}
+        #bar{{
+            background:var(--surface);border-bottom:1px solid var(--border);
+            height:44px;display:flex;align-items:center;padding:0 24px;gap:12px;
+        }}
+        .logo{{font-size:13px;font-weight:700;color:var(--red);letter-spacing:2px;text-transform:uppercase;}}
+        .logo span{{color:var(--dim);}}
+        .badge{{margin-left:auto;font-size:11px;color:var(--red);letter-spacing:1px;}}
+        #wrap{{padding:36px 44px;max-width:1100px;}}
+        .kind{{font-size:11px;color:var(--amber);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;}}
+        .msg{{font-size:20px;line-height:1.5;margin-bottom:28px;}}
+        .section-label{{
+            font-size:10px;font-weight:600;letter-spacing:2px;color:var(--dim);
+            text-transform:uppercase;margin:28px 0 10px;
+            padding-bottom:6px;border-bottom:1px solid var(--border);
+        }}
+        .ctx-list{{display:flex;flex-direction:column;gap:6px;margin-bottom:4px;}}
+        .ctx-item{{
+            font-size:12px;padding:8px 14px;background:var(--surface);
+            border:1px solid var(--border);border-left:3px solid var(--amber);
+        }}
+        .ctx-item .n{{color:var(--amber);margin-right:10px;}}
+        pre{{
+            font-size:11px;line-height:1.65;background:var(--surface);
+            border:1px solid var(--border);padding:18px;overflow-x:auto;
+            color:var(--dim);white-space:pre;
+        }}
+        .hint{{
+            font-size:11px;color:var(--dim);margin-top:14px;
+            padding:10px 16px;border:1px solid var(--border);
+            border-left:3px solid var(--green);
+        }}
+        .hint strong{{color:var(--green);}}
+    </style>
+</head>
+<body>
+<div id="bar">
+    <div class="logo">dx5<span>//</span>error</div>
+    <div class="badge">⬤ {status_str}</div>
+</div>
+<div id="wrap">
+    <div class="kind">⚠ {kind} — HTTP {status_code}</div>
+    <div class="msg">{message}</div>
+    {context_html}
+    <p class="section-label">BACKTRACE</p>
+    <pre>{bt_html}</pre>
+    <div class="hint">
+        💡 For the complete backtrace <strong>RUST_BACKTRACE=1 cargo run</strong><br>
+        💡 For the maximum detail     <strong>RUST_BACKTRACE=full</strong>
+    </div>
+</div>
+</body>
+</html>

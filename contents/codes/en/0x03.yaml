@@ -1,0 +1,58 @@
+---
+id: "0x03"
+title: "Titolo del Post"
+category: "MEM_ARCH"           # es. MEM_ARCH | SYS_CALL | NET_GHOST | CORE_DUMP
+date: "2026-04-15"
+intro: >
+  Frase introduttiva del post. Apparirà in corsivo con bordo laterale.
+  Può essere lunga, usa il blocco scalare YAML.
+has_errors: false
+error_description: ""          # Lascia vuoto se has_errors: false
+reflection: >
+  Riflessione finale. Supporta tag HTML inline come <em> e <strong>.
+body_fields:
+
+  # --- TESTO LIBERO ---
+  - type: text
+    value: |
+      Paragrafo di testo libero.
+      Può andare su più righe.
+  # --- HERO GLITCH WITH IMAGE ---
+  - type: hero_title
+    value: Lorem ipsum dolor silent
+    value_glitch: Lorem ipsum dolor silent # often it's the same as the value
+    env: true # if env is enabled, will be shown a background environment with an image (random if no env_id specified)
+    env_id: 16 # image id (look at /static/images/post/assets/env<env_id>.jpg
+  # --- CITAZIONE INLINE ---
+  - type: cite
+    value: |
+      Testo della citazione breve.
+
+  # --- BLOCKQUOTE SEMPLICE ---
+  - type: blockquote
+    value: "Testo della citazione."
+    author: "Nome Autore"          # opzionale
+    reference: "Fonte / Opera"     # opzionale
+
+  # --- BLOCKQUOTE CON FIGURA ---
+  - type: blockquote_figure
+    value: "Testo della citazione."
+    author: "Nome Autore"
+    reference: "Fonte / Opera"
+    figure: "/images/posts/0x00/avatar.webp"   # opzionale
+
+  # --- IMMAGINE ---
+  - type: image
+    value: "/images/posts/0x00/nome-immagine.webp"
+    alt: "Descrizione accessibile dell'immagine"   # opzionale
+    caption: "Didascalia visibile sotto l'immagine" # opzionale
+
+  # --- DATA / TIMESTAMP INLINE ---
+  - type: date
+    value: "2026-04-15"
+
+  # --- A CAPO ---
+  - type: eol
+    value: ""
+
+---

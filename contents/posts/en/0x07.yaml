@@ -1,0 +1,180 @@
+---
+id: "0x07"
+title: "Field catalogue demo post"
+lang: "en"
+category: "SYS_CALL"
+created: "2026-05-07"
+description: >
+  A living reference post that exercises every available body field.
+  Use this as a smoke-test when adding new templates or tweaking the renderer.
+
+body_fields:
+
+  # date
+  - type: date
+    value: "2026-04-12"
+
+  # hero_title
+  - type: hero_title
+    value: "Field Catalogue"
+    value_glitch: "F13ld C4tal0gu3"
+    env: true
+    env_id: 8
+
+
+  - type: spreaker
+    episode_id: 71771195
+    theme: dark
+
+  # text (plain)
+  - type: text
+    value: |
+      This post exists for one reason: every field type must appear at least once.
+      If you are reading this in a browser and nothing looks broken, the renderer is healthy.
+
+  # callout · note
+  - type: callout
+    variant: note
+    title: "How to read this post"
+    value: >
+      Fields are shown in the order they are declared in dx5.fields.toml.
+      Each block is preceded by a section_title that names the field type.
+
+  # section_title
+  - type: section_title
+    value: "Text & Glitch"
+
+  # text (safe — inline HTML)
+  - type: text
+    safe: true
+    value: >
+      The <code>safe</code> flag lets you embed raw HTML inline.
+      Use it sparingly — only when Markdown-style escaping is not enough,
+      for example to wrap a word in a <strong>custom element</strong> or
+      inject a <abbr title="zero-width non-joiner">ZWNJ</abbr>.
+
+  # text_glitch
+  - type: text_glitch
+    value: "Memory corruption detected."
+    value_glitch: "M3m0ry c0rrupt10n d3t3ct3d."
+
+  # section_title
+  - type: section_title
+    value: "Quotations"
+
+  # cite
+  - type: cite
+    value: "The compiler never lies — it only tells hard truths you were not ready to hear."
+
+  # blockquote
+  - type: blockquote
+    value: >
+      Any fool can write code that a computer can understand.
+      Good programmers write code that humans can understand.
+    author: "Martin Fowler"
+    reference: "Refactoring, 1999"
+
+  # blockquote_figure
+  - type: blockquote_figure
+    value: >
+      Programs must be written for people to read,
+      and only incidentally for machines to execute.
+    author: "Harold Abelson"
+    reference: "Structure and Interpretation of Computer Programs"
+    figure: "/static/images/authors/abelson.jpg"
+
+  # divider (labelled)
+  - type: divider
+    value: "§"
+
+  # section_title
+  - type: section_title
+    value: "Code & Shell"
+
+  # callout · tip
+  - type: callout
+    variant: tip
+    title: "Tip"
+    value: >
+      The <code>pre</code> field is for static code snippets.
+      Use <code>terminal</code> when you want to show an interactive shell session.
+
+  # pre
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      #[launch]
+      fn rocket() -> _ {
+          rocket::build()
+              .mount("/", routes![index])
+              .attach(Template::fairing())
+      }
+
+  # terminal
+  - type: terminal
+    title: "bash — project root"
+    prompt: "$"
+    value: |
+      cargo build --release
+      ./target/release/dx5
+      curl -s http://localhost:8000/en | head -n 5
+
+  # callout · warning
+  - type: callout
+    variant: warning
+    title: "Watch out"
+    value: "Running the binary outside the project root will cause dx5.toml to not be found."
+
+  # callout · danger
+  - type: callout
+    variant: danger
+    title: "Never do this"
+    value: >
+      Do not commit your admin token to version control.
+      Use an environment variable and inject it at deploy time.
+
+  # divider (plain)
+  - type: divider
+
+  # section_title
+  - type: section_title
+    value: "Media"
+
+  # image
+  - type: image
+    value: "/static/images/post/0x00/terminal.jpg"
+    alt: "Abstract dark terminal screenshot showing green phosphor text"
+    caption: "The aesthetic is the message."
+
+  # video
+  - type: video
+    src: "https://www.youtube.com/embed/iXFT0Kdfoig"
+    caption: "Yes, this is a placeholder. Replace with something relevant."
+    autoplay: false
+
+  # spotify_embed
+  - type: spotify_embed
+    track_id: "4uLU6hMCjMI75M1A2tKUQC"
+
+  # eol
+  - type: eol
+
+  # section_title
+  - type: section_title
+    value: "Links"
+
+  # link
+  - type: link
+    href: "https://rocket.rs/guide/"
+    value: "Rocket — web framework for Rust"
+    alt: "Official Rocket documentation"
+
+  - type: link
+    href: "https://keats.github.io/tera/"
+    value: "Tera — template engine"
+    alt: "Tera documentation"
+
+  # eol
+  - type: eol
+---

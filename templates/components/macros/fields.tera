@@ -1,0 +1,105 @@
+{# Loop body_fields #}
+{% macro render(fields) %}
+    {% for field in fields %}
+        {% if field.type == "eol" %}
+            <br/>
+        {% elif field.type == "hero_title" %}
+            {% if field.env_id %}
+                {% set env_id = field.env_id %}
+            {% else %}
+                {% set env_id = get_random(start=1, end=14) %}
+            {% endif %}
+            {% if field.env == true %}
+                <div class="hero-container">
+                    <div class="environment env{{ env_id }}"></div>
+                    <h2 class="hero glitch layers" data-text="{{ field.value_glitch }}">
+                        <span> {{ field.value | safe }} </span></h2>
+                </div>
+            {% else %}
+                {% if field.font_small %} {% set has_font_small = " font-small" %} {% else %} {% set has_font_small = "" %} {% endif %}
+                <span class="hero glitch layers {{ has_font_small }}"
+                      data-text="{{ field.value_glitch }}"><span>{{ field.value }}</span></span>
+            {% endif %}
+        {% elif field.type == "cite" %}
+            <cite class="text-teal-200">{{ field.value }}</cite>
+        {% elif field.type == "text" %}
+            {% if field.safe == true %} {{ field.value | safe }} {% else %} {{ field.value }} {% endif %}
+        {% elif field.type == "image" %}
+            <figure class="my-6">
+                <img
+                        src="{{ field.value }}"
+                        alt="{{ field.alt | default(value='') }}"
+                        class="w-full rounded-sm border border-white/10 shadow-2xl"
+                />
+                {% if field.caption %}
+                    <figcaption class="text-center text-xs text-gray-500 mt-2 font-mono">
+                        {{ field.caption }}
+                    </figcaption>
+                {% endif %}
+            </figure>
+        {% elif field.type == "date" %}
+            <div class="flex items-center gap-2 text-xs font-mono text-rust-500 uppercase tracking-widest my-4">
+                <i class="fa-regular fa-calendar"></i>
+                {% if field.value == "now" %}
+                    {{ globals.now }}
+                {% endif %}
+                {{ field.value }}
+            </div>
+        {% elif field.type == "blockquote" or field.type == "blockquote_figure" %}
+            {% if field.type == "blockquote_figure" %}
+                <figure>
+            {% endif %}
+            <svg class="w-6 h-6 text-heading mb-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                 width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M10 11V8a1 1 0 0 0-1-1H6a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1Zm0 0v2a4 4 0 0 1-4 4H5m14-6V8a1 1 0 0 0-1-1h-3a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1Zm0 0v2a4 4 0 0 1-4 4h-1"/>
+            </svg>
+            <blockquote class="!m-0">
+                <p class="text-md italic font-semibold tracking-tight text-heading">{{ field.value }}</p>
+                {% if field.type != "blockquote_figure" %}
+                    <span>
+                                   {% if field.author %} <cite
+                                           class="pe-3 font-medium text-heading">{{ field.author }}</cite> {% endif %}
+                        {% if field.reference %} <cite
+                                class="ps-3 text-sm text-body">{{ field.reference }}</cite> {% endif %}
+                               </span>
+                {% endif %}
+            </blockquote>
+            {% if field.type == "blockquote_figure" %}
+                <figcaption class="flex items-center justify-center mt-1 space-x-3 rtl:space-x-reverse">
+                    {% if field.figure %} <img class="w-6 h-6 rounded-full"
+                                               src="{{ field.figure }}"/> {% endif %}
+                    <div class="flex items-center divide-x rtl:divide-x-reverse divide-default">
+                        {% if field.author %}<cite
+                                class="pe-3 font-medium text-heading">{{ field.author }}</cite>{% endif %}
+                        {% if field.reference %}<cite
+                                class="ps-3 text-sm text-body">{{ field.reference }}</cite>{% endif %}
+                    </div>
+                </figcaption>
+                </figure>
+            {% endif %}
+        {% elif field.type == "pre" %}
+            <section class="space-y-4">
+                <div class="relative group">
+                    <div class="absolute left-4 px-2 py-1 bg-dusk-900 border border-white/10 text-[10px] text-gray-500 z-10 group-hover:text-rust-500 transition-colors">
+                        {{ field.path }}
+                    </div>
+                    <div class="bg-black/40 border border-white/5 p-4 md:p-6 pt-8 rounded-sm shadow-2xl overflow-x-auto">
+                        <pre>
+                            <code class="language-{{ field.lang }}">{{ field.value }}</code>
+                        </pre>
+                    </div>
+                </div>
+            </section>
+        {% elif field.type == "section_title" %}
+            <section class="space-y-4">
+                <div class="flex items-center gap-3">
+                    <div class="h-[1px] flex-1 bg-white/10"></div>
+                    <h3 class="text-[10px] text-rust-500 font-bold tracking-[0.3em] md:tracking-[0.5em] uppercase text-center">
+                        {{ field.value }}</h3>
+                    <div class="h-[1px] flex-1 bg-white/10"></div>
+                </div>
+            </section>
+        {% endif %}
+    {% endfor %}
+{% endmacro %}

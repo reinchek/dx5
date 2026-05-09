@@ -1,0 +1,117 @@
+{% macro glitch_text(text, subtitle="", color="teal", intense=false, font_size="4rem") %}
+
+    {# --- Colors map --- #}
+    {% if color == "red" %}
+      {% set hex_main   = "#ff003c" %}
+      {% set hex_before = "#ffee00" %}
+      {% set hex_after  = "#ff6600" %}
+    {% elif color == "purple" %}
+      {% set hex_main   = "#bf00ff" %}
+      {% set hex_before = "#ff00aa" %}
+      {% set hex_after  = "#00ccff" %}
+    {% else %}
+      {% set hex_main   = "#00ffe7" %}
+      {% set hex_before = "#ff003c" %}
+      {% set hex_after  = "#3d00ff" %}
+    {% endif %}
+
+    {# --- Unique ID to isolate the animations --- #}
+    {% set uid = text | lower | replace(from=" ", to="-") %}
+
+    <style>
+      .glitch-{{ uid }} {
+        position: relative;
+        display: inline-block;
+        font-family: 'Share Tech Mono', monospace;
+        font-size: {{ font_size }};
+        color: {{ hex_main }};
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        text-shadow: 0 0 8px {{ hex_main }}, 0 0 20px {{ hex_main }}80;
+        {% if intense %}
+        animation: glitch-pulse-{{ uid }} 0.8s ease-in-out infinite;
+        {% else %}
+        animation: glitch-pulse-{{ uid }} 3s ease-in-out infinite;
+        {% endif %}
+      }
+
+      .glitch-{{ uid }}::before,
+      .glitch-{{ uid }}::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0; left: 0;
+        width: 100%;
+        overflow: hidden;
+      }
+
+      .glitch-{{ uid }}::before {
+        color: {{ hex_before }};
+        left: 2px;
+        clip-path: polygon(0 0, 100% 0, 100% 40%, 0 40%);
+        animation: glitch-top-{{ uid }} {% if intense %}1.5s{% else %}4s{% endif %} steps(1) infinite;
+      }
+
+      .glitch-{{ uid }}::after {
+        color: {{ hex_after }};
+        left: -2px;
+        clip-path: polygon(0 60%, 100% 60%, 100% 100%, 0 100%);
+        animation: glitch-bot-{{ uid }} {% if intense %}1.5s{% else %}4s{% endif %} steps(1) infinite;
+      }
+
+      @keyframes glitch-pulse-{{ uid }} {
+        0%, 100% { text-shadow: 0 0 8px {{ hex_main }}, 0 0 20px {{ hex_main }}80; }
+        50%       { text-shadow: 0 0 4px {{ hex_main }}, 0 0 10px {{ hex_main }}40; }
+      }
+
+      @keyframes glitch-top-{{ uid }} {
+        0%,  8%  { transform: translate(0,0);     opacity: 0; }
+        9%        { transform: translate(-4px,-2px); opacity: 0.9; }
+        10%       { transform: translate(4px,0);   opacity: 0.8; }
+        11%       { transform: translate(0,0);     opacity: 0; }
+        49%       { transform: translate(0,0);     opacity: 0; }
+        50%       { transform: translate(6px,-1px); opacity: 1; }
+        51%       { transform: translate(0,0);     opacity: 0; }
+        84%       { transform: translate(0,0);     opacity: 0; }
+        84.5%     { transform: translate(-8px,0);  opacity: 0.85; }
+        85%       { transform: translate(0,0);     opacity: 0; }
+        100%      { transform: translate(0,0);     opacity: 0; }
+      }
+
+      @keyframes glitch-bot-{{ uid }} {
+        0%,  18%  { transform: translate(0,0);     opacity: 0; }
+        19%        { transform: translate(4px,2px);  opacity: 0.9; }
+        20%        { transform: translate(-4px,-1px); opacity: 0.7; }
+        21%        { transform: translate(0,0);     opacity: 0; }
+        64%        { transform: translate(0,0);     opacity: 0; }
+        65%        { transform: translate(-6px,1px); opacity: 1; }
+        66%        { transform: translate(0,0);     opacity: 0; }
+        96%        { transform: translate(0,0);     opacity: 0; }
+        97%        { transform: translate(8px,-2px); opacity: 0.8; }
+        98%        { transform: translate(0,0);     opacity: 0; }
+        100%       { transform: translate(0,0);     opacity: 0; }
+      }
+
+      {% if subtitle %}
+      .glitch-sub-{{ uid }} {
+        font-family: 'Share Tech Mono', monospace;
+        font-size: 0.75rem;
+        color: {{ hex_main }}90;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        margin-top: 0.75rem;
+        display: block;
+        animation: glitch-sub-blink-{{ uid }} 5s ease-in-out infinite;
+      }
+      @keyframes glitch-sub-blink-{{ uid }} {
+        0%, 100% { opacity: 0.5; }
+        50%       { opacity: 1; }
+      }
+      {% endif %}
+    </style>
+
+    <span class="glitch-{{ uid }}" data-text="{{ text }}">{{ text }}</span>
+    {% if subtitle %}
+    <span class="glitch-sub-{{ uid }}">{{ subtitle }}</span>
+    {% endif %}
+
+{% endmacro glitch_text %}

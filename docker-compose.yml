@@ -1,0 +1,25 @@
+version: "3.9"
+
+services:
+  dx5:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
+    container_name: dx5-blog
+    ports:
+      - "8000:8000"
+    environment:
+      - ROCKET_ADDRESS=0.0.0.0
+      - ROCKET_PORT=8000
+      - DX5_CONFIG=/app/config/dx5.toml
+    volumes:
+      # Mount content and config so edits take effect without rebuilding
+      - ./contents:/app/contents
+      - ./config:/app/config
+      - ./templates:/app/templates
+      - ./static:/app/static
+      - ./assets:/app/assets
+    restart: unless-stopped

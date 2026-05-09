@@ -1,0 +1,131 @@
+---
+id: "0x04"
+lang: "en"
+title: "0x07 Routing, Templates & Rendering"
+summary: "How dx5 maps URLs to content, renders pages with Tera, and serves the result."
+category: "FORGE_LOG"
+created: "2026-05-04"
+status: true
+author: "Nino Marrazzo aka reinchek"
+---
+body_fields:
+
+  - type: hero_title
+    value: "Routing, Templates & Rendering"
+    value_glitch: "R0uting, T3mpl4t3s & R3nd3ring"
+    env: true
+    env_id: 2
+
+  - type: text
+    value: |
+      dx5 uses Rocket for HTTP routing and Tera for HTML templating.
+      The pipeline is straightforward: a request arrives, Rocket matches
+      the route, dx5 loads the content from disk, Tera renders the template,
+      and the HTML is sent back.
+
+  - type: section_title
+    value: "Route structure"
+
+  - type: text
+    value: |
+      Routes follow a predictable pattern. Every content type gets
+      an index route and a single-content route:
+
+  - type: pre
+    lang: text
+    value: |
+      /<lang>             → content type index (default type)
+      /<lang>/page/<n>    → paginated index, page n
+      /<lang>/<type>      → content type index (non-default)
+      /<lang>/<type>/<id> → single content view
+      /api/<lang>/<type>  → JSON API endpoint
+      /admin               → admin panel
+
+  - type: callout
+    variant: note
+    title: "Default content type"
+    value: >
+      The type with is_default = true (posts) is served at /<lang>
+      instead of /<lang>/posts. All other types use their route prefix.
+
+  - type: section_title
+    value: "Template hierarchy"
+
+  - type: text
+    value: |
+      dx5 uses a clean template hierarchy. The base template provides
+      the HTML shell, content type templates extend it, and field templates
+      render individual blocks:
+
+  - type: text
+    safe: true
+    value: |
+      <pre>
+      templates/
+      ├── base.html.tera          ← HTML shell, nav, footer
+      ├── home.html.tera          ← homepage layout
+      ├── types/
+      │   ├── index.html.tera     ← content listing (paginated)
+      │   └── single.html.tera    ← single content view
+      └── components/
+          └── fields/
+              ├── text.tera       ← each body field type
+              ├── hero_title.tera
+              ├── pre.tera
+              └── ...
+      </pre>
+
+  - type: text
+    safe: true
+    value: |
+      The <code>single.html.tera</code> template iterates over
+      <code>body_fields</code> and calls <code>render_field()</code>
+      for each entry — a Tera global function registered at startup.
+
+  - type: section_title
+    value: "The rendering pipeline"
+
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      // Simplified view of the rendering flow
+      rocket::build()
+          .mount("/", routes![
+              index,           // GET /<lang>
+              get_post,        // GET /<lang>/<type>/<id>
+              paginated_index, // GET /<lang>/page/<n>
+          ])
+          .mount("/api", routes![api_index, api_single])
+          .mount("/admin", routes![admin_ui, api_posts])
+          .mount("/static", FileServer::from("static/"))
+          .attach(Template::custom(|engines| {
+              // Pre-load all field templates into Tera
+              engines.tera.add_raw_templates(...);
+              // Register render_field() as a global function
+              engines.tera.register_function("render_field", ...);
+          }))
+
+  - type: section_title
+    value: "SPA mode"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 supports optional single-page application mode.
+      When <code>spa_enabled = true</code>, the client-side
+      <code>spa-router.js</code> intercepts navigation and fetches
+      content via the JSON API, updating the page without a full reload.
+
+  - type: blockquote
+    value: >
+      SPA mode is optional. dx5 works perfectly as a traditional
+      server-rendered site. The API is always available regardless.
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

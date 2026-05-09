@@ -1,0 +1,133 @@
+---
+id: "0x02"
+lang: "en"
+title: "0x05 Content Types & Organization"
+summary: "How dx5 organizes content into types — posts, codes, notes — and how the directory structure maps to routes."
+category: "EXPLORE"
+created: "2026-05-02"
+status: true
+author: "Nino Marrazzo aka reinchek"
+---
+body_fields:
+
+  - type: hero_title
+    value: "Content Types & Organization"
+    value_glitch: "C0nt3nt Typ3s & 0rg4niz4t10n"
+    env: true
+    env_id: 4
+
+  - type: text
+    value: |
+      dx5 organizes content into types. Each type is a directory of YAML files
+      with its own route, menu entry, and display template.
+      Types are defined in a single TOML configuration file.
+
+  - type: section_title
+    value: "Defining content types"
+
+  - type: text
+    value: |
+      Content types are declared in config/dx5.content_types.toml.
+      Each type specifies a source directory, file extension, URL route,
+      and navigation metadata:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.content_types.toml"
+    value: |
+      [types.post]
+      dir        = "./contents/posts"
+      extension  = "yaml"
+      route      = "/posts"
+      menu_icon  = "fa-regular fa-keyboard"
+      menu_label = "Posts"
+      menu_order = 1
+      is_default = true
+      pagination_items_per_page = 10
+      enable_navigation = true
+
+      [types.code]
+      dir        = "./contents/codes"
+      extension  = "yaml"
+      route      = "/codes"
+      menu_icon  = "fa-solid fa-code"
+      menu_label = "Code"
+      menu_order = 2
+
+      [types.notes]
+      dir        = "./contents/notes"
+      extension  = "yaml"
+      route      = "/notes"
+      menu_icon  = "fa-solid fa-code"
+      menu_label = "Note"
+      menu_order = 2
+
+  - type: callout
+    variant: note
+    title: "The is_default flag"
+    value: >
+      The type with is_default = true serves its index at the root
+      language URL (e.g. /en instead of /en/posts).
+
+  - type: section_title
+    value: "Directory structure"
+
+  - type: text
+    value: |
+      Inside each content type directory, files are organized by language:
+
+  - type: pre
+    lang: text
+    value: |
+      contents/
+      ├── posts/
+      │   ├── en/
+      │   │   ├── 0x00.template.yaml
+      │   │   ├── 0x01.yaml
+      │   │   └── 0x02.yaml
+      │   └── it/
+      │       ├── 0x00.template.yaml
+      │       ├── 0x01.yaml
+      │       └── 0x02.yaml
+      ├── codes/
+      │   └── en/
+      │       ├── 0x00.template.yaml
+      │       ├── 0x01.yaml
+      │       └── 0x02.yaml
+      ├── notes/
+      │   └── en/
+      │       └── 0x01.yaml
+      └── home/
+          ├── home.en.yaml
+          ├── home.it.yaml
+          └── home.de.yaml
+
+  - type: text
+    value: |
+      The language subdirectory determines the lang of the content.
+      The home page is special — it lives outside the type system
+      and is configured separately.
+
+  - type: section_title
+    value: "Pagination"
+
+  - type: text
+    value: |
+      Content types with pagination_items_per_page set automatically
+      split their index across multiple pages. The filesystem watcher
+      rebuilds pagination caches whenever a file is added, removed, or modified.
+
+  - type: terminal
+    title: "auto-generated routes"
+    prompt: "$"
+    value: |
+      /en          → posts, page 1
+      /en/page/2   → posts, page 2
+      /en/codes    → codes index
+      /en/notes    → notes index
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

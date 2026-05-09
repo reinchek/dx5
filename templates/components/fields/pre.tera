@@ -1,0 +1,12 @@
+<section class="space-y-4">
+    <div class="relative group">
+        {% if field.path %}
+            <div class="absolute left-4 px-2 py-1 bg-dusk-900 border border-white/10 text-[10px] text-gray-500 z-10 group-hover:text-rust-500 transition-colors">
+                {{ field.path }}
+            </div>
+        {% endif %}
+        <div class="bg-black/40 border border-white/5 p-4 md:p-6 pt-8 rounded-sm shadow-2xl overflow-x-auto">
+            <pre><code class="language-{{ field.lang }}">{{ field.value }}</code></pre>
+        </div>
+    </div>
+</section>

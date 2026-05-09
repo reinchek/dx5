@@ -1,0 +1,41 @@
+{% set src = field.src %}
+
+<figure class="my-6">
+
+    {% if "youtube.com/embed" in src or "youtu.be" in src or "vimeo.com" in src %}
+        {# ── Embed iframe (YouTube / Vimeo) ── #}
+        <div class="relative w-full overflow-hidden bg-zinc-900 border border-zinc-800"
+             style="aspect-ratio: 16/9;">
+            <iframe
+                    src="{{ src }}{% if field.autoplay %}?autoplay=1&mute=1{% endif %}"
+                    class="absolute inset-0 w-full h-full"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                    loading="lazy"
+                    title="{% if field.caption %}{{ field.caption }}{% else %}Video{% endif %}">
+            </iframe>
+        </div>
+
+    {% else %}
+        {# ── File video diretto (.mp4, .webm, ecc.) ── #}
+        <video
+                class="w-full border border-zinc-800 bg-zinc-900"
+                controls
+                {% if field.autoplay %}autoplay muted playsinline{% endif %}
+                preload="metadata">
+            <source src="{{ src }}">
+            <p class="text-xs text-zinc-600 p-3">
+                Il tuo browser non supporta il tag video.
+                <a href="{{ src }}" class="text-[#00e5a0] hover:underline">Scarica il file</a>.
+            </p>
+        </video>
+    {% endif %}
+
+    {% if field.caption %}
+        <figcaption class="mt-2 text-[11px] text-zinc-600 tracking-wider text-center">
+            {{ field.caption }}
+        </figcaption>
+    {% endif %}
+
+</figure>

@@ -1,0 +1,134 @@
+{% extends "base" %}
+
+{% block title %}{{ app.title }} // Posts{% endblock title %}
+{% block description %}All posts — {{ app.title }}{% endblock description %}
+
+{% block content %}
+
+    {# Section header #}
+    <div class="mb-10 flex items-end justify-between border-b border-zinc-800 pb-4">
+        <div>
+            <div class="text-[10px] text-zinc-600 tracking-widest mb-1">
+                <span class="text-zinc-700">$</span> ls {{ type_def.dir }}/{{ lang }}
+            </div>
+            <h1 class="text-2xl font-bold tracking-tight text-zinc-100 capitalize">{{ type_name }}{{ items|length|pluralize }}</h1>
+        </div>
+        <span class="text-xs text-zinc-600 tracking-wider">
+        {{ items | length }} item{{ items|length|pluralize }}
+    </span>
+    </div>
+
+    {# Posts list #}
+    {% if items %}
+        <ul class="space-y-px">
+            {% for item in items %}
+                <li>
+                    <a href="/{{ lang }}/{{ type_name }}/{{ item.id }}"
+                       class="group flex items-start gap-4 py-4 px-3 hover:bg-zinc-900/60 border-l-2 border-transparent
+                  hover:border-[#00e5a0]/60 transition-all duration-150" data-spa>
+
+                        {# ID / prefix #}
+                        <span class="text-[#00e5a0] text-xs font-bold tracking-widest shrink-0 mt-0.5 w-14 text-right">
+                {{ item.id }}
+            </span>
+
+                        {# Main content #}
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-3 mb-1">
+                                <h2 class="text-sm font-semibold text-zinc-200 group-hover:text-white transition-colors truncate">
+                                    {{ item.title | safe }}
+                                </h2>
+                                {% if item.category %}
+                                    <span class="shrink-0 text-[10px] text-[#ffb347] border border-[#ffb347]/30 px-1.5 py-0.5 tracking-widest uppercase">
+                        {{ item.category }}
+                    </span>
+                                {% endif %}
+                            </div>
+                            {% if item.intro %}
+                                <p class="text-xs text-zinc-500 leading-relaxed line-clamp-2">
+                                    {{ item.intro }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+                        {# Date + arrow #}
+                        <div class="shrink-0 flex flex-col items-end gap-1">
+                            <span class="text-[11px] text-zinc-600 tracking-wider">{{ item.created }}</span>
+                            <span class="text-zinc-700 group-hover:text-[#00e5a0] text-xs transition-colors">→</span>
+                        </div>
+
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+
+        {# PAGER #}
+        {% if pagination and pagination.total_pages > 1 %}
+            <nav class="mt-6 flex items-center justify-between text-xs text-zinc-500 tracking-wider"
+                 aria-label="Paginazione">
+
+                {# Prev #}
+                {% if pagination.has_prev %}
+                    <a href="/{{ lang }}/{{ type_name }}?page={{ pagination.current - 1 }}"
+                       class="flex items-center gap-2 px-3 py-2 border border-zinc-800 hover:border-zinc-600 hover:text-zinc-300 transition-colors"
+                       data-spa>
+                        ← prev
+                    </a>
+                {% else %}
+                    <span class="flex items-center gap-2 px-3 py-2 border border-zinc-800 opacity-25 cursor-not-allowed select-none">
+        ← prev
+    </span>
+                {% endif %}
+
+                {# Ellipsis page numbers #}
+                <div class="flex items-center gap-1" role="list">
+                    {#                    <code class="language-json">{{ pagination |json_encode }}</code> #}
+                    {% for p in pagination.pages %}
+                        {% set page_num = p %}
+                        {% if page_num == 1 or page_num == pagination.total_pages
+                            or page_num == pagination.current
+                            or page_num == pagination.current - 1
+                            or page_num == pagination.current + 1 %}
+                            <a data-spa
+                               href="/{{ lang }}/{{ type_name }}?page={{ page_num }}"
+                               role="listitem"
+                               aria-label="Pagina {{ page_num }}"
+                               {% if page_num == pagination.current %}aria-current="page"{% endif %}
+                               class="w-7 h-7 flex items-center justify-center border transition-colors text-[11px]
+                      {% if page_num == pagination.current %}
+                          border-[#00e5a0]/60 text-[#00e5a0] bg-[#00e5a0]/5
+                      {% else %}
+                          border-zinc-800 hover:border-zinc-600 hover:text-zinc-300
+                      {% endif %}">
+                                {{ page_num }}
+                            </a>
+                            {% elif page_num == pagination.current - 2 or page_num == pagination.current + 2 %}
+                            <span class="px-1 text-zinc-700 select-none" aria-hidden="true">…</span>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+
+                {# Next #}
+                {% if pagination.has_next %}
+                    <a data-spa
+                       href="/{{ lang }}/{{ type_name }}?page={{ pagination.current + 1 }}"
+                       class="flex items-center gap-2 px-3 py-2 border border-zinc-800 hover:border-zinc-600 hover:text-zinc-300 transition-colors">
+                        next →
+                    </a>
+                {% else %}
+                    <span class="flex items-center gap-2 px-3 py-2 border border-zinc-800 opacity-25 cursor-not-allowed select-none">
+        next →
+    </span>
+                {% endif %}
+
+            </nav>
+        {% endif %}
+
+    {% else %}
+        <div class="text-center py-20 text-zinc-600 text-xs tracking-widest">
+            <div class="text-3xl mb-3 text-zinc-800">⌗</div>
+            <p>{{ t(key="post__index__no_posts_found", lang=lang) }}</p>
+        </div>
+    {% endif %}
+
+{% endblock content %}

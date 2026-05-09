@@ -1,0 +1,9 @@
+<section class="space-y-4">
+    <div class="flex items-center gap-3">
+        <div class="h-[1px] flex-1 bg-white/10"></div>
+        <h3 class="text-[10px] text-rust-500 font-bold tracking-[0.3em] md:tracking-[0.5em] uppercase text-center">
+            {{ field.value }}
+        </h3>
+        <div class="h-[1px] flex-1 bg-white/10"></div>
+    </div>
+</section>

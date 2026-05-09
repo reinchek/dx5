@@ -1,0 +1,12 @@
+<figure class="my-6">
+    <img
+            src="{{ field.value }}"
+            alt="{{ field.alt | default(value='') }}"
+            class="w-full rounded-sm border border-white/10 shadow-2xl"
+    />
+    {% if field.caption %}
+        <figcaption class="text-center text-xs text-gray-500 mt-2 font-mono">
+            {{ field.caption }}
+        </figcaption>
+    {% endif %}
+</figure>

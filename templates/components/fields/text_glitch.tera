@@ -1,0 +1,4 @@
+{% if not field.value_glitch %} {% set value_glitch = field.value %} {% else %} {% set value_glitch = field.value_glitch %} {% endif %}
+<span class="glitch layers" data-text="{{ value_glitch }}">
+    <span>{{ field.value }}</span>
+</span>

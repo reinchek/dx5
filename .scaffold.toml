@@ -1,0 +1,93 @@
+[template]
+name = "dx5_template"
+author = "Nino Marrazzo"
+
+# File and folders to ignore during the scaffolding (will not be copied to the new project).
+exclude = [
+    ".opencode",
+    ".scaffold.toml",
+    ".git",
+    ".gitignore",
+    ".github",
+    "target",
+    "Cargo.lock"
+]
+
+disable_templating = [
+    "README.md",
+    "LEGEND.md",
+    "templates/**/*.tera",
+    "public/**/*",
+    "static/**/*",
+    "assets/**/*",
+    "contents/**/*",
+    "src/utils/error.html",
+    "src/admin_ui.html",
+    "config/locales/**/*.json",
+    "config/dx5.fields.toml",
+    "config/dx5.content_types.toml",
+    "dx5.toml"
+]
+
+# Project's name (crate rust)
+[parameters]
+    [parameters.blog_name]
+    message = "What's the new project's name? (used in Cargo.toml)"
+    type = "string"
+    default = "dx5-blog"
+    regex = "^[a-z0-9_-]+$" # Force valid names for Rust
+
+    [parameters.blog_base_url]
+    message = "What's the project's base URL? (usually, in local dev, is http://localhost)"
+    type = "string"
+    default = "http://localhost"
+
+    # Author
+    [parameters.blog_author]
+    message = "Who's the main author blog"
+    type = "string"
+    default = "Admin"
+
+    # Blog title
+    [parameters.blog_title]
+    message = "Insert the blog's title"
+    type = "string"
+    default = "My new blog"
+
+    # Main language
+    [parameters.blog_lang]
+    message = "What's the main blog's language (you can change it in dx5.toml)"
+    type = "select"
+    default = "en"
+    values = ["it", "en", "fr", "es", "de"]
+
+    # Enable SPA mode
+    [parameters.spa_enabled]
+    message = "Enable SPA mode? (true/false)"
+    type = "boolean"
+    default = true
+
+
+    # Rocket port
+    [parameters.rocket_port]
+    message = "On which local port will server run? (rocket)"
+    type = "string"
+    default = "8000"
+
+    # Repository GitHub (Useful for the footer's links)
+    [parameters.github_username]
+    message = "What's your GitHub name? (let it empty if you doesn't have one)"
+    type = "string"
+    default = ""
+
+    # Admin panel enabled
+    [parameters.admin_enabled]
+    message = "Enable admin panel? (true/false)"
+    type = "boolean"
+    default = true
+
+    # Admin token
+    [parameters.admin_token]
+    message = "Choose an admin authentication token (password)"
+    type = "string"
+    default = "change-this-token-value"

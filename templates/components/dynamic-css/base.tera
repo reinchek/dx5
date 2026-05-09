@@ -1,0 +1,66 @@
+<style>
+    body { font-family: 'JetBrains Mono', monospace; }
+    .glitch { position: relative; }
+    .glitch::before {
+        content: attr(data-glitch);
+        position: absolute; inset: 0;
+        color: #00e5a0;
+        clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+        transform: translate(-2px, -1px);
+        opacity: 0;
+        animation: glitch 4s infinite;
+    }
+    @keyframes glitch {
+        0%, 90%, 100% { opacity: 0; }
+        92%  { opacity: 0.8; transform: translate(-3px, 0); }
+        94%  { opacity: 0.8; transform: translate(2px, 1px); }
+        96%  { opacity: 0; }
+    }
+
+    {% for id in [1,2,3,4,5,6,7,8,9] %}
+        .env{{ id }} {
+            background-image: url("/static/images/base/env{{ id }}.jpg");
+        }
+    {% endfor %}
+
+    {# CSS "lens" effect. This effect will be triggered hovering the logo image #}
+    .logo-wrap {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        cursor: pointer;
+    }
+    .logo-small {
+        width: 28px;
+        height: 28px;
+        display: block;
+        flex-shrink: 0;
+    }
+    .lens {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.4);
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        border: 1.5px solid #00e5a0;
+        background: #060809;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.22s ease,
+        transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        z-index: 50;
+        box-shadow: 0 0 0 1px #004d35, inset 0 0 0 1px #004d35;
+    }
+    .lens img {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+    .logo-wrap:hover .lens {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+</style>

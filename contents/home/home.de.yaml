@@ -1,0 +1,17 @@
+---
+id: home
+title: Home page
+created: 26-04-26 23:09
+
+body_fields:
+  - type: col
+    value: "Left content"
+    size: 4
+  - type: col
+    value: "Right content"
+    size: 8
+  - type: col
+    value: "<b>Full width</b>"
+    size: 12
+    safe: true
+---

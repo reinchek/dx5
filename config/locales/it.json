@@ -1,0 +1,27 @@
+{
+  "text__explore": "esplora",
+  "home_title": "dx5 – CMS basato su file",
+  "home_tagline": "Scrivi contenuti in YAML, pubblica con Rust",
+  "what_is_dx5": "Cos'è dx5?",
+  "what_is_dx5_text": "dx5 è un <strong>CMS file‑based</strong> scritto in Rust. Nessun database, nessun pannello di amministrazione – solo semplici file YAML, Markdown e template Tera potenti.",
+  "feature_files": "Contenuti YAML",
+  "feature_files_text": "Ogni post, frammento di codice o pagina è un semplice file YAML. Amico del versionamento, facile da backup.",
+  "feature_fields": "Campi personalizzati",
+  "feature_fields_text": "Definisci i tuoi tipi di campo in dx5.fields.toml. Blocchi riutilizzabili e convalidati da schema.",
+  "feature_i18n": "Multilingua",
+  "feature_i18n_text": "Supporto integrato per più lingue. Traduci l'intero sito con file JSON.",
+  "dynamic_demo": "Demo live: campi dinamici",
+  "dynamic_demo_text": "I blocchi seguenti sono renderizzati dal front matter YAML di questa stessa homepage:",
+  "unknown_field": "Tipo di campo sconosciuto",
+  "example_note": "Basta copiare questo file in `contents/posts/` e dx5 lo servirà immediatamente.",
+  "view_posts": "Vedi i post →",
+  "custom_fields_guide": "🔧 Creare un campo personalizzato: Spotify embed",
+  "custom_fields_guide_text": "dx5 ti permette di definire i tuoi tipi di campo. Ecco come aggiungere un campo Spotify embed in tre passi:",
+  "step_fields_toml": "Modifica dx5.fields.toml",
+  "step_template": "Crea il template Tera: templates/fields/spotify_embed.tera",
+  "step_usage": "Usalo in qualsiasi post YAML",
+  "step_usage_note": "Il campo verrà renderizzato automaticamente quando usi type: spotify_embed.",
+  "example_yaml": "📄 Esempio di post YAML (file completo)",
+
+  "text__error__complete_backtrace": "Per il backtrace completo"
+}

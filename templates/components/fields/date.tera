@@ -1,0 +1,8 @@
+<div class="flex items-center gap-2 text-xs font-mono text-rust-500 uppercase tracking-widest my-4">
+    <i class="fa-regular fa-calendar"></i>
+    {% if field.value == "now" %}
+        {{ globals.now }}
+    {% else %}
+        {{ field.value }}
+    {% endif %}
+</div>

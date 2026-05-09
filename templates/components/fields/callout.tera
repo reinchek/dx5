@@ -1,0 +1,37 @@
+{% set variant = field.variant | default(value="note") %}
+
+{% if variant == "warning" %}
+    {% set border  = "border-[#ffb347]/40" %}
+    {% set bg      = "bg-[#ffb347]/5" %}
+    {% set icon    = "⚠" %}
+    {% set label_c = "text-[#ffb347]" %}
+    {% elif variant == "danger" %}
+    {% set border  = "border-red-500/40" %}
+    {% set bg      = "bg-red-950/20" %}
+    {% set icon    = "✕" %}
+    {% set label_c = "text-red-400" %}
+    {% elif variant == "tip" %}
+    {% set border  = "border-[#00e5a0]/40" %}
+    {% set bg      = "bg-[#00e5a0]/5" %}
+    {% set icon    = "→" %}
+    {% set label_c = "text-[#00e5a0]" %}
+{% else %}{# note (default) #}
+    {% set border  = "border-zinc-600/40" %}
+    {% set bg      = "bg-zinc-900/40" %}
+    {% set icon    = "ℹ" %}
+    {% set label_c = "text-zinc-400" %}
+{% endif %}
+
+<aside class="my-6 border-l-2 {{ border }} {{ bg }} px-4 py-3">
+    <div class="flex items-center gap-2 mb-1.5">
+        <span class="{{ label_c }} text-[11px]" aria-hidden="true">{{ icon }}</span>
+        {% if field.title %}
+            <span class="{{ label_c }} text-[11px] font-semibold tracking-widest uppercase">{{ field.title }}</span>
+        {% else %}
+            <span class="{{ label_c }} text-[11px] font-semibold tracking-widest uppercase">{{ variant }}</span>
+        {% endif %}
+    </div>
+    <div class="text-sm text-zinc-300 leading-relaxed">
+        {% if field.safe %}{{ field.value | safe }}{% else %}{{ field.value }}{% endif %}
+    </div>
+</aside>

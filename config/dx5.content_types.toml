@@ -1,0 +1,37 @@
+# [type.<type_name>]
+# dir = <folder where content for this type will be created>
+# # If not specified will be used `./templates/types/[index.html.tera|single.html.tera]`
+# template = <templates folder for type>
+# route = <base route for contents listing page>
+# # Optional `extension`
+# extension = <content's file extension> # default is "yaml"
+# # Optional `menu_icon`
+# menu_icon = <font-awesome icon class to use as link's icon>
+# menu_label = <label to show in menu>
+# menu_order = <numerical weight of the link in the menu>
+# is_default = <true | false> # wheather to use the type as home page.
+# ASC: from oldest to the newest
+# DESC: from newst to the oldest
+# ordering = <"ASC"|"DESC"> # default is "DESC"
+# pagination_items_per_page = <numerical items per page> # default is 10
+# # The navigation in this case indicates the possibility to move, inside from a content,
+# # to the next or prev content, directly.
+# enable_navigation = <true | false>
+
+[types.post]
+dir        = "./contents/posts"
+route      = "/posts"
+menu_icon  = "fa-regular fa-keyboard"
+menu_label = "Posts"
+menu_order = 1
+is_default = true
+ordering   = "DESC"
+pagination_items_per_page = 2
+enable_navigation = true # default false
+
+[types.code]
+dir        = "./contents/codes"
+route      = "/codes"
+menu_icon  = "fa-solid fa-code"
+menu_label = "Code"
+menu_order = 2

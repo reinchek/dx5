@@ -1,0 +1,13 @@
+---
+body_fields:
+- prompt: some prompt
+  title: prompt title
+  type: terminal
+  value: lorem ipsum
+category: ''
+created: 05/08/2026
+id: '0x04'
+summary: Dolor silent
+title: Lorem ipsum
+updated: 05/08/2026
+---

@@ -1,0 +1,9 @@
+{% if field.value %}
+    <div class="my-10 flex items-center gap-4 text-zinc-700">
+        <span class="flex-1 h-px bg-zinc-800"></span>
+        <span class="text-xs tracking-widest select-none">{{ field.value }}</span>
+        <span class="flex-1 h-px bg-zinc-800"></span>
+    </div>
+{% else %}
+    <hr class="my-10 border-none h-px bg-zinc-800" />
+{% endif %}

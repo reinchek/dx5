@@ -1,0 +1,20 @@
+{% set prompt = field.prompt | default(value="$") %}
+
+<figure class="my-6">
+    {% if field.title %}
+        <figcaption class="flex items-center gap-2 bg-zinc-800 border border-b-0 border-zinc-700 px-3 py-1.5">
+            {# Faux traffic-light dots #}
+            <span class="flex gap-1.5" aria-hidden="true">
+            <span class="w-2.5 h-2.5 rounded-full bg-red-500/60"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[#ffb347]/60"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[#00e5a0]/60"></span>
+        </span>
+            <span class="text-[11px] text-zinc-400 tracking-wider">{{ field.title }}</span>
+        </figcaption>
+    {% endif %}
+
+    <pre class="overflow-x-auto bg-zinc-900 border border-zinc-700
+                {% if not field.title %}rounded-none{% endif %}
+                px-4 py-3 text-[13px] leading-relaxed font-mono m-0"><code>{% for line in field.value | split(pat="\n") %}{% if line %}<span class="select-none text-[#00e5a0]/70">{{ prompt }} </span>{{ line }}
+{% endif %}{% endfor %}</code></pre>
+</figure>

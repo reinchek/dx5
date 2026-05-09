@@ -1,0 +1,55 @@
+Changes made
+
+1. Removed LEGEND.md
+
+2. Updated README.md:
+   - Project structure tree: added missing src modules (api.rs, admin.rs,
+     menu_item.rs), config/locales/de.json, all static/ files (favicon, CSS,
+     JS, images), templates/ subdirs (partials, macros, dynamic-css), root
+     files (Dockerfile, docker-compose.yml, .scaffold.toml, landing_dx5.html,
+     load.js), expanded contents/ with notes/, orig/, Italian posts, more codes
+   - Example config: spa_enabled = true (was false), debug_enabled commented
+     out, framework commented out (optional field)
+   - Content types example: added ordering field, fixed menu_icon to
+     fa-regular fa-keyboard, fixed codes menu_label to "Code" (was "Codes"),
+     removed redundant extension fields
+   - Field types table: added col, group, spreaker (3 undocumented types)
+   - Routes: added /api/<lang>/home to Headless JSON API table
+
+3. Fixed config/dx5.fields.toml:
+   - spotify_embed description: "End of Line (line break)." ->
+     "Embedded Spotify player from a track ID."
+
+4. Refactored admin_ui.html to dynamic schema-driven field editor:
+   - loadFieldsDefinitions(): res.fieldsDefinitions → res.definitions
+     (matching the API endpoint in admin.rs)
+   - Removed finally { this.fieldsDefinitions = []; } that was clearing
+     successfully loaded data
+   - Replaced all hardcoded <template x-if="field.type === '...'"> blocks
+     with a single dynamic renderer that reads field properties from schema
+     (fieldSchemaKeys / fieldSchemaType)
+   - Replaced per-field type <select> with read-only text (field type
+     no longer changeable after creation)
+   - Replaced add-field <select> options with dynamic iteration over
+     fieldsDefinitions keys
+   - Added helpers: makeField(), fieldSchema(), fieldSchemaKeys(),
+     fieldSchemaType(), fieldTypeKeys(), fieldDescription()
+   - onFieldTypeChange() now resets field with makeField() using schema
+   - addField() uses makeField() for proper default values
+
+5. Updated README.md:
+    - Added GET /admin/api/fields_definitions to admin routes table
+
+6. Fixed .scaffold.toml scaffolding template:
+    - Cargo.toml: name = "dx5" → name = "{{ blog_name }}"
+    - config/dx5.toml.dist: title = "{{ blog_name }}" → "{{ blog_title }}"
+    - config/dx5.toml.dist: fixed language spacing ({{ blog_lang}} → {{ blog_lang }})
+    - config/dx5.toml.dist: spa_enabled unquoted for valid TOML boolean
+    - config/dx5.toml.dist: added [languages] section (was missing, would crash)
+    - config/dx5.toml.dist: removed legacy [content] section
+    - config/dx5.toml.dist: added start_with_framework to [theme]
+    - config/dx5.toml.dist: port = {{ rocket_port }} under [server]
+    - .scaffold.toml: removed "Rocket.toml" from disable_templating
+    - Rocket.toml: port = {{ rocket_port }}
+    - .scaffold.toml: added admin_enabled (boolean) and admin_token (string) parameters
+    - config/dx5.toml.dist: admin section now uses {{ admin_enabled }} and {{ admin_token }}

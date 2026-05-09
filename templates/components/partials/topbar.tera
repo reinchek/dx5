@@ -1,0 +1,47 @@
+{# TOPBAR #}
+<header class="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/90 backdrop-blur-sm">
+    <div class="max-w-5xl mx-auto px-4 h-12 flex items-center gap-6">
+
+        {# Logo #}
+        <div class="logo-wrap">
+            <a data-spa href="/{{ lang }}">
+                <img src="/images/logo.svg" alt="dx5" class="logo-small">
+                <div class="lens">
+                    <img src="/images/logo.svg" alt="" />
+                </div>
+            </a>
+        </div>
+
+        <a data-spa href="/{{ lang }}" class="text-[#00e5a0] font-bold tracking-widest text-sm uppercase glitch"
+           data-glitch="{{ app.title }}">
+            {{ app.title }}
+        </a>
+
+        <span class="text-zinc-700 text-xs">//</span>
+
+        {# Nav — content types da dx5.content_types.toml #}
+        <nav class="flex items-center gap-4 flex-1">
+            {% for item in menu_items %}
+                <a data-spa data-lang="{{ lang }}" href="/{{ lang }}{{ item.path }}"
+                   class="text-xs text-zinc-400 hover:text-[#00e5a0] transition-colors tracking-wider uppercase flex items-center gap-1.5">
+                    {% if item.icon %}<i class="{{ item.icon }} text-[10px]"></i>{% endif %}
+                    {{ item.label }}
+                </a>
+            {% endfor %}
+        </nav>
+
+        {# Language switcher #}
+        <div class="flex items-center gap-2 text-xs">
+            {% for code, label in languages %}
+                <a data-spa data-lang="{{ code }}" href="/{{ code }}"
+                   class="lang-switch {% if code == lang %}text-[#00e5a0]{% else %}text-zinc-600 hover:text-zinc-300{% endif %} transition-colors uppercase tracking-wider">
+                    {{ code }}
+                </a>
+            {% endfor %}
+
+            <!-- Time -->
+            <span id="system-clock" class="text-zinc-500 ml-2"></span>
+        </div>
+
+    </div>
+</header>

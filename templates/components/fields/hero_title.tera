@@ -1,0 +1,24 @@
+{% if field.env == true %}
+    {% if field.env_id %}
+        {% set env_id = field.env_id %}
+    {% else %}
+        {# Note: get_random has to be registered as function in Tera #}
+        {% set env_id = get_random(start=1, end=14) %}
+    {% endif %}
+    <div class="relative w-full overflow-hidden flex items-center justify-center">
+        <div class="absolute inset-0 bg-cover bg-center bg-no-repeat env{{ env_id }}"></div>
+        <h2 class="relative z-10 layers text-4xl md:text-6xl font-bold tracking-widest uppercase leading-tight px-6 py-12">
+            <span class="glitch" data-glitch="{{ field.value_glitch | striptags }}">{{ field.value | safe }}</span>
+        </h2>
+    </div>
+{% else %}
+    {% if field.font_small %}
+        {% set size_class = "text-xl tracking-wide" %}
+    {% else %}
+        {% set size_class = "text-4xl md:text-6xl tracking-widest" %}
+    {% endif %}
+    <span class="glitch layers {{ size_class }} font-bold uppercase leading-tight inline-block"
+          data-glitch="{{ field.value_glitch | striptags }}">
+        {{ field.value }}
+    </span>
+{% endif %}

@@ -1,0 +1,56 @@
+{% import "components/macros/fields" as fields_macro %}
+{% set app = app() %}
+<!DOCTYPE html>
+<html lang="{{ lang | default(value='en') }}" class="bg-zinc-950 text-zinc-200">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ app.title }}{% endblock title %}</title>
+    <meta name="description" content="{% block description %}{% endblock description %}">
+    <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+
+    {% include 'components/dynamic-css/base' %}
+
+    {# Highlightjs #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css" integrity="sha512-Jk4AqjWsdSzSWCSuQTfYRIF84Rq/eV0G2+tu07byYwHcbTGfdmLrHjUSwvzp5HvbiqK4ibmNwdcG49Y5RGYPTg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+
+    {# Tailwind via CDN — replace with a local build for the production env. #}
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="/static/js/tailwind-config.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    {# FontAwesome (icone menu) #}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    {% block head %}{% endblock head %}
+</head>
+<body class="min-h-screen flex flex-col font-mono bg-zinc-950">
+    <!-- Page content wrapper (SPA target) -->
+    <div id="page-content">
+        {% include 'components/partials/topbar' %}
+        <main class="flex-1 max-w-5xl mx-auto w-full px-4 py-10">
+            {% block content %}{% endblock content %}
+        </main>
+        {% include 'components/partials/footer' %}
+    </div>
+
+    {# AUDIO PLAYER #}
+    {% if playlist_data and playlist_data != "[]" %}
+        {% include 'components/partials/audio_player_fab' %}
+    {% endif %}
+
+    <!-- Scripts -->
+    <script src="/static/js/current-time.js"></script>
+    <script src="/static/js/lang-switch.js"></script>
+    <script>hljs.highlightAll();</script>
+
+    {% if app.spa_enabled == true %}
+        <script src="/static/js/spa-router.js"></script>
+    {% endif %}
+
+    {% block scripts %}{% endblock scripts %}
+</body>
+</html>

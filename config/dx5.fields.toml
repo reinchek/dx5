@@ -1,0 +1,164 @@
+# Global configuration for dx5 content blocks
+# Each section defines the Tera template to use and the expected data schema.
+# Foreach field, where isn't explicitely specified, the template property is the default one: `template = "components/fields/<field_name>.tera"`
+
+[fields.text]
+# template = "components/fields/text" # default folder: `components/fields/<field_name>`
+description = "Standard text block. Supports inline HTML if 'safe' is true."
+[fields.text.schema]
+value = "string"
+safe = "bool"
+
+
+[fields.hero_title]
+# template = "components/fields/hero_title" # default folder: `components/fields/<field_name>`
+description = "Monumental title with glitch effect and environmental background image."
+[fields.hero_title.schema]
+value = "string"
+value_glitch = "string"
+env = "bool"
+env_id = "int"
+font_small = "bool" # If 'true' will be rendered in a <span> as a small font.
+
+
+[fields.text_glitch]
+# template = "components/fields/text_glitch" # default folder: `components/fields/<field_name>`
+description = "Simple text with glitch effect."
+[fields.text_glitch.schema]
+value = "string"
+value_glitch = "string"
+
+
+[fields.section_title]
+# template = "components/fields/section_title" # default folder: `components/fields/<field_name>`
+description = "Section heading to divide the post body."
+[fields.section_title.schema]
+value = "string"
+
+
+[fields.cite]
+# template = "components/fields/cite" # default folder: `components/fields/<field_name>`
+description = "Short highlighted quotation (inline style)."
+[fields.cite.schema]
+value = "string"
+
+
+[fields.blockquote]
+# template = "components/fields/blockquote" # default folder: `components/fields/<field_name>`
+description = "Extended quotation with author and bibliographic reference."
+[fields.blockquote.schema]
+value = "string"
+author = "string"
+reference = "string"
+
+
+[fields.blockquote_figure]
+# template = "components/fields/blockquote_figure" # default folder: `components/fields/<field_name>`
+description = "Blockquote with support for an author image or avatar."
+[fields.blockquote_figure.schema]
+value = "string"
+author = "string"
+reference = "string"
+figure = "string"
+
+
+[fields.image]
+# template = "components/fields/image" # default folder: `components/fields/<field_name>`
+description = "Image within the post body with caption and alt-text."
+[fields.image.schema]
+value = "string" # image path
+alt = "string"
+caption = "string"
+
+
+[fields.video]
+# template = "components/fields/video" # default folder: `components/fields/<field_name>`
+description = "Embed video (YouTube, Vimeo, direct URL)."
+[fields.video.schema]
+src = "string" # video src
+caption = "string"
+autoplay = "bool"
+
+
+[fields.pre]
+# template = "components/fields/pre" # default folder: `components/fields/<field_name>`
+description = "Formatted code block with syntax highlighting."
+[fields.pre.schema]
+lang = "string"
+value = "string"
+path = "string" # optional, to display the filename
+
+
+[fields.date]
+# template = "components/fields/date" # default folder: `components/fields/<field_name>`
+description = "Inserts a specific date or the 'now' timestamp."
+[fields.date.schema]
+value = "string"
+
+
+[fields.link]
+# template = "components/fields/link" # default folder: `components/fields/<field_name>`
+description = "External or internal hyperlink."
+[fields.link.schema]
+href = "string" # URL
+value = "string" # Label
+alt = "string"
+
+
+[fields.eol]
+# template = "components/fields/eol" # default folder: `components/fields/<field_name>`
+description = "End of Line (line break)."
+[fields.eol.schema]
+# No fields required, acts as a separator
+
+
+[fields.spotify_embed]
+# template = "components/fields/spotify_embed" # default folder: `components/fields/<field_name>`
+description = "Embedded Spotify player from a track ID."
+[fields.spotify_embed.schema]
+track_id = "string"
+
+[fields.col]
+# template = "components/fields/col" # default folder: `components/fields/<field_name>`
+description = "Column block with configurable Tailwind width."
+[fields.col.schema]
+value = "string"
+safe  = "bool"
+
+[fields.group]
+# template = "components/fields/group" # default folder: `components/fields/<field_name>`
+description = "Use it only to group together other fields (like cols). It opens a tag... remember to close it using group fields again!"
+[fields.group.schema]
+value = "string"
+
+
+[fields.callout]
+# template = "components/fields/callout" # default folder: `components/fields/<field_name>`
+description = "Note, warning and suggestions. Used a lot in technical blog"
+[fields.callout.schema]
+value = "string"
+variant = "string"
+title = "string"
+safe = "bool"
+
+
+[fields.terminal]
+# template = "components/fields/terminal" # default folder: `components/fields/<field_name>`
+description = "Shell session: commands and output. Differs semantically from 'pre' field."
+[fields.terminal.schema]
+value = "string"
+prompt = "string"
+title = "string"
+
+
+[fields.divider]
+# template = "components/fields/divider" # default folder: `components/fields/<field_name>`
+description = "Visual horizontal divider (<hr>)."
+[fields.divider.schema]
+value = "string"
+
+[fields.spreaker]
+description = "Spreaker embedded iframe"
+[fields.spreaker.schema]
+episode_id="string"
+theme="string"

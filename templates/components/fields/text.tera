@@ -1,0 +1,7 @@
+{#{% if field.safe %}#}
+{#    {% if field.safe == true %} {{ field.value | safe }} {% else %} {{ field.value }} {% endif %}#}
+{#{% else %}#}
+{#    {{ field.value }}#}
+{#{% endif %}#}
+
+{{ field.value }}

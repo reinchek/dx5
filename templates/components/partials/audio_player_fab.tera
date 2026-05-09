@@ -1,0 +1,376 @@
+{#
+AUDIO BARS — dx5
+Animated equalizer bars shown on the player toggle button
+when the player is closed but music is playing.
+
+Include this partial in your base layout / player partial.
+Expects the `playlist_data` variable to be in context.
+Pair it with your existing audio player JS: it listens to a
+custom event `dx5:audio:state` dispatched by the player:
+
+  document.dispatchEvent(new CustomEvent('dx5:audio:state', {
+    detail: { playing: true | false }
+  }));
+
+If your player already manages a global `audioPlaying` state,
+call `DX5Bars.sync(playing)` directly.
+#}
+
+<style>
+    /* Player FAB wrapper */
+    #dx5-player-fab {
+        position: fixed;
+        bottom: 24px;
+        left: 24px;
+        z-index: 9000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+    }
+
+    /* Toggle button */
+    #dx5-player-toggle {
+        width: 48px;
+        height: 48px;
+        background: #0e1317;
+        border: 1px solid #1e2a32;
+        color: #c8d8e0;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        transition: border-color .2s, background .2s;
+        font-family: 'JetBrains Mono', monospace;
+    }
+    #dx5-player-toggle:hover {
+        border-color: #00e5a0;
+        background: #0a1210;
+    }
+
+    /* Icon: static headphone SVG */
+    .fab-icon {
+        transition: opacity .2s;
+    }
+
+    /* Bars container (replaces icon when playing + closed) */
+    #dx5-eq-bars {
+        display: flex;
+        align-items: flex-end;
+        gap: 3px;
+        height: 20px;
+        opacity: 0;
+        position: absolute;
+        transition: opacity .25s;
+        pointer-events: none;
+    }
+
+    #dx5-eq-bars.visible { opacity: 1; }
+    #dx5-eq-bars.visible ~ .fab-icon { opacity: 0; }
+
+    /* Individual bars */
+    .eq-bar {
+        width: 3px;
+        background: #00e5a0;
+        border-radius: 1px 1px 0 0;
+        animation: eq-bounce var(--dur, .8s) ease-in-out infinite alternate;
+        animation-play-state: paused;
+        transform-origin: bottom center;
+    }
+
+    #dx5-eq-bars.visible .eq-bar {
+        animation-play-state: running;
+    }
+
+    .eq-bar:nth-child(1) { --dur: .55s; height: 8px;  animation-delay: 0s; }
+    .eq-bar:nth-child(2) { --dur: .70s; height: 14px; animation-delay: -.15s; }
+    .eq-bar:nth-child(3) { --dur: .60s; height: 20px; animation-delay: -.30s; }
+    .eq-bar:nth-child(4) { --dur: .75s; height: 11px; animation-delay: -.10s; }
+    .eq-bar:nth-child(5) { --dur: .50s; height: 6px;  animation-delay: -.40s; }
+
+    @keyframes eq-bounce {
+        0%   { transform: scaleY(.15); }
+        100% { transform: scaleY(1); }
+    }
+
+    /* Slide-up player panel */
+    #dx5-player-panel {
+        background: #0e1317;
+        border: 1px solid #1e2a32;
+        width: 280px;
+        overflow: hidden;
+        max-height: 0;
+        transition: max-height .3s cubic-bezier(.4,0,.2,1),
+        border-color .2s,
+        opacity .2s;
+        opacity: 0;
+        margin-bottom: 4px;
+    }
+
+    #dx5-player-panel.open {
+        max-height: 320px;
+        opacity: 1;
+        border-color: #1e2a32;
+    }
+
+    .player-inner {
+        padding: 14px 16px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: #c8d8e0;
+    }
+
+    .player-label {
+        font-size: 9px;
+        letter-spacing: 2px;
+        color: #5a7080;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .player-track-title {
+        font-size: 12px;
+        color: #00e5a0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 2px;
+    }
+
+    .player-track-author {
+        font-size: 10px;
+        color: #5a7080;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        margin-bottom: 12px;
+    }
+
+    .player-controls {
+        display: flex;
+        gap: 8px;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .ctrl-btn {
+        background: transparent;
+        border: 1px solid #1e2a32;
+        color: #c8d8e0;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px;
+        width: 30px;
+        height: 30px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: border-color .15s, color .15s;
+    }
+    .ctrl-btn:hover { border-color: #00e5a0; color: #00e5a0; }
+    .ctrl-btn.play-btn { width: 36px; height: 36px; font-size: 14px; }
+
+    .player-progress {
+        width: 100%;
+        height: 2px;
+        background: #1e2a32;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 10px;
+    }
+    .player-progress-fill {
+        height: 100%;
+        background: #00e5a0;
+        width: 0%;
+        transition: width .5s linear;
+    }
+
+    .player-time {
+        display: flex;
+        justify-content: space-between;
+        font-size: 9px;
+        color: #3a4a52;
+        margin-bottom: 10px;
+    }
+
+    .player-playlist {
+        max-height: 100px;
+        overflow-y: auto;
+        scrollbar-width: thin;
+        scrollbar-color: #3a4a52 transparent;
+    }
+
+    .playlist-item {
+        padding: 5px 4px;
+        border-bottom: 1px solid #1e2a32;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: background .1s;
+    }
+    .playlist-item:hover { background: rgba(0,229,160,.05); }
+    .playlist-item.active { color: #00e5a0; }
+    .playlist-item .track-num { color: #3a4a52; font-size: 9px; min-width: 16px; }
+    .playlist-item .track-name { font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style>
+
+<div id="dx5-player-fab">
+    <!-- Slide-up panel -->
+    <div id="dx5-player-panel">
+        <div class="player-inner">
+            <div class="player-label">// audio log</div>
+            <div class="player-track-title" id="fab-track-title">—</div>
+            <div class="player-track-author" id="fab-track-author">—</div>
+            <div class="player-controls">
+                <button class="ctrl-btn" onclick="DX5Player.prev()" title="prev">⏮</button>
+                <button class="ctrl-btn play-btn" id="fab-play-btn" onclick="DX5Player.toggle()" title="play/pause">▶</button>
+                <button class="ctrl-btn" onclick="DX5Player.next()" title="next">⏭</button>
+                <button class="ctrl-btn" onclick="DX5Player.toggleMute()" id="fab-mute-btn" title="mute" style="margin-left:auto">🔊</button>
+            </div>
+            <div class="player-progress" onclick="DX5Player.seek(event)">
+                <div class="player-progress-fill" id="fab-progress"></div>
+            </div>
+            <div class="player-time">
+                <span id="fab-time-cur">0:00</span>
+                <span id="fab-time-tot">0:00</span>
+            </div>
+            <div class="player-playlist" id="fab-playlist"></div>
+        </div>
+    </div>
+
+    <!-- FAB toggle button -->
+    <button id="dx5-player-toggle" onclick="DX5Player.togglePanel()" title="audio player">
+        <div id="dx5-eq-bars" aria-hidden="true">
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+            <div class="eq-bar"></div>
+        </div>
+        <svg class="fab-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 18v-6a9 9 0 0 1 18 0v6"/>
+            <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/>
+            <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/>
+        </svg>
+    </button>
+</div>
+
+<script>
+    (function() {
+        /* PLAYLIST from Tera context */
+        const PLAYLIST = {{ playlist_data | safe }};
+
+        /* AUDIO ENGINE */
+        let audio      = new Audio();
+        let trackIdx   = 0;
+        let isPlaying  = false;
+        let panelOpen  = false;
+        let muted      = false;
+
+        const eqBars   = document.getElementById('dx5-eq-bars');
+        const playBtn  = document.getElementById('fab-play-btn');
+        const panel    = document.getElementById('dx5-player-panel');
+        const progress = document.getElementById('fab-progress');
+
+        function syncBars() {
+            /* bars visible only when playing AND panel is closed */
+            if (isPlaying && !panelOpen) {
+                eqBars.classList.add('visible');
+            } else {
+                eqBars.classList.remove('visible');
+            }
+        }
+
+        function loadTrack(idx, autoPlay) {
+            if (!PLAYLIST.length) return;
+            trackIdx = ((idx % PLAYLIST.length) + PLAYLIST.length) % PLAYLIST.length;
+            const t = PLAYLIST[trackIdx];
+            audio.src = t.src;
+            document.getElementById('fab-track-title').textContent  = t.title;
+            document.getElementById('fab-track-author').textContent = t.author;
+            renderPlaylist();
+            if (autoPlay) {
+                audio.play().then(() => { isPlaying = true; syncUI(); });
+            }
+        }
+
+        function syncUI() {
+            playBtn.textContent = isPlaying ? '⏸' : '▶';
+            syncBars();
+            /* notify other components */
+            document.dispatchEvent(new CustomEvent('dx5:audio:state', {
+                detail: { playing: isPlaying, track: PLAYLIST[trackIdx] }
+            }));
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            if (!audio.duration) return;
+            const pct = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = pct + '%';
+            document.getElementById('fab-time-cur').textContent = fmt(audio.currentTime);
+            document.getElementById('fab-time-tot').textContent = fmt(audio.duration);
+        });
+
+        audio.addEventListener('ended', () => { loadTrack(trackIdx + 1, true); });
+
+        function fmt(s) {
+            const m = Math.floor(s / 60);
+            const sec = Math.floor(s % 60);
+            return m + ':' + String(sec).padStart(2, '0');
+        }
+
+        function renderPlaylist() {
+            const el = document.getElementById('fab-playlist');
+            el.innerHTML = PLAYLIST.map((t, i) => `
+      <div class="playlist-item${i===trackIdx?' active':''}" onclick="DX5Player.load(${i})">
+        <span class="track-num">${String(i+1).padStart(2,'0')}</span>
+        <span class="track-name">${t.title}</span>
+      </div>`).join('');
+        }
+
+        /* PUBLIC API */
+        window.DX5Player = {
+            toggle() {
+                if (!PLAYLIST.length) return;
+                if (isPlaying) {
+                    audio.pause(); isPlaying = false;
+                } else {
+                    if (!audio.src) loadTrack(0, false);
+                    audio.play().then(() => { isPlaying = true; syncUI(); return; });
+                    isPlaying = true;
+                }
+                syncUI();
+            },
+            prev()  { loadTrack(trackIdx - 1, isPlaying); },
+            next()  { loadTrack(trackIdx + 1, isPlaying); },
+            load(i) { loadTrack(i, true); },
+            togglePanel() {
+                panelOpen = !panelOpen;
+                panel.classList.toggle('open', panelOpen);
+                if (panelOpen && !audio.src && PLAYLIST.length) loadTrack(0, false);
+                syncBars();
+            },
+            toggleMute() {
+                muted = !muted;
+                audio.muted = muted;
+                document.getElementById('fab-mute-btn').textContent = muted ? '🔇' : '🔊';
+            },
+            seek(e) {
+                if (!audio.duration) return;
+                const r = e.currentTarget.getBoundingClientRect();
+                audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
+            },
+            sync(playing) { isPlaying = playing; syncUI(); }
+        };
+
+        /* INIT */
+        if (PLAYLIST.length) {
+            document.getElementById('fab-track-title').textContent  = PLAYLIST[0].title;
+            document.getElementById('fab-track-author').textContent = PLAYLIST[0].author;
+            renderPlaylist();
+        }
+
+    })();
+</script>

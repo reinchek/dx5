@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dx5 // admin</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        body: '#0f1117',
+                        surface: '#1a1d27',
+                        border: '#2a2d3a',
+                        primary: '#10b981',
+                        primaryHover: '#059669',
+                        danger: '#ef4444',
+                        dangerHover: '#dc2626',
+                        warning: '#f59e0b',
+                    },
+                    fontFamily: {
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                }
+            }
+        }
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        [x-cloak] { display: none !important; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #2a2d3a; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #3a3d4a; }
+    </style>
+</head>
+<body class="bg-body text-gray-300 font-mono antialiased" x-data="adminApp()" x-init="boot()" x-cloak>
+
+    <!-- TOKEN MODAL -->
+    <div x-show="showTokenModal" class="fixed inset-0 z-50 flex items-center justify-center bg-body/95 backdrop-blur-sm" x-transition.opacity>
+        <div class="w-full max-w-md bg-surface border border-border rounded-xl p-8 shadow-2xl" @keydown.enter.window="submitToken()">
+            <div class="flex items-center gap-3 mb-2">
+                <span class="text-primary text-lg font-bold tracking-widest uppercase">// auth</span>
+            </div>
+            <p class="text-sm text-gray-500 mb-6">Enter the Bearer token from <code class="text-warning text-xs">dx5.toml → [admin].token</code></p>
+            <input type="password" x-model="token" placeholder="dx5_tok_••••••••" autocomplete="off"
+                   class="w-full bg-body border border-border text-primary font-mono text-sm px-4 py-3 rounded-lg outline-none focus:border-primary transition-colors placeholder:text-gray-600 mb-3">
+            <p x-show="tokenError" x-text="tokenError" class="text-danger text-xs mb-3"></p>
+            <button @click="submitToken()" :disabled="tokenLoading"
+                    class="w-full bg-primary hover:bg-primaryHover text-body font-semibold text-sm py-3 rounded-lg transition-colors disabled:opacity-50">
+                <span x-show="!tokenLoading">ACCEDI →</span>
+                <span x-show="tokenLoading">...</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN LAYOUT -->
+    <div x-show="authenticated" class="flex h-screen overflow-hidden">
+
+        <!-- ──── SIDEBAR ──── -->
+        <aside class="w-64 bg-surface border-r border-border flex flex-col flex-shrink-0">
+            <!-- Logo -->
+            <div class="h-14 flex items-center px-5 border-b border-border">
+                <span class="text-primary font-bold text-sm tracking-widest uppercase">dx5<span class="text-gray-600">//</span>admin</span>
+            </div>
+
+            <!-- Content Type Selector -->
+            <div class="px-4 pt-4 pb-2">
+                <label class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase block mb-2">Content Type</label>
+                <select x-model="selectedType" @change="onTypeChange()"
+                        class="w-full bg-body border border-border text-sm text-gray-300 rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                    <template x-for="ct in contentTypes" :key="ct.key">
+                        <option :value="ct.key" x-text="ct.label"></option>
+                    </template>
+                </select>
+            </div>
+
+            <!-- Language Selector -->
+            <div class="px-4 pb-4">
+                <label class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase block mb-2">Language</label>
+                <select x-model="selectedLang" @change="onLangChange()"
+                        class="w-full bg-body border border-border text-sm text-gray-300 rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                    <template x-for="lang in languages" :key="lang.code">
+                        <option :value="lang.code" x-text="lang.label"></option>
+                    </template>
+                </select>
+            </div>
+
+            <!-- Divider -->
+            <div class="border-t border-border mx-4"></div>
+
+            <!-- Items List -->
+            <div class="flex items-center justify-between px-4 py-3">
+                <span class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase">Items</span>
+                <button @click="newItem()" class="text-[11px] text-primary border border-primary px-2 py-0.5 rounded hover:bg-primary hover:text-body transition-colors">
+                    + NEW
+                </button>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-2 pb-4">
+                <template x-if="itemsLoading">
+                    <div class="text-center text-gray-600 text-xs py-8">loading...</div>
+                </template>
+                <template x-if="!itemsLoading && items.length === 0">
+                    <div class="text-center text-gray-600 text-xs py-8">no items</div>
+                </template>
+                <template x-for="item in items" :key="item.id">
+                    <div @click="loadItem(item.id)"
+                         :class="selectedId === item.id ? 'bg-primary/10 border-l-2 border-primary' : 'hover:bg-white/[0.03]'"
+                         class="px-3 py-2.5 rounded-r-lg cursor-pointer transition-colors border-l-2 border-transparent mb-0.5">
+                        <div class="text-[11px] text-primary font-semibold" x-text="item.id"></div>
+                        <div class="text-xs text-gray-400 truncate" x-text="item.title"></div>
+                        <div class="text-[10px] text-gray-600 mt-0.5" x-text="item.created"></div>
+                    </div>
+                </template>
+            </div>
+        </aside>
+
+        <!-- ──── MAIN AREA ──── -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+
+            <!-- Top bar -->
+            <header class="h-14 bg-surface border-b border-border flex items-center justify-between px-6 flex-shrink-0">
+                <span class="text-sm text-gray-500" x-text="editorTitle"></span>
+                <div class="flex items-center gap-2">
+                    <button x-show="selectedId" @click="deleteItem()"
+                            class="text-xs border border-danger text-danger px-4 py-1.5 rounded-lg hover:bg-danger hover:text-white transition-colors">
+                        DELETE
+                    </button>
+                    <button @click="saveItem()"
+                            class="text-xs border border-primary text-primary px-4 py-1.5 rounded-lg hover:bg-primary hover:text-body transition-colors">
+                        SAVE
+                    </button>
+                </div>
+            </header>
+
+            <!-- Content -->
+            <div class="flex-1 overflow-y-auto">
+
+                <!-- Empty State -->
+                <div x-show="!editing" class="flex flex-col items-center justify-center h-full text-gray-600">
+                    <div class="text-5xl mb-4 text-gray-700">⌗</div>
+                    <p class="text-sm tracking-wide">select an item or create a new one</p>
+                </div>
+
+                <!-- Editor -->
+                <div x-show="editing" class="max-w-3xl mx-auto py-8 px-6">
+
+                    <!-- Front Matter -->
+                    <div class="mb-8">
+                        <h2 class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase pb-2 mb-4 border-b border-border">Front Matter</h2>
+
+                        <div class="grid grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">ID</label>
+                                <input type="text" x-model="editForm.id" :readonly="!!selectedId"
+                                       :class="selectedId ? 'opacity-50 cursor-not-allowed' : ''"
+                                       class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">Created</label>
+                                <input type="text" x-model="editForm.created" placeholder="MM/DD/YYYY"
+                                       class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors placeholder:text-gray-600">
+                            </div>
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">Category</label>
+                                <input type="text" x-model="editForm.category" placeholder="optional"
+                                       class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors placeholder:text-gray-600">
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">Title</label>
+                            <input type="text" x-model="editForm.title"
+                                   class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">Summary</label>
+                            <textarea x-model="editForm.summary" rows="2"
+                                      class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors resize-y"></textarea>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1.5">Updated</label>
+                                <input type="text" x-model="editForm.updated" placeholder="MM/DD/YYYY"
+                                       class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors placeholder:text-gray-600">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Body Fields -->
+                    <div class="mb-8">
+                        <h2 class="text-[10px] font-semibold text-gray-500 tracking-widest uppercase pb-2 mb-4 border-b border-border">Body Fields</h2>
+
+                        <div class="space-y-3">
+                            <template x-for="(field, index) in editForm.body_fields" :key="index">
+                                <div class="bg-surface border border-border rounded-lg p-4 group">
+                                    <div class="flex items-center gap-2 mb-3">
+                                        <div class="flex-1 min-w-0">
+                                            <div class="text-warning text-xs font-semibold uppercase tracking-wider" x-text="field.type"></div>
+                                            <div class="text-[10px] text-gray-600 truncate mt-0.5 px-0.5" x-text="fieldDescription(field.type)"></div>
+                                        </div>
+                                        <button @click="moveField(index, -1)" :disabled="index === 0"
+                                                class="text-gray-500 hover:text-gray-300 disabled:opacity-20 disabled:cursor-not-allowed text-sm" title="move up">↑</button>
+                                        <button @click="moveField(index, 1)" :disabled="index === editForm.body_fields.length - 1"
+                                                class="text-gray-500 hover:text-gray-300 disabled:opacity-20 disabled:cursor-not-allowed text-sm" title="move down">↓</button>
+                                        <button @click="removeField(index)"
+                                                class="text-gray-500 hover:text-danger text-sm" title="remove">✕</button>
+                                    </div>
+
+                                    <!-- Dynamic field inputs from schema -->
+                                    <div class="space-y-3">
+                                        <template x-for="prop in fieldSchemaKeys(field.type)" :key="prop">
+                                            <div>
+                                                <template x-if="fieldSchemaType(field.type, prop) === 'bool'">
+                                                    <label class="flex items-center gap-2 text-xs text-gray-500">
+                                                        <input type="checkbox" x-model="field[prop]" class="accent-primary">
+                                                        <span x-text="prop"></span>
+                                                    </label>
+                                                </template>
+                                                <template x-if="fieldSchemaType(field.type, prop) === 'int'">
+                                                    <div>
+                                                        <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1" x-text="prop"></label>
+                                                        <input type="number" x-model="field[prop]"
+                                                               class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                                                    </div>
+                                                </template>
+                                                <template x-if="fieldSchemaType(field.type, prop) === 'string'">
+                                                    <div>
+                                                        <label class="text-[10px] text-gray-500 uppercase tracking-wider block mb-1" x-text="prop"></label>
+                                                        <textarea x-model="field[prop]" rows="3"
+                                                                  class="w-full bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors resize-y"
+                                                                  :class="prop === 'value' ? 'font-mono' : ''"></textarea>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+
+                        <!-- Add field -->
+                        <div class="flex gap-3 mt-4">
+                            <select x-model="newFieldType"
+                                    class="flex-1 bg-body border border-border text-sm rounded-lg px-3 py-2 outline-none focus:border-primary transition-colors">
+                                <template x-for="key in fieldTypeKeys()" :key="key">
+                                    <option :value="key" x-text="key"></option>
+                                </template>
+                            </select>
+                            <button @click="addField()"
+                                    class="border border-warning text-warning text-xs px-4 py-2 rounded-lg hover:bg-warning hover:text-body transition-colors">
+                                + ADD FIELD
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TOAST -->
+    <div x-show="toast.show" x-transition
+         :class="toast.error ? 'border-danger text-danger' : 'border-primary text-primary'"
+         class="fixed bottom-6 right-6 bg-surface border rounded-lg px-5 py-3 text-xs tracking-wide z-50 shadow-xl">
+        <span x-text="toast.message"></span>
+    </div>
+
+    <!-- ALPINE APP -->
+    <script>
+        function adminApp() {
+            return {
+                // Auth
+                token: '',
+                authenticated: false,
+                showTokenModal: true,
+                tokenLoading: false,
+                tokenError: '',
+
+                // Data
+                blogTitle: '',
+                languages: [],
+                contentTypes: [],
+                items: [],
+                fieldsDefinitions: [],
+
+                // Selection
+                selectedLang: 'en',
+                selectedType: 'posts',
+                selectedId: null,
+
+                // Editor
+                editing: false,
+                editorTitle: '// select an item',
+                itemsLoading: false,
+
+                // Form
+                editForm: {
+                    id: '', title: '', summary: '', category: '', created: '',
+                    updated: '', body_fields: []
+                },
+
+                // UI
+                newFieldType: 'text',
+                toast: { show: false, message: '', error: false },
+                toastTimer: null,
+
+                async boot() {
+                    this.editForm.created = this.today();
+                    this.editForm.updated = this.today();
+                    const stored = sessionStorage.getItem('dx5_token');
+                    if (stored) {
+                        this.token = stored;
+                        await this.tryAuth();
+                    }
+                },
+
+                async submitToken() {
+                    if (!this.token.trim()) return;
+                    await this.tryAuth();
+                },
+
+                async tryAuth() {
+                    this.tokenLoading = true;
+                    this.tokenError = '';
+                    try {
+                        const res = await this.api('GET', '/admin/api/config');
+                        if (res.ok) {
+                            this.authenticated = true;
+                            this.showTokenModal = false;
+                            sessionStorage.setItem('dx5_token', this.token);
+                            await this.loadInit();
+                        } else {
+                            this.tokenError = 'invalid token';
+                            this.token = '';
+                        }
+                    } catch {
+                        this.tokenError = 'connection failed';
+                    } finally {
+                        this.tokenLoading = false;
+                    }
+                },
+
+                async loadInit() {
+                    try {
+                        const res = await this.api('GET', '/admin/api/init');
+                        if (res.ok) {
+                            this.blogTitle = res.blog?.title || 'dx5';
+                            this.languages = res.languages || [];
+                            this.contentTypes = res.content_types || [];
+                            if (this.contentTypes.length > 0) {
+                                this.selectedType = this.contentTypes[0].key;
+                            }
+                            if (this.languages.length > 0) {
+                                this.selectedLang = this.languages[0].code;
+                            }
+                            await this.loadItems();
+                            await this.loadFieldsDefinitions();
+                            console.log("called loadInit()")
+                        }
+                    } catch (e) {
+                        this.toastMsg('Failed to load config', true);
+                    }
+                },
+
+                async loadFieldsDefinitions() {
+                    try {
+                        const res = await this.api('GET', '/admin/api/fields_definitions');
+                        if (res.ok) {
+                            this.fieldsDefinitions = res.definitions;
+                        } else {
+                            this.toastMsg('Failed to load fields definitions', true);
+                        }
+                    } catch (e) {
+                        this.toastMsg('Failed to load fields definitions', true);
+                    }
+                },
+
+                async loadItems() {
+                    this.itemsLoading = true;
+                    try {
+                        const res = await this.api('GET', `/admin/api/contents/${this.selectedLang}/${this.selectedType}`);
+                        if (res.ok) {
+                            this.items = res.items || [];
+                        } else {
+                            this.toastMsg(res.error || 'Failed to load items', true);
+                        }
+                    } catch {
+                        this.toastMsg('Connection error', true);
+                    } finally {
+                        this.itemsLoading = false;
+                    }
+                },
+
+                async loadItem(id) {
+                    this.selectedId = id;
+                    try {
+                        const res = await this.api('GET', `/admin/api/contents/${this.selectedLang}/${this.selectedType}/${id}`);
+                        if (res.ok) {
+                            const c = res.content;
+                            this.editForm = {
+                                id: c.id || '',
+                                title: c.title || '',
+                                summary: c.summary || '',
+                                category: c.category || '',
+                                created: c.created || this.today(),
+                                updated: c.updated || '',
+                                body_fields: (c.body_fields || []).map(f => ({ ...f }))
+                            };
+                            this.editing = true;
+                            this.editorTitle = `// editing ${id}`;
+                        } else {
+                            this.toastMsg(res.error || 'Failed to load item', true);
+                        }
+                    } catch {
+                        this.toastMsg('Connection error', true);
+                    }
+                },
+
+                newItem() {
+                    this.selectedId = null;
+                    this.editForm = {
+                        id: '', title: '', summary: '', category: '', created: this.today(),
+                        updated: this.today(), body_fields: []
+                    };
+                    this.editing = true;
+                    this.editorTitle = '// new item';
+                },
+
+                async saveItem() {
+                    if (!this.editForm.id.trim()) {
+                        this.toastMsg('ID is required', true);
+                        return;
+                    }
+                    const method = this.selectedId ? 'PUT' : 'POST';
+                    const path = this.selectedId
+                        ? `/admin/api/contents/${this.selectedLang}/${this.selectedType}/${this.selectedId}`
+                        : `/admin/api/contents/${this.selectedLang}/${this.selectedType}`;
+
+                    try {
+                        const res = await this.api(method, path, this.editForm);
+                        if (res.ok) {
+                            this.toastMsg(`Saved '${this.editForm.id}'`);
+                            if (!this.selectedId) {
+                                this.selectedId = this.editForm.id;
+                                this.editorTitle = `// editing ${this.selectedId}`;
+                            }
+                            await this.loadItems();
+                        } else {
+                            this.toastMsg(res.error || 'Save failed', true);
+                        }
+                    } catch {
+                        this.toastMsg('Connection error', true);
+                    }
+                },
+
+                async deleteItem() {
+                    if (!this.selectedId) return;
+                    if (!confirm(`Delete '${this.selectedId}'? This cannot be undone.`)) return;
+
+                    try {
+                        const res = await this.api('DELETE', `/admin/api/contents/${this.selectedLang}/${this.selectedType}/${this.selectedId}`);
+                        if (res.ok) {
+                            this.toastMsg(`Deleted '${this.selectedId}'`);
+                            this.selectedId = null;
+                            this.editing = false;
+                            this.editorTitle = '// select an item';
+                            await this.loadItems();
+                        } else {
+                            this.toastMsg(res.error || 'Delete failed', true);
+                        }
+                    } catch {
+                        this.toastMsg('Connection error', true);
+                    }
+                },
+
+                async onTypeChange() {
+                    this.selectedId = null;
+                    this.editing = false;
+                    this.editorTitle = '// select an item';
+                    await this.loadItems();
+                },
+
+                async onLangChange() {
+                    this.selectedId = null;
+                    this.editing = false;
+                    this.editorTitle = '// select an item';
+                    await this.loadItems();
+                },
+
+                addField() {
+                    this.editForm.body_fields.push(this.makeField(this.newFieldType));
+                    this.$nextTick(() => {
+                        const cards = document.querySelectorAll('[x-for]');
+                        const last = cards[cards.length - 1];
+                        last?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    });
+                },
+
+                removeField(index) {
+                    this.editForm.body_fields.splice(index, 1);
+                },
+
+                moveField(index, dir) {
+                    const j = index + dir;
+                    if (j < 0 || j >= this.editForm.body_fields.length) return;
+                    const fields = this.editForm.body_fields;
+                    [fields[index], fields[j]] = [fields[j], fields[index]];
+                },
+
+                onFieldTypeChange(index) {
+                    const type = this.editForm.body_fields[index].type;
+                    this.editForm.body_fields[index] = this.makeField(type);
+                },
+
+                makeField(type) {
+                    const schema = this.fieldSchema(type);
+                    const field = { type };
+                    for (const [prop, propType] of Object.entries(schema)) {
+                        if (propType === 'bool') {
+                            field[prop] = false;
+                        } else if (propType === 'int') {
+                            field[prop] = null;
+                        } else {
+                            field[prop] = '';
+                        }
+                    }
+                    return field;
+                },
+
+                fieldSchema(type) {
+                    const def = this.fieldsDefinitions[type];
+                    return def ? def.schema : {};
+                },
+
+                fieldSchemaKeys(type) {
+                    return Object.keys(this.fieldSchema(type));
+                },
+
+                fieldSchemaType(type, prop) {
+                    return this.fieldSchema(type)[prop] || 'string';
+                },
+
+                toastMsg(msg, error = false) {
+                    this.toast = { show: true, message: msg, error };
+                    clearTimeout(this.toastTimer);
+                    this.toastTimer = setTimeout(() => this.toast.show = false, 3000);
+                },
+
+                today() {
+                    const d = new Date();
+                    const mm = String(d.getMonth() + 1).padStart(2, '0');
+                    const dd = String(d.getDate()).padStart(2, '0');
+                    const yyyy = d.getFullYear();
+                    return `${mm}/${dd}/${yyyy}`;
+                },
+
+                fieldTypeKeys() {
+                    return Object.keys(this.fieldsDefinitions);
+                },
+
+                fieldDescription(type) {
+                    const def = this.fieldsDefinitions[type];
+                    return def ? def.description : '';
+                },
+
+                async api(method, path, body) {
+                    const opts = {
+                        method,
+                        headers: {
+                            'Authorization': `Bearer ${this.token}`,
+                            'Content-Type': 'application/json',
+                        }
+                    };
+                    if (body) opts.body = JSON.stringify(body);
+                    const res = await fetch(path, opts);
+                    return res.json();
+                },
+            };
+        }
+    </script>
+</body>
+</html>

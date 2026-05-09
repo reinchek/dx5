@@ -1,0 +1,32 @@
+[blog]
+title         = "Dx5"
+author        = "Nino Marrazzo"
+base_url      = "https://dx5.dev"
+language      = "en"
+spa_enabled   = true
+# debug_enabled = true # (WIP...) Actually doesn't works.
+
+[languages]
+en = "English"
+it = "Italiano"
+
+[home]
+label  = "Dx5_Lab::Home"
+icon   = "fa-solid fa-barcode"
+
+[audio]
+enabled         = true
+soundtracks_dir = "./assets/soundtracks"
+
+[theme]
+name                 = "default"
+templates_dir        = "./templates"
+start_with_framework = true
+
+[server]
+port    = 8000
+address = "127.0.0.1"
+
+[admin]
+enabled = true
+token   = "change-this-token-value"
