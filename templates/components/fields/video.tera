@@ -18,7 +18,6 @@
         </div>
 
     {% else %}
-        {# ── File video diretto (.mp4, .webm, ecc.) ── #}
         <video
                 class="w-full border border-zinc-800 bg-zinc-900"
                 controls
@@ -26,8 +25,8 @@
                 preload="metadata">
             <source src="{{ src }}">
             <p class="text-xs text-zinc-600 p-3">
-                Il tuo browser non supporta il tag video.
-                <a href="{{ src }}" class="text-[#00e5a0] hover:underline">Scarica il file</a>.
+                {{ t(key="video.fallback", lang=lang) }}
+                <a href="{{ src }}" class="text-[#00e5a0] hover:underline">{{ t(key="video.download", lang=lang) }}</a>.
             </p>
         </video>
     {% endif %}

@@ -5,6 +5,25 @@ use rocket_dyn_templates::tera;
 use rocket_dyn_templates::tera::Function;
 use serde_json::{to_value, Value};
 
+fn flatten_json(value: &Value, prefix: &str, map: &mut HashMap<String, String>) {
+    match value {
+        Value::Object(obj) => {
+            for (k, v) in obj {
+                let new_key = if prefix.is_empty() {
+                    k.clone()
+                } else {
+                    format!("{}.{}", prefix, k)
+                };
+                flatten_json(v, &new_key, map);
+            }
+        }
+        Value::String(s) => {
+            map.insert(prefix.to_string(), s.clone());
+        }
+        _ => {}
+    }
+}
+
 pub fn load_translations() -> HashMap<String, HashMap<String, String>> {
     let locales_dir = "config/locales";
     let mut all = HashMap::new();
@@ -14,7 +33,9 @@ pub fn load_translations() -> HashMap<String, HashMap<String, String>> {
             if path.extension().and_then(|e| e.to_str()) == Some("json") {
                 let lang = path.file_stem().unwrap().to_string_lossy().to_string();
                 let content = fs::read_to_string(&path).unwrap_or_default();
-                let map: HashMap<String, String> = serde_json::from_str(&content).unwrap_or_default();
+                let value: Value = serde_json::from_str(&content).unwrap_or_default();
+                let mut map = HashMap::new();
+                flatten_json(&value, "", &mut map);
                 all.insert(lang, map);
             }
         }

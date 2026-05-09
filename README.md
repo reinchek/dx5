@@ -215,16 +215,33 @@ prop_name = "string"   # "string" | "bool" | "int"
 
 ### locales/*.json — translations
 
-Translation files in `config/locales/` map keys to localized strings:
+Translation files in `config/locales/` map keys to localized strings. Keys can be **nested** (grouped by namespace) or **flat**:
 
 ```json
 {
-  "home_title": "dx5 - File-based CMS",
-  "view_posts": "Browse posts"
+  "nav": {
+    "prev": "← prev",
+    "next": "next →",
+    "index": "⌗ index"
+  },
+  "page_title": {
+    "suffix_home": "Home",
+    "suffix_posts": "Posts"
+  },
+  "text__explore": "explore",
+  "post__index__no_posts_found": "no posts found"
 }
 ```
 
-Available languages: `en`, `it`, `de`.
+Both styles work interchangeably. Nested keys are accessed with **dot notation** in templates — the nesting is flattened at load time:
+
+```tera
+{{ t(key="nav.prev", lang=lang) }}
+{{ t(key="page_title.suffix_home", lang=lang) }}
+{{ t(key="text__explore", lang=lang) }}
+```
+
+Available languages: `en`, `it`, and whichever you like — just add a `{lang}.json` file.
 
 ---
 
@@ -255,28 +272,28 @@ Homepage content is stored as `contents/home/home.{lang}.yaml` and uses the same
 
 ### Available field types
 
-| `type`              | Fields                                            | Notes                                 |
-|---------------------|---------------------------------------------------|---------------------------------------|
-| `text`              | `value`, `safe`                                   | `safe: true` enables raw HTML         |
-| `text_glitch`       | `value`, `value_glitch`                           | text with CSS glitch animation        |
+| `type`              | Fields                                                 | Notes                                 |
+|---------------------|--------------------------------------------------------|---------------------------------------|
+| `text`              | `value`, `safe`                                        | `safe: true` enables raw HTML         |
+| `text_glitch`       | `value`, `value_glitch`                                | text with CSS glitch animation        |
 | `hero_title`        | `value`, `value_glitch`, `env`, `env_id`, `font_small` | title with glitch effect + env bg  |
-| `section_title`     | `value`                                           | section heading                       |
-| `cite`              | `value`                                           | inline quotation                      |
-| `blockquote`        | `value`, `author`, `reference`                    | blockquote with attribution           |
-| `blockquote_figure` | `value`, `author`, `reference`, `figure`          | blockquote with author image          |
-| `image`             | `value` (path), `alt`, `caption`                  |                                       |
-| `video`             | `src`, `caption`, `autoplay`                      | YouTube, Vimeo, or direct .mp4/.webm  |
-| `pre`               | `lang`, `path`, `value`                           | code block with syntax highlight      |
-| `terminal`          | `value`, `prompt`, `title`                        | shell session display                 |
-| `date`              | `value` (`"2026-04-22"` or `"now"`)               |                                       |
-| `link`              | `href`, `value` (label), `alt`                    |                                       |
-| `eol`               | —                                                 | line break                            |
-| `spotify_embed`     | `track_id`                                        | embedded Spotify player               |
-| `callout`           | `value`, `variant`, `title`, `safe`               | variants: note, warning, tip, danger  |
-| `divider`           | `value`                                           | horizontal rule with optional label   |
-| `col`               | `value`, `safe`                                   | column block with Tailwind width       |
-| `group`             | `value`                                           | wrapper to group fields (open/close)   |
-| `spreaker`          | `episode_id`, `theme`                             | Spreaker embedded iframe               |
+| `section_title`     | `value`                                                | section heading                       |
+| `cite`              | `value`                                                | inline quotation                      |
+| `blockquote`        | `value`, `author`, `reference`                         | blockquote with attribution           |
+| `blockquote_figure` | `value`, `author`, `reference`, `figure`               | blockquote with author image          |
+| `image`             | `value` (path), `alt`, `caption`                       |                                       |
+| `video`             | `src`, `caption`, `autoplay`                           | YouTube, Vimeo, or direct .mp4/.webm  |
+| `pre`               | `lang`, `path`, `value`                                | code block with syntax highlight      |
+| `terminal`          | `value`, `prompt`, `title`                             | shell session display                 |
+| `date`              | `value` (`"2026-04-22"` or `"now"`)                    |                                       |
+| `link`              | `href`, `value` (label), `alt`                         |                                       |
+| `eol`               | —                                                      | line break                            |
+| `spotify_embed`     | `track_id`                                             | embedded Spotify player               |
+| `callout`           | `value`, `variant`, `title`, `safe`                    | variants: note, warning, tip, danger  |
+| `divider`           | `value`                                                | horizontal rule with optional label   |
+| `col`               | `value`, `safe`                                        | column block with Tailwind width       |
+| `group`             | `value`                                                | wrapper to group fields (open/close)   |
+| `spreaker`          | `episode_id`, `theme`, `title`                         | Spreaker embedded iframe               |
 
 ### Full post example
 

@@ -112,13 +112,13 @@
                 {# Back to index - center #}
                 <a data-spa href="/{{ lang }}/{{ type_name }}"
                    class="flex justify-center items-center hover:text-[#00e5a0] transition-colors pt-0.5">
-                    ⌗ index
+                    {{ t(key="nav.index", lang=lang) }}
                 </a>
 
                 {# Next #}
                 <a data-spa href="{{ next_item[0] }}"
                    class="group flex flex-col gap-1 items-end hover:text-[#00e5a0] transition-colors min-w-0 text-right">
-                    <span class="text-zinc-700 group-hover:text-[#00e5a0] transition-colors">next →</span>
+                    <span class="text-zinc-700 group-hover:text-[#00e5a0] transition-colors">{{ t(key="nav.next", lang=lang) }}</span>
                     <span class="text-[11px] text-zinc-600 group-hover:text-zinc-400 transition-colors truncate">
                 {{ next_item[1] | safe }}
             </span>
@@ -128,8 +128,8 @@
         {% else %}
             {# Simple navigation - without prev/next #}
             <div class="flex justify-between">
-                <a data-spa href="/{{ lang }}/{{ type_name }}" class="hover:text-[#00e5a0] transition-colors">← back to posts</a>
-                <a data-spa href="/{{ lang }}"                 class="hover:text-[#00e5a0] transition-colors">home →</a>
+                <a data-spa href="/{{ lang }}/{{ type_name }}" class="hover:text-[#00e5a0] transition-colors">{{ t(key="nav.back_to_posts", lang=lang) }}</a>
+                <a data-spa href="/{{ lang }}"                 class="hover:text-[#00e5a0] transition-colors">{{ t(key="nav.home", lang=lang) }}</a>
             </div>
         {% endif %}
 

@@ -1,31 +1,37 @@
 {
+  "nav": {
+    "prev": "← prev",
+    "next": "next →",
+    "index": "⌗ index",
+    "back_to_posts": "← back to posts",
+    "home": "home →",
+    "breadcrumb_home": "~",
+    "breadcrumb_posts": "posts"
+  },
+  "page_title": {
+    "suffix_home": "Home",
+    "meta_home": "developer log",
+    "suffix_posts": "Posts",
+    "meta_posts": "All posts"
+  },
+  "listing": {
+    "item": "item",
+  },
+  "home": {
+    "terminal_prompt": "$",
+    "terminal_cmd": "cat home.{{ lang }}.yaml"
+  },
+  "audio": {
+    "track_placeholder": "—",
+    "btn_mute": "mute",
+    "fab_label": "audio player",
+  },
+  "video": {
+    "fallback": "Your browser does not support the video tag.",
+    "download": "Download the file",
+    "title_default": "Video"
+  },
   "text__explore": "explore",
-  "home_title": "dx5 – File‑based CMS",
-  "home_tagline": "Write content in YAML, publish with Rust",
-  "what_is_dx5": "What is dx5?",
-  "what_is_dx5_text": "dx5 is a <strong>file‑based CMS</strong> written in Rust. No database, no admin panel – just plain YAML files, Markdown, and powerful templating with Tera.",
-  "feature_files": "YAML Content",
-  "feature_files_text": "Every post, code snippet, or page is a simple YAML file. Version control friendly, easy to backup.",
-  "feature_fields": "Custom Fields",
-  "feature_fields_text": "Define your own field types in dx5.fields.toml. Reusable, schema‑validated blocks.",
-  "feature_i18n": "Multilingual",
-  "feature_i18n_text": "Built‑in support for multiple languages. Translate your entire site with JSON files.",
-  "dynamic_demo": "Live demo: dynamic fields",
-  "dynamic_demo_text": "The following blocks are rendered from the YAML front matter of this very homepage:",
-  "unknown_field": "Unknown field type",
-  "example_note": "Just drop this file into `contents/posts/` and dx5 will instantly serve it.",
-  "view_posts": "Browse posts →",
-  "custom_fields_guide": "🔧 Creating a custom field: Spotify embed",
-  "custom_fields_guide_text": "dx5 allows you to define your own field types. Here's how to add a Spotify embed field in three steps:",
-  "step_fields_toml": "Edit dx5.fields.toml",
-  "step_template": "Create the Tera template: templates/fields/spotify_embed.tera",
-  "step_usage": "Use it in any post YAML",
-  "step_usage_note": "The field will be automatically rendered when you use type: spotify_embed.",
-  "example_yaml": "📄 Example YAML post (full file)",
-
-  "post__index__description": "Documentation, guides and interactive samples",
   "post__index__no_posts_found": "no posts found",
-
-  "text__error__complete_backtrace": "For the complete backtrace",
-
+  "text__error__complete_backtrace": "For the complete backtrace"
 }
