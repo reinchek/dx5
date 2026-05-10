@@ -27,11 +27,6 @@ fn get_created(path: &Path) -> String {
 }
 
 // TODO: Rename in fake-cache.rs
-// TODO:
-//  1. Copy files splitting them, basing on pagination_items_per_page, in .pages/<n>/ directories.
-//  2. Create a tracking file (like .pages-status.json) to save some info like "last pagination_items_per_page" or similar.
-//  2a. This could be useful when the user changes the pagination_items_per_page from dx5.content_types.toml, that means we need
-//      to rebuild whole .pages folder structure.
 pub fn split_contents_in_pages_folders(
     languages: Vec<&String>,
     content_type_def: &ContentTypeDef,
@@ -44,7 +39,7 @@ pub fn split_contents_in_pages_folders(
         let pages_hidden_dir = format!("{}/{}", dir, ".pages");
 
         // If rebuild is true, remove recursive .pages folder.
-        if rebuild {
+        if rebuild && Path::new(&pages_hidden_dir).exists() {
             fs::remove_dir_all(&pages_hidden_dir)?;
         }
 

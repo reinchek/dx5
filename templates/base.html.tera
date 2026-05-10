@@ -37,8 +37,9 @@
         {% include 'components/partials/footer' %}
     </div>
 
-    {# AUDIO PLAYER #}
-    {% if playlist_data and playlist_data != "[]" %}
+    {# STRUDEL REPL #}
+    {% if app.audio_enabled %}
+        <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
         {% include 'components/partials/audio_player_fab' %}
     {% endif %}
 

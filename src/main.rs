@@ -15,7 +15,6 @@ mod locales;
 mod cache;
 mod watcher;
 
-use crate::audio_metadata::get_playlist;
 use crate::config::Config;
 use crate::contents::ContentTypesConfig;
 use crate::fields::{make_fields_renderer, FieldsConfig};
@@ -45,13 +44,8 @@ fn rocket() -> _ {
     let fields_config: FieldsConfig =
         FieldsConfig::load().expect("[FATAL] Field to load fields configuration file.");
 
-    let playlist = if config.audio.enabled {
-        get_playlist(Some(&config.audio.soundtracks_dir))
-    } else {
-        vec![]
-    };
-
-    let playlist_json = serde_json::to_string(&playlist).unwrap_or_else(|_| "[]".to_string());
+    // Strudel REPL replaces MP3 player — no playlist needed
+    let playlist_json = "[]".to_string();
     let globals = Globals {
         now: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
     };
@@ -152,6 +146,7 @@ fn rocket() -> _ {
                 "author":        config.blog.author,
                 "lang":          config.blog.language,
                 "spa_enabled":   config.blog.spa_enabled,
+                "audio_enabled": config.audio.enabled,
                 "debug_enabled": config.blog.debug_enabled.unwrap_or(false),
                 "start_with_framework": config.theme.start_with_framework,
                 "framework": config.theme.framework

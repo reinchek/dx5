@@ -26,12 +26,5 @@ menu_label = "Posts"
 menu_order = 1
 is_default = true
 ordering   = "DESC"
-pagination_items_per_page = 2
+pagination_items_per_page = 10
 enable_navigation = true # default false
-
-[types.code]
-dir        = "./contents/codes"
-route      = "/codes"
-menu_icon  = "fa-solid fa-code"
-menu_label = "Code"
-menu_order = 2
