@@ -23,7 +23,6 @@ soundtracks_dir = "./assets/soundtracks"
 [theme]
 name                 = "default"
 templates_dir        = "./templates"
-start_with_framework = true
 
 [server]
 port    = {{ rocket_port }}
