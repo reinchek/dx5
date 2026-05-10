@@ -16,7 +16,7 @@ icon   = "fa-solid fa-barcode"
 
 [audio]
 enabled         = true
-soundtracks_dir = "./assets/soundtracks"
+soundtracks_dir = "./public/soundtracks"
 
 [theme]
 name                 = "default"

@@ -338,7 +338,7 @@ call `DX5Bars.sync(playing)` directly.
                     audio.pause(); isPlaying = false;
                 } else {
                     if (!audio.src) loadTrack(0, false);
-                    audio.play().then(() => { isPlaying = true; syncUI(); return; });
+                    audio.play().then(() => { isPlaying = true; syncUI(); });
                     isPlaying = true;
                 }
                 syncUI();

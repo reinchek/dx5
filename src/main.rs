@@ -27,6 +27,7 @@ use rocket_dyn_templates::Template;
 use serde_json::Value;
 use std::collections::HashMap;
 use std::sync::Arc;
+use crate::audio_metadata::get_playlist;
 use crate::cache::split_contents_in_pages_folders;
 use crate::watcher::start_filesystem_watcher;
 
@@ -44,8 +45,14 @@ fn rocket() -> _ {
     let fields_config: FieldsConfig =
         FieldsConfig::load().expect("[FATAL] Field to load fields configuration file.");
 
-    // Strudel REPL replaces MP3 player — no playlist needed
-    let playlist_json = "[]".to_string();
+    let playlist = if config.audio.enabled {
+        get_playlist(Some(&config.audio.soundtracks_dir))
+    } else {
+        vec![]
+    };
+
+    let playlist_json = serde_json::to_string(&playlist).unwrap_or_else(|_| "[]".to_string());
+
     let globals = Globals {
         now: Local::now().format("%Y-%m-%d %H:%M:%S").to_string(),
     };
@@ -81,6 +88,7 @@ fn rocket() -> _ {
         // Static files mount
         .mount("/assets", FileServer::from("assets"))
         .mount("/static", FileServer::from("static"))
+        .mount("/public", FileServer::from("public"))
         .mount("/", FileServer::from("static").rank(20)) // ← catch favicon, robots.txt, ecc.
         // Admin: only mounted if the [admin] section exists in dx5.toml file and is `enabled = true`
         .mount(

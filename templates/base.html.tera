@@ -37,9 +37,8 @@
         {% include 'components/partials/footer' %}
     </div>
 
-    {# STRUDEL REPL #}
+    {# Audio player #}
     {% if app.audio_enabled %}
-        <script src="https://unpkg.com/@strudel/web@1.0.3"></script>
         {% include 'components/partials/audio_player_fab' %}
     {% endif %}
 
