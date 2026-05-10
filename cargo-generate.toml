@@ -10,7 +10,6 @@ ignore = [
     ".github",
     "target",
     "Cargo.lock",
-    "Cargo.toml",
     ".idea",
 ]
 
