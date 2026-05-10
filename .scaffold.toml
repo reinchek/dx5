@@ -91,3 +91,54 @@ disable_templating = [
     message = "Choose an admin authentication token (password)"
     type = "string"
     default = "change-this-token-value"
+
+# Notes to display at the end of the generation (user welcome guide)
+notes = """
+🎉 Welcome to {{blog_name}} — your new dx5 blog is ready!
+
+  ✔  Config:        config/dx5.toml  (edit title, lang, base_url...)
+  ✔  Server:        cargo run  (starts at http://localhost:{{rocket_port}})
+  {{#if admin_enabled}}
+  ✔  Admin panel:   http://localhost:{{rocket_port}}/admin  (token: {{admin_token}})
+  {{/if}}
+
+── What you can do now ──────────────────────────────────────
+
+  1. Add content
+     Drop new .yaml files in contents/<type>/<lang>/
+     (e.g., contents/posts/en/my-first-post.yaml)
+
+  2. Create new content types
+     Edit config/dx5.content_types.toml
+     → define collections (e.g., "projects", "photos")
+
+  3. Extend body fields
+     Edit config/dx5.fields.toml
+     → add your own custom field types with Tera templates
+
+  4. Add translations
+     Add/edit JSON files in config/locales/
+     (e.g., config/locales/fr.json for French)
+
+  5. Customize templates
+     Edit .tera files under templates/
+     → modify layout, components, type pages
+
+  6. Headless JSON API
+     http://localhost:{{rocket_port}}/api/<type>
+     → consume your content from any frontend
+
+  7. SPA mode
+     {{#if spa_enabled}}SPA mode is ON — navigates without full reloads{{else}}SPA mode is OFF — toggle via spa_enabled in dx5.toml{{/if}}
+
+  📖  Full docs: https://github.com/reinchek/dx5-dev-diary
+      (or open README.md in your project root)
+
+  Happy blogging! ✨
+"""
+
+[hooks]
+# Commands to be executed after scaffolding, from within the generated project
+post = [
+    "cp config/dx5.toml.dist config/dx5.toml",
+]
