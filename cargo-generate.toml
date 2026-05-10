@@ -1,0 +1,42 @@
+[template]
+cargo_generate_version = ">=0.18"
+
+ignore = [
+    ".opencode",
+    ".scaffold.toml",
+    "cargo-generate.toml",
+    ".git",
+    ".gitignore",
+    ".github",
+    "target",
+    "Cargo.lock",
+    "Cargo.toml",
+    ".idea",
+]
+
+exclude = [
+    "README.md",
+    "LEGEND.md",
+    "templates/**/*.tera",
+    "public/**/*",
+    "static/**/*",
+    "assets/**/*",
+    "contents/**/*",
+    "src/utils/error.html",
+    "src/admin_ui.html",
+    "config/locales/**/*.json",
+    "config/dx5.fields.toml",
+    "config/dx5.content_types.toml",
+    "dx5.toml",
+]
+
+[placeholders]
+blog_base_url = { type = "string", prompt = "What's the project's base URL? (usually, in local dev, is http://localhost)", default = "http://localhost" }
+blog_author = { type = "string", prompt = "Who's the main author blog", default = "Admin" }
+blog_title = { type = "string", prompt = "Insert the blog's title", default = "My new blog" }
+blog_lang = { type = "string", prompt = "What's the main blog's language (you can change it in dx5.toml)", default = "en", choices = ["it", "en", "fr", "es", "de"] }
+spa_enabled = { type = "bool", prompt = "Enable SPA mode?", default = true }
+rocket_port = { type = "string", prompt = "On which local port will server run? (rocket)", default = "8000" }
+github_username = { type = "string", prompt = "What's your GitHub name? (let it empty if you doesn't have one)", default = "" }
+admin_enabled = { type = "bool", prompt = "Enable admin panel?", default = true }
+admin_token = { type = "string", prompt = "Choose an admin authentication token (password)", default = "change-this-token-value" }

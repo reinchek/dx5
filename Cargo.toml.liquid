@@ -1,0 +1,19 @@
+[package]
+name = "{{project-name}}"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+gray_matter = "0.3.2"
+lofty = "0.24.0"
+rocket = {version = "0.5.1", features = ["json"]}
+rocket_dyn_templates = {version = "0.2.0", features = ["tera"]}
+serde = { version = "1.0.228", features = ["derive", "serde_derive"] }
+serde_json = "1.0.149"
+chrono = "0.4"
+toml = "0.8"
+html-escape = "0.2.13"
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"]}
+notify = "8.2.0"
+serde_yaml = "0.9"
