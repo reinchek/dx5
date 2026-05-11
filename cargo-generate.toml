@@ -26,8 +26,6 @@ exclude = [
     "config/locales/**/*.json",
     "config/dx5.fields.toml",
     "config/dx5.content_types.toml",
-    "dx5.toml",
-    "config/dx5.toml",
 ]
 
 [placeholders]

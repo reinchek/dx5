@@ -1,9 +1,9 @@
 [blog]
-title       = "My new blog"
-base_url    = "http://localhost"
-author      = "Admin"
-language    = "en"
-spa_enabled = true
+title       = "{{ blog_title }}"
+base_url    = "{{ blog_base_url }}"
+author      = "{{ blog_author }}"
+language    = "{{ blog_lang }}"
+spa_enabled = {{ spa_enabled }}
 
 [languages]
 en = "English"
@@ -25,9 +25,9 @@ name                 = "default"
 templates_dir        = "./templates"
 
 [server]
-port    = 8000
+port    = {{ rocket_port }}
 address = "127.0.0.1"
 
 [admin]
-enabled = true
-token   = "change-this-token-value"
+enabled = {{ admin_enabled }}
+token   = "{{ admin_token }}"

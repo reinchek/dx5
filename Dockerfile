@@ -36,6 +36,7 @@ WORKDIR /app
 COPY --from=builder /build/target/release/dx5 /app/dx5
 
 COPY config/ config/
+RUN cp config/dx5.toml.dist config/dx5.toml
 COPY contents/ contents/
 COPY templates/ templates/
 COPY static/ static/
