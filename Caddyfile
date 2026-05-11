@@ -1,8 +1,8 @@
 # ──────────────────────────────────────────────
 # dx5 + Caddy — reverse proxy
 # ──────────────────────────────────────────────
-# Local dev (plain HTTP on port 80):
-#   Just run: docker compose up
+# Local dev (HTTPS via Caddy internal CA):
+#   https://localhost
 #
 # Production (automatic HTTPS via Let's Encrypt):
 #   Uncomment the production block below,
@@ -11,11 +11,16 @@
 # ──────────────────────────────────────────────
 
 # Local development
-:80 {
+:8080 {
+    tls internal
     reverse_proxy dx5:8000
 }
-
-# Production — automatic HTTPS
+# Local development - self-signed HTTPS
+localhost {
+    tls internal
+    reverse_proxy dx5:8000
+}
+# Production - automatic HTTPS (Let's Encrypt)
 # your-blog.com {
 #     reverse_proxy dx5:8000
 # }

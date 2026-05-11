@@ -53,10 +53,7 @@ UID=$(id -u) GID=$(id -g) docker compose up -d
 
 Caddy will proxy requests to dx5 internally on port 8000 and handle SSL termination automatically. Certificates are persisted in Docker named volumes (`caddy_data`, `caddy_config`).
 
-> For local development without a domain, change `Caddyfile` to:
-> ```
-> :80 { reverse_proxy dx5:8000 }
-> ```
+Caddy serves `https://localhost` with a self-signed certificate (Caddy's internal CA). Your browser will show a warning — this is expected for local development. For production, uncomment the domain block in `Caddyfile` for automatic Let's Encrypt certificates.
 
 ### Manual (Rust)
 
