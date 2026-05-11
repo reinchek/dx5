@@ -42,6 +42,7 @@ COPY contents/ contents/
 COPY templates/ templates/
 COPY static/ static/
 COPY assets/ assets/
+COPY public/ public/
 COPY Rocket.toml .
 
 RUN chown -R dx5:dx5 /app
