@@ -623,11 +623,12 @@ Authentication via `Authorization: Bearer <token>` header.
 
 ## Environment variables
 
-| Variable       | Default           | Description                           |
-|----------------|-------------------|---------------------------------------|
-| `DX5_CONFIG`   | `config/dx5.toml` | alternative path for the config file  |
-| `RUST_BACKTRACE` | (unset)         | set to `1` or `full` for backtraces   |
-| `RUST_LOG`     | (unset)           | tracing log level (e.g., `info`)      |
+| Variable           | Default           | Description                                      |
+|--------------------|-------------------|--------------------------------------------------|
+| `DX5_CONFIG`       | `config/dx5.toml` | alternative path for the config file             |
+| `DX5_ADMIN_TOKEN`  | (unset)           | override admin token at runtime (overrides config)|
+| `RUST_BACKTRACE`   | (unset)           | set to `1` or `full` for backtraces              |
+| `RUST_LOG`         | (unset)           | tracing log level (e.g., `info`)                 |
 
 ---
 
