@@ -7,7 +7,8 @@ RUN apk add --no-cache musl-dev pkgconfig openssl-dev
 
 WORKDIR /build
 
-COPY Cargo.toml Cargo.lock ./
+COPY Cargo.toml ./
+COPY Cargo.lock* ./
 RUN mkdir src && echo "fn main() {}" > src/main.rs
 RUN cargo build --release 2>/dev/null || true
 RUN rm -rf src
@@ -33,7 +34,7 @@ RUN addgroup -S dx5 -g ${GID} && adduser -S dx5 -G dx5 -u ${UID}
 
 WORKDIR /app
 
-COPY --from=builder /build/target/release/dx5 /app/dx5
+COPY --from=builder /build/target/release/{{ project-name }} /app/{{ project-name }}
 
 COPY config/ config/
 RUN cp config/dx5.toml.dist config/dx5.toml
@@ -52,4 +53,4 @@ EXPOSE 8000
 ENV ROCKET_ADDRESS=0.0.0.0
 ENV ROCKET_PORT=8000
 
-CMD ["/app/dx5"]
+CMD ["/app/{{ project-name }}"]

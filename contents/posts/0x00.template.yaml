@@ -1,6 +1,5 @@
 ---
 id: "0x00"
-#slug: "readable-url" # @todo
 lang: "en"
 title: "Post title"
 summary: "The content summary"
@@ -17,26 +16,21 @@ body_fields:
   # --- Free text ---
   - type: text
     value: |
-      Paragrafo di testo libero.
-      Può andare su più righe.
-  # --- Some and useless glitched hero header :) ---
-  - type: hero_title
-    value: Lorem ipsum dolor silent
-    value_glitch: Lorem ipsum dolor silent # often it's the same as the value
-    env: true # if env is enabled, will be shown a background environment with an image (random if no env_id specified)
-    env_id: 16 # image id (look at /static/images/post/assets/env<env_id>.jpg
-  # --- INLINE quote ---
+      Lorem ipsum dolor silent amet.
+      Lorem multi-line ipsum text silent, if you put `safe: true` you can use 
+      also <b> HTML TAGS </b>
+    safe: false
+  # --- Inline quote ---
   - type: cite
-    value: |
-      Testo della citazione breve.
+    value: Workers of the world, unite!
 
-  # --- BLOCKQUOTE Simple ---
+  # --- Blockquote Simple ---
   - type: blockquote
     value: "Quote's text."
     author: "Author's name"          # optional
     reference: "Source / From"     # optional
 
-  # --- BLOCKQUOTE with figure ---
+  # --- Blockquote with figure ---
   - type: blockquote_figure
     value: "QUote's text."
     author: "Author's name"
@@ -46,14 +40,18 @@ body_fields:
   # --- Image ---
   - type: image
     value: "/images/posts/0x00/image-name.webp"
-    alt: "Alt text"   # opzionale
+    alt: "Alt text"   # optional
     caption: "Figure's caption - standard HTML <figure> one" # optional
 
-  # --- DATE / TIMESTAMP INLINE ---
+  # --- Date ---
   - type: date
     value: "2026-04-15"
 
   # --- Break line ---
   - type: eol
     value: ""
+
+  ########################################################
+  ## All fields are defined in config/dx5.fields.toml!  ##
+  ########################################################
 ---
