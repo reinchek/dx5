@@ -20,7 +20,7 @@ print("║                                                              ║");
 print("║  STEP 2 — set the admin token                                ║");
 print("║  [admin]                                                     ║");
 print("║  enabled = true                                              ║");
-print("║  token   = \"your-secret-token\"                              ║");
+print("║  token   = \"your-secret-token\"                               ║");
 print("║  ⚠  never commit a real token to version control.            ║");
 print("║                                                              ║");
 print("║  STEP 3 — write your first post                              ║");
