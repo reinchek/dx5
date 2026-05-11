@@ -17,9 +17,7 @@ pub struct Config {
 #[derive(Debug, Deserialize, Clone)]
 pub struct AdminConfig {
     pub enabled: bool,
-    /// Token Bearer — In production use an env var:
-    /// token = "${DX5_ADMIN_TOKEN}"  (not natively supported by toml,
-    /// but you can read it using std::env::var in main and inject it manually)
+    /// Token Bearer — Overridable via DX5_ADMIN_TOKEN env var at runtime.
     pub token: String,
 }
 
@@ -67,7 +65,18 @@ impl Config {
             ))
         })?;
 
-        toml::from_str(&raw).map_err(|e| ConfigError(format!("Error during dx5.toml file parsing: {}", e)))
+        let mut config: Self = toml::from_str(&raw).map_err(|e| ConfigError(format!("Error during dx5.toml file parsing: {}", e)))?;
+
+        // DX5_ADMIN_TOKEN env var overrides admin token from config file
+        if let Ok(env_token) = std::env::var("DX5_ADMIN_TOKEN") {
+            if let Some(ref mut admin) = config.admin {
+                if !env_token.is_empty() {
+                    admin.token = env_token;
+                }
+            }
+        }
+
+        Ok(config)
     }
 }
 
