@@ -4,7 +4,6 @@ use rocket::http::{ContentType, Status};
 use rocket::{Request, Response};
 use rocket::response::Responder;
 use rocket_dyn_templates::tera::escape_html;
-use serde_json::Value;
 
 #[derive(Debug)]
 pub enum Dx5ErrorKind {
@@ -82,10 +81,6 @@ impl Dx5Error {
         }
     }
 
-    pub fn to_json(&self) -> Value {
-        todo!()
-    }
-
     fn render_html(&self) -> String {
         let status     = self.http_status();
         let status_str = format!("{} {}", status.code, status.reason().unwrap_or("Error"));
@@ -130,7 +125,7 @@ impl Dx5Error {
 
 // Rocket Responder - renders an HTML error page.
 impl<'r> Responder<'r, 'static> for Dx5Error {
-    fn respond_to(self, request: &'r Request<'_>) -> rocket::response::Result<'static> {
+    fn respond_to(self, _request: &'r Request<'_>) -> rocket::response::Result<'static> {
         let status = self.http_status();
         let html   = self.render_html();
 

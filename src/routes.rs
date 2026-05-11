@@ -7,7 +7,7 @@ use gray_matter::Matter;
 use rocket::response::Redirect;
 use rocket::State;
 use rocket_dyn_templates::{context, Template};
-use tracing::{error, info, instrument, warn};
+use tracing::error;
 
 #[get("/")]
 pub fn root() -> Redirect {
@@ -69,7 +69,7 @@ pub fn index(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> 
 
     let lang = lang.0.clone();
 
-    let items = Content::all(&lang, &matter, &ct_def, None)
+    let items = Content::all(&lang, &matter, ct_def, None)
         .map_err(|e| e.context(format!("route: index, lang={}", lang)))?;
 
     Ok(Template::render(
@@ -111,7 +111,7 @@ pub fn generic_contents(
             .context("route: content type '{}' not registered in dx5.content_types.toml")
     })?;
 
-    let items = Content::all(&lang.0, &matter, &def, page).map_err(|e| {
+    let items = Content::all(&lang.0, &matter, def, page).map_err(|e| {
         error!(
             path,
             "Error on generic_contents, lang={}, error={}",
@@ -179,7 +179,7 @@ pub fn generic_content(
     let mut next_item = None;
 
     if nav_enabled {
-        let items = Content::all(&lang.0, &matter, &def, None).map_err(|err| {
+        let items = Content::all(&lang.0, &matter, def, None).map_err(|err| {
             error!(
                 path,
                 "Error on generic_content, lang={}, error={}",
@@ -200,7 +200,7 @@ pub fn generic_content(
         let id_pos = all_items.iter().position(|x| *x == id).unwrap_or(0);
         let prev_pos = id_pos.checked_sub(1).unwrap_or_else(|| all_items.len() - 1);
         let next_pos = if id_pos < all_items.len() - 1 {
-            id_pos.checked_add(1).unwrap_or_else(|| 0)
+            id_pos.checked_add(1).unwrap_or(0)
         } else {
             all_items.len() - 1
         };
@@ -211,7 +211,7 @@ pub fn generic_content(
         next_item = Some((next_id, &all_items_titles[next_pos]));
     }
 
-    let item = Content::load(lang.0.clone(), &id, &matter, &def).map_err(|e| {
+    let item = Content::load(lang.0.clone(), id, &matter, def).map_err(|e| {
         error!(path, "{}", e.to_string());
         e.context(format!(
             "route: generic_content type={} id={} lang={}",

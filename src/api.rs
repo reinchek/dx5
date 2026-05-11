@@ -11,7 +11,7 @@ use serde_json::json;
 pub fn api_home(lang: Lang, state: &State<AppState>) -> Json<Value> {
     let matter = Matter::<YAML>::new();
     let first_type = &state.content_types.types.keys().last().unwrap().clone();
-    match Content::load_home(Some(lang.0), &state.app_config, &matter, &state.content_types.types.get(first_type).unwrap()) {
+    match Content::load_home(Some(lang.0), &state.app_config, &matter, state.content_types.types.get(first_type).unwrap()) {
         Ok(content) => Json(json!({
             "ok": true,
             "content": content,

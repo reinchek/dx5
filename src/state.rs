@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use rocket::serde::Serialize;
 use crate::config::Config;
 use crate::contents::ContentTypesConfig;

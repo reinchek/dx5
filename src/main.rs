@@ -70,7 +70,7 @@ fn rocket() -> _ {
     if let Err(e) = start_filesystem_watcher(&config) {
         eprintln!("[FS][warn] Filesystem watcher not started: {}", e);
     }
-    for (_type_name, type_def) in &state.content_types.types {
+    for type_def in state.content_types.types.values() {
         let languages = config.languages.0.keys().collect::<Vec<&String>>();
         split_contents_in_pages_folders(languages, type_def, true).expect("TODO: panic message");
     }

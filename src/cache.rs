@@ -6,7 +6,7 @@ use serde::Deserialize;
 use std::ffi::OsStr;
 use std::fs;
 use std::fs::read_dir;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 #[derive(Deserialize)]
 struct FileCreated {
@@ -101,7 +101,7 @@ pub fn find_content_file_in_pages(dir: &Path, file_name: &str) -> Result<String,
     for entry in entries.flatten() {
         let path = entry.path();
         if path.is_dir() {
-            return find_content_file_in_pages(path.as_path(), &file_name)
+            return find_content_file_in_pages(path.as_path(), file_name)
         } else if path.file_name().unwrap().to_str().unwrap() == file_name {
             result = path.display().to_string();
             return Ok(result);

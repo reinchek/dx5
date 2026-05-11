@@ -11,7 +11,6 @@ pub struct Config {
     pub home: HomeConfig,
     pub audio: AudioConfig,
     pub theme: ThemeConfig,
-    pub server: ServerConfig,
     pub admin: Option<AdminConfig>,
 }
 
@@ -45,13 +44,6 @@ pub struct BlogConfig {
 }
 
 #[derive(Debug, Deserialize, Clone)]
-pub struct ContentConfig {
-    pub posts_dir: String,
-    pub codes_dir: String,
-    pub post_extension: String,
-}
-
-#[derive(Debug, Deserialize, Clone)]
 pub struct AudioConfig {
     pub enabled: bool,
     pub soundtracks_dir: String
@@ -59,16 +51,9 @@ pub struct AudioConfig {
 
 #[derive(Debug, Deserialize, Clone)]
 pub struct ThemeConfig {
-    pub name: String,
     pub templates_dir: String,
     pub start_with_framework: Option<bool>,
     pub framework: Option<String>
-}
-
-#[derive(Debug, Deserialize, Clone)]
-pub struct ServerConfig {
-    pub port: u16,
-    pub address: String,
 }
 
 impl Config {

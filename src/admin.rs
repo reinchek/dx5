@@ -129,7 +129,7 @@ pub fn api_list_contents(
     };
 
     let matter = Matter::<YAML>::new();
-    let template_stem = "0x00.template";
+    let template_stem = crate::contents::TEMPLATE_FILENAME;
 
     let mut items: Vec<Value> = Vec::new();
     for entry in entries.flatten() {

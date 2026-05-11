@@ -10,9 +10,8 @@ use std::collections::HashMap;
 use std::fs;
 use std::fs::{read_dir, read_to_string};
 use std::path::Path;
-use crate::state::AppState;
 
-const TEMPLATE_FILENAME: &str = "0x00.template";
+pub const TEMPLATE_FILENAME: &str = "0x00.template";
 pub const DEFAULT_TYPES_TEMPLATE_FOLDER: &str = "types";
 
 #[derive(Serialize, Debug)]
@@ -250,7 +249,6 @@ impl Content {
             .map_err(|e| Dx5Error::io(format!("Unable to read '{}': {}", cfg.dir, e)))?;
 
         let mut contents = Vec::new();
-        let mut pagination_object = None;
 
         for entry in entries.flatten() {
             let path = entry.path();
@@ -258,7 +256,7 @@ impl Content {
                 continue;
             };
 
-            match ContentIndex::load(&lang, stem, matter, cfg) {
+            match ContentIndex::load(lang, stem, matter, cfg) {
                 Ok(item) => contents.push(item),
                 Err(e) => eprintln!("[WARN] Skipping '{}': {}", stem, e),
             }
@@ -273,7 +271,7 @@ impl Content {
             contents.sort_by(|a, b| b.created.cmp(&a.created));
         }
 
-        pagination_object = Some(PaginationObject {
+        let pagination_object = Some(PaginationObject {
             current: page,
             per_page: cfg.pagination_items_per_page.unwrap_or(10) as usize,
             total_pages: pages.len(),

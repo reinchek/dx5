@@ -47,7 +47,7 @@ pub fn start_filesystem_watcher(dx5_config: &Dx5Config) -> Result<(), notify::Er
             crate::cache::split_contents_in_pages_folders(languages, &type_def, true).unwrap();
         };
 
-        let sync_to_cache = |file_path: &str, file_name: &str| {
+        let _sync_to_cache = |file_path: &str, file_name: &str| {
             let dest_dir = file_path.replace(file_name, ".pages");
             if let Ok(dest_path) =
                 crate::cache::find_content_file_in_pages(std::path::Path::new(&dest_dir), file_name)
@@ -60,10 +60,10 @@ pub fn start_filesystem_watcher(dx5_config: &Dx5Config) -> Result<(), notify::Er
             match res {
                 Ok(event) => {
                     let is_yaml = |p: &std::path::PathBuf| -> bool {
-                        p.extension().map_or(false, |e| e == "yaml")
+                        p.extension().is_some_and(|e| e == "yaml")
                     };
 
-                    if !event.paths.iter().any(|p| is_yaml(p)) {
+                    if !event.paths.iter().any(&is_yaml) {
                         continue;
                     }
 

@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use rocket::serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
