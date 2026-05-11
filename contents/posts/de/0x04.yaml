@@ -80,7 +80,7 @@ body_fields:
     value: |
       Das Template <code>single.html.tera</code> iteriert über
       <code>body_fields</code> und ruft <code>render_field()</code>
-      für jeden Eintrag auf — eine globale Tera-Funktion, die beim Start registriert wird.
+      für jeden Eintrag auf - eine globale Tera-Funktion, die beim Start registriert wird.
 
   - type: section_title
     value: "Die Rendering-Pipeline"

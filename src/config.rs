@@ -17,7 +17,7 @@ pub struct Config {
 #[derive(Debug, Deserialize, Clone)]
 pub struct AdminConfig {
     pub enabled: bool,
-    /// Token Bearer — Overridable via DX5_ADMIN_TOKEN env var at runtime.
+    /// Token Bearer - Overridable via DX5_ADMIN_TOKEN env var at runtime.
     pub token: String,
 }
 

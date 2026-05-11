@@ -2,7 +2,7 @@
 id: "0x01"
 lang: "en"
 title: "What is dx5?"
-summary: "0x01 An introduction to dx5 — a file‑based CMS written in Rust. No database, no complexity."
+summary: "0x01 An introduction to dx5 - a file‑based CMS written in Rust. No database, no complexity."
 category: "EXPLORE"
 created: "2026-05-01"
 status: true
@@ -19,7 +19,7 @@ body_fields:
     safe: true
     value: >
       <strong>dx5</strong> is a <strong>file‑based CMS</strong> written in Rust.
-      Every piece of content — blog posts, code snippets, notes, the homepage —
+      Every piece of content - blog posts, code snippets, notes, the homepage —
       is a plain YAML file on disk. No database, no admin panel, no vendor lock-in.
       Just your text editor and <code>cargo run</code>.
 

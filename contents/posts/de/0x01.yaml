@@ -2,7 +2,7 @@
 id: "0x01"
 lang: "de"
 title: "Was ist dx5?"
-summary: "0x01 Eine Einführung in dx5 — ein dateibasiertes CMS in Rust. Keine Datenbank, keine Komplexität."
+summary: "0x01 Eine Einführung in dx5 - ein dateibasiertes CMS in Rust. Keine Datenbank, keine Komplexität."
 category: "EXPLORE"
 created: "2026-05-01"
 status: true
@@ -19,7 +19,7 @@ body_fields:
     safe: true
     value: >
       <strong>dx5</strong> ist ein <strong>dateibasiertes CMS</strong>, geschrieben in Rust.
-      Jeder Inhalt — Blogbeiträge, Code-Snippets, Notizen, die Startseite —
+      Jeder Inhalt - Blogbeiträge, Code-Snippets, Notizen, die Startseite -
       ist eine einfache YAML-Datei auf der Festplatte. Keine Datenbank, kein Admin-Panel, keine Vendor-Lock-in.
       Nur dein Texteditor und <code>cargo run</code>.
 
@@ -39,10 +39,10 @@ body_fields:
     value: |
       Ein dateibasiertes CMS löst Probleme, die datenbankgesteuerte Systeme schaffen:
       <ul>
-        <li><strong>Versionskontrolle</strong> — jeder Beitrag ist eine Textdatei. <code>git diff</code> funktioniert sofort.</li>
-        <li><strong>Backups</strong> — <code>tar czf backup.tar.gz contents/</code> ist alles, was du brauchst.</li>
-        <li><strong>Keine Bindung</strong> — deine Inhalte sind YAML. Jedes Tool kann sie lesen.</li>
-        <li><strong>Einfachheit</strong> — keine Schema-Migrationen, keine Connection-Pools, kein ORM.</li>
+        <li><strong>Versionskontrolle</strong> - jeder Beitrag ist eine Textdatei. <code>git diff</code> funktioniert sofort.</li>
+        <li><strong>Backups</strong> - <code>tar czf backup.tar.gz contents/</code> ist alles, was du brauchst.</li>
+        <li><strong>Keine Bindung</strong> - deine Inhalte sind YAML. Jedes Tool kann sie lesen.</li>
+        <li><strong>Einfachheit</strong> - keine Schema-Migrationen, keine Connection-Pools, kein ORM.</li>
       </ul>
 
   - type: blockquote

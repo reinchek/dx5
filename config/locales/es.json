@@ -22,7 +22,7 @@
     "terminal_cmd": "cat home.{{ lang }}.yaml"
   },
   "audio": {
-    "track_placeholder": "—",
+    "track_placeholder": "-",
     "btn_mute": "silencio",
     "fab_label": "reproductor de audio"
   },

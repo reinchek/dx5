@@ -62,7 +62,7 @@ pub fn api_fields_definitions(_auth: AdminAuth, state: &State<AppState>) -> Json
 }
 
 // ---------------------------------------------------------------------------
-// API — Init (languages + content types metadata)
+// API - Init (languages + content types metadata)
 // ---------------------------------------------------------------------------
 #[get("/admin/api/init")]
 pub fn api_init(_auth: AdminAuth, state: &State<AppState>) -> Json<Value> {
@@ -101,7 +101,7 @@ pub fn api_init(_auth: AdminAuth, state: &State<AppState>) -> Json<Value> {
 }
 
 // ---------------------------------------------------------------------------
-// API — Contents list
+// API - Contents list
 // ---------------------------------------------------------------------------
 #[get("/admin/api/contents/<lang>/<type_name>")]
 pub fn api_list_contents(
@@ -169,7 +169,7 @@ pub fn api_list_contents(
 }
 
 // ---------------------------------------------------------------------------
-// API — Get single content
+// API - Get single content
 // ---------------------------------------------------------------------------
 #[get("/admin/api/contents/<lang>/<type_name>/<id>")]
 pub fn api_get_content(
@@ -194,7 +194,7 @@ pub fn api_get_content(
 }
 
 // ---------------------------------------------------------------------------
-// API — Create content
+// API - Create content
 // ---------------------------------------------------------------------------
 #[post("/admin/api/contents/<lang>/<type_name>", data = "<body>")]
 pub fn api_create_content(
@@ -230,7 +230,7 @@ pub fn api_create_content(
 }
 
 // ---------------------------------------------------------------------------
-// API — Update content
+// API - Update content
 // ---------------------------------------------------------------------------
 #[put("/admin/api/contents/<lang>/<type_name>/<id>", data = "<body>")]
 pub fn api_update_content(
@@ -260,7 +260,7 @@ pub fn api_update_content(
 }
 
 // ---------------------------------------------------------------------------
-// API — Delete content
+// API - Delete content
 // ---------------------------------------------------------------------------
 #[delete("/admin/api/contents/<lang>/<type_name>/<id>")]
 pub fn api_delete_content(
@@ -285,7 +285,7 @@ pub fn api_delete_content(
 }
 
 // ---------------------------------------------------------------------------
-// API — Blog config
+// API - Blog config
 // ---------------------------------------------------------------------------
 #[get("/admin/api/config")]
 pub fn api_config(_auth: AdminAuth, state: &State<AppState>) -> Json<Value> {
@@ -299,7 +299,7 @@ pub fn api_config(_auth: AdminAuth, state: &State<AppState>) -> Json<Value> {
 }
 
 // ---------------------------------------------------------------------------
-// Helper — Serialize JSON to YAML front matter and write to filesystem
+// Helper - Serialize JSON to YAML front matter and write to filesystem
 // ---------------------------------------------------------------------------
 fn write_content_yaml(data: &Value, path: &str) -> Result<(), Dx5Error> {
     let mut fm = data.clone();

@@ -2,7 +2,7 @@
 id: "0x05"
 lang: "en"
 title: "0x05 Admin Panel, API & Multilingual"
-summary: "Advanced dx5 features — the built-in admin SPA, the JSON API, and the i18n system."
+summary: "Advanced dx5 features - the built-in admin SPA, the JSON API, and the i18n system."
 category: "FORGE_LOG"
 created: "2026-05-05"
 status: true
@@ -128,7 +128,7 @@ body_fields:
     value: |
       dx5 uses the notify crate to watch the content directories for changes.
       When a file is added, modified, or removed, the pagination cache and
-      index are rebuilt automatically — no restart required.
+      index are rebuilt automatically - no restart required.
 
   - type: date
     value: "2026-05-07"

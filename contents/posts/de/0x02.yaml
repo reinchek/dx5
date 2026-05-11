@@ -2,7 +2,7 @@
 id: "0x02"
 lang: "de"
 title: "0x02 Inhaltstypen und Organisation"
-summary: "Wie dx5 Inhalte in Typen organisiert — Beiträge, Codes, Notizen — und wie die Verzeichnisstruktur auf Routen abgebildet wird."
+summary: "Wie dx5 Inhalte in Typen organisiert - Beiträge, Codes, Notizen - und wie die Verzeichnisstruktur auf Routen abgebildet wird."
 category: "EXPLORE"
 created: "2026-05-02"
 status: true
@@ -105,7 +105,7 @@ body_fields:
   - type: text
     value: |
       Das Sprachunterverzeichnis bestimmt die Sprache des Inhalts.
-      Die Startseite ist speziell — sie existsert außerhalb des Typsystems
+      Die Startseite ist speziell - sie existsert außerhalb des Typsystems
       und wird separat konfiguriert.
 
   - type: section_title

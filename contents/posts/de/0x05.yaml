@@ -2,7 +2,7 @@
 id: "0x05"
 lang: "de"
 title: "0x05 Admin-Panel, API und Mehrsprachigkeit"
-summary: "Erweiterte dx5-Funktionen — das integrierte Admin-SPA, die JSON-API und das i18n-System."
+summary: "Erweiterte dx5-Funktionen - das integrierte Admin-SPA, die JSON-API und das i18n-System."
 category: "FORGE_LOG"
 created: "2026-05-05"
 status: true

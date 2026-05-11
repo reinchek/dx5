@@ -2,7 +2,7 @@
 id: "0x03"
 lang: "de"
 title: "0x03 Das Feldsystem"
-summary: "Die leistungsstärkste Funktion von dx5 — benutzerdefinierte, schema-validierte Body-Felder, die durch Tera-Templates gerendert werden."
+summary: "Die leistungsstärkste Funktion von dx5 - benutzerdefinierte, schema-validierte Body-Felder, die durch Tera-Templates gerendert werden."
 category: "FORGE_LOG"
 created: "2026-05-03"
 status: true
@@ -70,7 +70,7 @@ body_fields:
     title: "Wiederverwendbare Blöcke"
     value: >
       Sobald ein Feldtyp definiert ist, kannst du ihn in jeder Inhaltsdatei verwenden.
-      Füge einen Callout hinzu, bette einen Spotify-Player ein oder füge einen Code-Block ein —
+      Füge einen Callout hinzu, bette einen Spotify-Player ein oder füge einen Code-Block ein -
       der Renderer kümmert sich um den Rest.
 
   - type: section_title

@@ -1,4 +1,4 @@
-// spa-router.js — Simple, robust vanilla SPA router
+// spa-router.js - Simple, robust vanilla SPA router
 // Requires: <div id="page-content"> inside the layout,
 // and links with either data-spa attribute or inside #page-content.
 

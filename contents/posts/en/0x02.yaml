@@ -2,7 +2,7 @@
 id: "0x02"
 lang: "en"
 title: "0x02 Content Types & Organization"
-summary: "How dx5 organizes content into types — posts, codes, notes — and how the directory structure maps to routes."
+summary: "How dx5 organizes content into types - posts, codes, notes - and how the directory structure maps to routes."
 category: "EXPLORE"
 created: "2026-05-02"
 status: true
@@ -105,7 +105,7 @@ body_fields:
   - type: text
     value: |
       The language subdirectory determines the lang of the content.
-      The home page is special — it lives outside the type system
+      The home page is special - it lives outside the type system
       and is configured separately.
 
   - type: section_title
