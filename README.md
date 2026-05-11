@@ -1,8 +1,8 @@
-# dx5 — file-based CMS for developer blogs
+# dx5 - file-based CMS for developer blogs
 
 Stack: **Rust + Rocket + Tera + gray_matter**. Content is stored as YAML files. The blog is configured through TOML files in the `config/` directory.
 
-Ready for a **lite headless** approach — all content types (and home pages) can be consumed via the JSON API, making dx5 usable as a backend for decoupled projects, SPAs, or external clients.
+Ready for a **lite headless** approach - all content types (and home pages) can be consumed via the JSON API, making dx5 usable as a backend for decoupled projects, SPAs, or external clients.
 
 ![hippo](https://s13.gifyu.com/images/b702k.gif)
 
@@ -12,7 +12,7 @@ Ready for a **lite headless** approach — all content types (and home pages) ca
 
 ### Scaffolding (recommended)
 
-The dx5 CMS is served with its own `cargo-generate.toml` template file ([cargo-generate](https://cargo-generate.github.io/cargo-generate/)) to bootstrap your blog with an interactive prompt — it will ask for blog title, author, language, admin credentials, and more:
+The dx5 CMS is served with its own `cargo-generate.toml` template file ([cargo-generate](https://cargo-generate.github.io/cargo-generate/)) to bootstrap your blog with an interactive prompt - it will ask for blog title, author, language, admin credentials, and more:
 
 ```bash
 cargo generate --git https://github.com/reinchek/dx5.git --name my-blog
@@ -39,7 +39,7 @@ The container runs as a non-root user. On Linux, pass your host UID/GID so mount
 UID=$(id -u) GID=$(id -g) docker compose up
 ```
 
-On macOS and Windows this is not needed — Docker Desktop handles permission mapping transparently.
+On macOS and Windows this is not needed - Docker Desktop handles permission mapping transparently.
 
 ### Docker Compose with HTTPS (Caddy)
 
@@ -55,7 +55,7 @@ UID=$(id -u) GID=$(id -g) docker compose up -d
 
 Caddy will proxy requests to dx5 internally on port 8000 and handle SSL termination automatically. Certificates are persisted in Docker named volumes (`caddy_data`, `caddy_config`).
 
-Caddy serves `https://localhost` with a self-signed certificate (Caddy's internal CA). Your browser will show a warning — this is expected for local development. For production, uncomment the domain block in `Caddyfile` for automatic Let's Encrypt certificates.
+Caddy serves `https://localhost` with a self-signed certificate (Caddy's internal CA). Your browser will show a warning - this is expected for local development. For production, uncomment the domain block in `Caddyfile` for automatic Let's Encrypt certificates.
 
 ### Manual (Rust)
 
@@ -160,7 +160,7 @@ myblog/
 
 ## Configuration
 
-### dx5.toml — main configuration
+### dx5.toml - main configuration
 
 ```toml
 [blog]
@@ -169,7 +169,7 @@ author       = "Your Name"
 base_url     = "https://my-blog.dev"
 language     = "en"
 spa_enabled  = true              # enable client-side SPA routing
-# debug_enabled = true           # WIP — exposes debug_data in templates
+# debug_enabled = true           # WIP - exposes debug_data in templates
 
 [languages]
 en = "English"
@@ -201,7 +201,7 @@ token   = "change-this-token-value"
 > DX5_CONFIG=/etc/dx5/prod.toml cargo run --release
 > ```
 
-### dx5.content_types.toml — content type definitions
+### dx5.content_types.toml - content type definitions
 
 Each content type defines how content is loaded, routed, and displayed:
 
@@ -221,20 +221,20 @@ enable_navigation         = true            # prev/next on single view
 # ...
 ```
 
-### dx5.fields.toml — body field definitions
+### dx5.fields.toml - body field definitions
 
 Body fields are defined separately from the main config. Each section registers a field type, the Tera template used to render it, and the expected data schema.
 
 ```toml
 [fields.<field_name>]
-template    = "components/fields/<field_name>"   # optional — default matches field name
+template    = "components/fields/<field_name>"   # optional - default matches field name
 description = "Human-readable description."
 
 [fields.<field_name>.schema]
 prop_name = "string"   # "string" | "bool" | "int"
 ```
 
-### locales/*.json — translations
+### locales/*.json - translations
 
 Translation files in `config/locales/` map keys to localized strings. Keys can be **nested** (grouped by namespace) or **flat**:
 
@@ -254,7 +254,7 @@ Translation files in `config/locales/` map keys to localized strings. Keys can b
 }
 ```
 
-Both styles work interchangeably. Nested keys are accessed with **dot notation** in templates — the nesting is flattened at load time:
+Both styles work interchangeably. Nested keys are accessed with **dot notation** in templates - the nesting is flattened at load time:
 
 ```tera
 {{ t(key="nav.prev", lang=lang) }}
@@ -262,7 +262,7 @@ Both styles work interchangeably. Nested keys are accessed with **dot notation**
 {{ t(key="text__explore", lang=lang) }}
 ```
 
-Available languages: `en`, `it`, and whichever you like — just add a `{lang}.json` file.
+Available languages: `en`, `it`, and whichever you like - just add a `{lang}.json` file.
 
 ---
 
@@ -308,7 +308,7 @@ Homepage content is stored as `contents/home/home.{lang}.yaml` and uses the same
 | `terminal`          | `value`, `prompt`, `title`                             | shell session display                 |
 | `date`              | `value` (`"2026-04-22"` or `"now"`)                    |                                       |
 | `link`              | `href`, `value` (label), `alt`                         |                                       |
-| `eol`               | —                                                      | line break                            |
+| `eol`               | -                                                      | line break                            |
 | `spotify_embed`     | `track_id`                                             | embedded Spotify player               |
 | `callout`           | `value`, `variant`, `title`, `safe`                    | variants: note, warning, tip, danger  |
 | `divider`           | `value`                                                | horizontal rule with optional label   |
@@ -456,7 +456,7 @@ enabled = false
 | GET    | `/api/<lang>/<type_name>?page=N` | list items (pagination)       |
 | GET    | `/api/<lang>/<type_name>/<id>`   | single item with body_fields  |
 
-Public endpoints — no auth required.
+Public endpoints - no auth required.
 
 **Examples:**
 ```
@@ -553,11 +553,11 @@ base.html.tera
 
 ### Template blocks
 
-- `{% block title %}` — page title
-- `{% block description %}` — meta description
-- `{% block head %}` — additional head content
-- `{% block content %}` — main page content
-- `{% block scripts %}` — additional scripts
+- `{% block title %}` - page title
+- `{% block description %}` - meta description
+- `{% block head %}` - additional head content
+- `{% block content %}` - main page content
+- `{% block scripts %}` - additional scripts
 
 ---
 
@@ -610,12 +610,12 @@ token   = "your-secret-token"
 
 ### Features
 
-- **Token authentication** — modal login with session storage
-- **Content type selector** — switch between posts, codes, or any custom type
-- **Language selector** — manage content per language
-- **Item list** — sidebar with all items, sorted by ID
-- **Full editor** — front matter fields + body fields builder with add/remove/reorder
-- **Dynamic field forms** — each field type shows its specific input fields
+- **Token authentication** - modal login with session storage
+- **Content type selector** - switch between posts, codes, or any custom type
+- **Language selector** - manage content per language
+- **Item list** - sidebar with all items, sorted by ID
+- **Full editor** - front matter fields + body fields builder with add/remove/reorder
+- **Dynamic field forms** - each field type shows its specific input fields
 
 Authentication via `Authorization: Bearer <token>` header.
 
@@ -642,7 +642,7 @@ Authentication via `Authorization: Bearer <token>` header.
 | `render_field: type 'X' not defined`                          | field type has no section in `dx5.fields.toml`                 |
 | `[WARN] Template not found: components/fields/X.tera`         | field's `.tera` file does not exist                            |
 
-Malformed content files are skipped with a warning — the server does not crash.
+Malformed content files are skipped with a warning - the server does not crash.
 
 For full backtraces: `RUST_BACKTRACE=1 cargo run`.
 
@@ -656,7 +656,7 @@ See the "Adding a custom field" section above.
 
 ### Adding Rust-side logic
 
-The extension point is `src/fields.rs` — add preprocessing there and inject extra data into the Tera context before rendering.
+The extension point is `src/fields.rs` - add preprocessing there and inject extra data into the Tera context before rendering.
 
 ### Adding content types
 
