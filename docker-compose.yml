@@ -1,6 +1,18 @@
-version: "3.9"
-
 services:
+  caddy:
+    image: caddy:alpine
+    container_name: dx5-caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - dx5
+    restart: unless-stopped
+
   dx5:
     build:
       context: .
@@ -9,8 +21,8 @@ services:
         UID: ${UID:-1000}
         GID: ${GID:-1000}
     container_name: dx5-blog
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     environment:
       - ROCKET_ADDRESS=0.0.0.0
       - ROCKET_PORT=8000
@@ -24,3 +36,7 @@ services:
       - ./assets:/app/assets
       - ./public:/app/public
     restart: unless-stopped
+
+volumes:
+  caddy_data:
+  caddy_config:

@@ -1,0 +1,180 @@
+---
+id: "0x06"
+title: "0x06 Publicación de demostración del Catálogo de Campos"
+lang: "es"
+category: "SYS_CALL"
+created: "2026-05-07"
+description: >
+  Una publicación de referencia viva que ejercita cada campo body disponible.
+  Úsala como prueba de humo al agregar nuevas plantillas o ajustar el motor de renderizado.
+
+body_fields:
+
+  # date
+  - type: date
+    value: "2026-04-12"
+
+  # hero_title
+  - type: hero_title
+    value: "Catálogo de Campos"
+    value_glitch: "C4t4l0g0 d3 C4mp0s"
+    env: true
+    env_id: 8
+
+
+  - type: spreaker
+    episode_id: 71771195
+    theme: dark
+
+  # text (plain)
+  - type: text
+    value: |
+      Esta publicación existe por una sola razón: cada tipo de campo debe aparecer al menos una vez.
+      Si estás leyendo esto en un navegador y nada parece roto, el motor de renderizado está sano.
+
+  # callout · note
+  - type: callout
+    variant: note
+    title: "Cómo leer esta publicación"
+    value: >
+      Los campos se muestran en el orden en que se declaran en dx5.fields.toml.
+      Cada bloque está precedido por un section_title que nombra el tipo de campo.
+
+  # section_title
+  - type: section_title
+    value: "Texto y Glitch"
+
+  # text (safe — inline HTML)
+  - type: text
+    safe: true
+    value: >
+      La bandera <code>safe</code> te permite incrustar HTML sin procesar en línea.
+      Úsala con moderación — solo cuando el escape al estilo Markdown no sea suficiente,
+      por ejemplo para envolver una palabra en un <strong>elemento personalizado</strong> o
+      injectar un <abbr title="zero-width non-joiner">ZWNJ</abbr>.
+
+  # text_glitch
+  - type: text_glitch
+    value: "Corrupción de memoria detectada."
+    value_glitch: "C0rrupc1ón d3 m3m0r14 d3t3ct4d4."
+
+  # section_title
+  - type: section_title
+    value: "Citas"
+
+  # cite
+  - type: cite
+    value: "El compilador nunca miente — solo dice verdades duras que no estabas listo para escuchar."
+
+  # blockquote
+  - type: blockquote
+    value: >
+      Cualquier tonto puede escribir código que una computadora pueda entender.
+      Los buenos programadores escriben código que los humanos puedan entender.
+    author: "Martin Fowler"
+    reference: "Refactoring, 1999"
+
+  # blockquote_figure
+  - type: blockquote_figure
+    value: >
+      Los programas deben escribirse para que las personas los lean,
+      y solo incidentalmente para que las máquinas los ejecuten.
+    author: "Harold Abelson"
+    reference: "Structure and Interpretation of Computer Programs"
+    figure: "/static/images/authors/abelson.jpg"
+
+  # divider (labelled)
+  - type: divider
+    value: "§"
+
+  # section_title
+  - type: section_title
+    value: "Código y Shell"
+
+  # callout · tip
+  - type: callout
+    variant: tip
+    title: "Consejo"
+    value: >
+      El campo <code>pre</code> es para fragmentos de código estáticos.
+      Usa <code>terminal</code> cuando quieras mostrar una sesión de shell interactiva.
+
+  # pre
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      #[launch]
+      fn rocket() -> _ {
+          rocket::build()
+              .mount("/", routes![index])
+              .attach(Template::fairing())
+      }
+
+  # terminal
+  - type: terminal
+    title: "bash — raíz del proyecto"
+    prompt: "$"
+    value: |
+      cargo build --release
+      ./target/release/dx5
+      curl -s http://localhost:8000/en | head -n 5
+
+  # callout · warning
+  - type: callout
+    variant: warning
+    title: "Cuidado"
+    value: "Ejecutar el binario fuera del directorio raíz del proyecto hará que no se encuentre dx5.toml."
+
+  # callout · danger
+  - type: callout
+    variant: danger
+    title: "Nunca hagas esto"
+    value: >
+      No comprometas tu token de administración en el control de versiones.
+      Usa una variable de entorno e inyéctalo en el momento del despliegue.
+
+  # divider (plain)
+  - type: divider
+
+  # section_title
+  - type: section_title
+    value: "Multimedia"
+
+  # image
+  - type: image
+    value: "/static/images/post/0x00/terminal.jpg"
+    alt: "Captura de pantalla abstracta de terminal oscuro con texto fosfórico verde"
+    caption: "La estética es el mensaje."
+
+  # video
+  - type: video
+    src: "https://www.youtube.com/embed/iXFT0Kdfoig"
+    caption: "Sí, esto es un marcador de posición. Reemplázalo con algo relevante."
+    autoplay: false
+
+  # spotify_embed
+  - type: spotify_embed
+    track_id: "4uLU6hMCjMI75M1A2tKUQC"
+
+  # eol
+  - type: eol
+
+  # section_title
+  - type: section_title
+    value: "Enlaces"
+
+  # link
+  - type: link
+    href: "https://rocket.rs/guide/"
+    value: "Rocket — framework web para Rust"
+    alt: "Documentación oficial de Rocket"
+
+  - type: link
+    href: "https://keats.github.io/tera/"
+    value: "Tera — motor de plantillas"
+    alt: "Documentación de Tera"
+
+  # eol
+  - type: eol
+---

@@ -103,7 +103,7 @@
                 {# Prev #}
                 <a data-spa href="{{ prev_item[0] }}"
                    class="group flex flex-col gap-1 hover:text-[#00e5a0] transition-colors min-w-0">
-                    <span class="text-zinc-700 group-hover:text-[#00e5a0] transition-colors">← prev</span>
+                    <span class="text-zinc-700 group-hover:text-[#00e5a0] transition-colors">{{ t(key="nav.prev", lang=lang) }}</span>
                     <span class="text-[11px] text-zinc-600 group-hover:text-zinc-400 transition-colors truncate">
                 {{ prev_item[1] | safe }}
             </span>

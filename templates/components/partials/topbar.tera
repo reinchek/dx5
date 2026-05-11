@@ -33,7 +33,7 @@
         {# Language switcher #}
         <div class="flex items-center gap-2 text-xs">
             {% for code, label in languages %}
-                <a data-spa data-lang="{{ code }}" href="/{{ code }}"
+                <a data-spa data-lang="{{ code }}" href="/{{ code }}{{ current_path | replace(from="/" ~ lang, to="") }}"
                    class="lang-switch {% if code == lang %}text-[#00e5a0]{% else %}text-zinc-600 hover:text-zinc-300{% endif %} transition-colors uppercase tracking-wider">
                     {{ code }}
                 </a>

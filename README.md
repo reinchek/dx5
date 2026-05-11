@@ -26,6 +26,11 @@ cd myblog
 docker compose up -d
 ```
 
+> **Note:** When cloning directly (not via `cargo-generate`), the `Dockerfile` contains `{{ project-name }}` placeholders that must be replaced with your project name first:
+> ```bash
+> sed -i 's/{{ project-name }}/dx5/g' Dockerfile
+> ```
+
 The container runs as a non-root user. On Linux, pass your host UID/GID so mounted volumes have the correct ownership:
 
 ```bash
@@ -33,6 +38,25 @@ UID=$(id -u) GID=$(id -g) docker compose up
 ```
 
 On macOS and Windows this is not needed — Docker Desktop handles permission mapping transparently.
+
+### Docker Compose with HTTPS (Caddy)
+
+The project includes a `Caddyfile` and a `caddy` service in `docker-compose.yml` for automatic HTTPS with Let's Encrypt:
+
+1. Replace `your-blog.com` in `Caddyfile` with your actual domain
+2. Make sure your domain's DNS points to the server's IP
+3. Run:
+
+```bash
+UID=$(id -u) GID=$(id -g) docker compose up -d
+```
+
+Caddy will proxy requests to dx5 internally on port 8000 and handle SSL termination automatically. Certificates are persisted in Docker named volumes (`caddy_data`, `caddy_config`).
+
+> For local development without a domain, change `Caddyfile` to:
+> ```
+> :80 { reverse_proxy dx5:8000 }
+> ```
 
 ### Manual (Rust)
 
@@ -163,8 +187,6 @@ soundtracks_dir = "./assets/soundtracks"
 [theme]
 name                 = "default"
 templates_dir        = "./templates"
-start_with_framework = true
-# framework          = "tailwind"   # "pico.css" or "tailwind"
 
 [server]
 port    = 8000

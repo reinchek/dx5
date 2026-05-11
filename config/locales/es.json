@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "prev": "← anterior",
+    "next": "siguiente →",
+    "index": "⌗ índice",
+    "back_to_posts": "← volver a publicaciones",
+    "home": "inicio →",
+    "breadcrumb_home": "~",
+    "breadcrumb_posts": "publicaciones"
+  },
+  "page_title": {
+    "suffix_home": "Inicio",
+    "meta_home": "registro de desarrollo",
+    "suffix_posts": "Publicaciones",
+    "meta_posts": "Todas las publicaciones"
+  },
+  "listing": {
+    "item": "elemento"
+  },
+  "home": {
+    "terminal_prompt": "$",
+    "terminal_cmd": "cat home.{{ lang }}.yaml"
+  },
+  "audio": {
+    "track_placeholder": "—",
+    "btn_mute": "silencio",
+    "fab_label": "reproductor de audio"
+  },
+  "video": {
+    "fallback": "Su navegador no soporta la etiqueta de video.",
+    "download": "Descargar el archivo",
+    "title_default": "Video"
+  },
+  "text__explore": "explorar",
+  "post__index__no_posts_found": "no se encontraron publicaciones",
+  "text__error__complete_backtrace": "Para el seguimiento completo"
+}

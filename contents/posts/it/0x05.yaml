@@ -1,0 +1,137 @@
+---
+id: "0x05"
+lang: "it"
+title: "0x05 Pannello Admin, API e Multilingua"
+summary: "Funzionalità avanzate di dx5 — il pannello admin SPA integrato, l'API JSON e il sistema i18n."
+category: "FORGE_LOG"
+created: "2026-05-05"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Pannello Admin, API e Multilingua"
+    value_glitch: "P4nn3ll0 Adm1n, API e Mult1l1ngu4"
+    env: true
+    env_id: 7
+
+  - type: section_title
+    value: "Pannello admin"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 include un'interfaccia admin completa a pagina singola costruita con
+      Alpine.js e Tailwind CSS. Viene servita da un singolo
+      file <code>admin_ui.html</code> incorporato nel binario Rust.
+      Il pannello admin fornisce operazioni CRUD per tutti i tipi di contenuto.
+
+  - type: text
+    value: |
+      L'API admin è protetta da un token configurato in dx5.toml.
+      In produzione, inietta il token tramite una variabile d'ambiente invece
+      di inserirlo nel controllo versione.
+
+  - type: terminal
+    title: "endpoint admin"
+    prompt: "$"
+    value: |
+      GET    /admin              → interfaccia admin (SPA)
+      POST   /api/admin/contents → crea contenuto
+      PUT    /api/admin/contents → aggiorna contenuto
+      DELETE /api/admin/contents → elimina contenuto
+
+  - type: callout
+    variant: danger
+    title: "Sicurezza"
+    value: >
+      Cambia il token admin prima di fare deploy. Usa una variabile d'ambiente
+      e non inserire mai segreti nel tuo repository.
+
+  - type: section_title
+    value: "API JSON"
+
+  - type: text
+    value: |
+      Ogni tipo di contenuto espone automaticamente un'API JSON.
+      Viene utilizzata dal router SPA ed è disponibile per client esterni.
+      L'API restituisce contenuti strutturati inclusi i body_fields analizzati:
+
+  - type: terminal
+    title: "Utilizzo API"
+    prompt: "$"
+    value: |
+      curl -s http://localhost:8000/api/en/posts | jq '.'
+      curl -s http://localhost:8000/api/en/posts/0x01 | jq '.'
+
+  - type: pre
+    lang: json
+    value: |
+      {
+        "id": "0x01",
+        "title": "Field catalogue demo post",
+        "category": "SYS_CALL",
+        "created": "2026-04-12",
+        "body_fields": [
+          { "type": "date", "value": "2026-04-12" },
+          { "type": "text", "value": "..." }
+        ]
+      }
+
+  - type: section_title
+    value: "Supporto multilingua"
+
+  - type: text
+    value: |
+      dx5 supporta più lingue già pronto all'uso. I contenuti sono organizzati
+      per sottodirectory linguistiche e le stringhe dell'interfaccia sono gestite
+      tramite file JSON di localizzazione.
+
+  - type: text
+    safe: true
+    value: |
+      Le lingue sono dichiarate in <code>config/dx5.toml</code>:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.toml"
+    value: |
+      [languages]
+      en = "English"
+      it = "Italiano"
+
+  - type: text
+    safe: true
+    value: |
+      Le traduzioni dell'interfaccia vivono in <code>config/locales/</code>:
+
+  - type: pre
+    lang: text
+    value: |
+      config/locales/
+      ├── en.json    → stringhe UI inglesi
+      ├── it.json    → stringhe UI italiane
+      └── de.json    → stringhe UI tedesche
+
+  - type: text
+    safe: true
+    value: |
+      I template usano la macro <code>t()</code> per renderizzare le stringhe tradotte.
+      I file di localizzazione definiscono anche i nomi visualizzati delle categorie
+      e le etichette utilizzate nella navigazione.
+
+  - type: section_title
+    value: "Filesystem watcher"
+
+  - type: text
+    value: |
+      dx5 usa la crate notify per monitorare le directory dei contenuti per rilevare modifiche.
+      Quando un file viene aggiunto, modificato o rimosso, la cache di paginazione e
+      l'indice vengono ricostruiti automaticamente — nessun riavvio necessario.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

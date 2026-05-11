@@ -1,0 +1,111 @@
+---
+id: "0x01"
+lang: "fr"
+title: "Qu'est-ce que dx5?"
+summary: "0x01 Une introduction à dx5 — un CMS basé sur des fichiers écrit en Rust. Pas de base de données, pas de complexité."
+category: "EXPLORE"
+created: "2026-05-01"
+status: true
+author: "Nino Marrazzo aka reinchek"
+body_fields:
+
+  - type: hero_title
+    value: "Qu'est-ce que dx5?"
+    value_glitch: "Qu'3st-c3 qu3 dx5?"
+    env: true
+    env_id: 1
+
+  - type: text
+    safe: true
+    value: >
+      <strong>dx5</strong> est un <strong>CMS basé sur des fichiers</strong> écrit en Rust.
+      Chaque contenu — articles de blog, extraits de code, notes, la page d'accueil —
+      est un simple fichier YAML sur le disque. Pas de base de données, pas de panneau d'administration, pas de verrouillage propriétaire.
+      Seulement votre éditeur de texte et <code>cargo run</code>.
+
+  - type: callout
+    variant: note
+    title: "Philosophie"
+    value: >
+      dx5 traite le contenu comme des données. Chaque fichier YAML définit des champs structurés
+      qui sont rendus via des templates Tera, offrant la flexibilité
+      d'une base de données avec la simplicité des fichiers plats.
+
+  - type: section_title
+    value: "Pourquoi basé sur des fichiers?"
+
+  - type: text
+    safe: true
+    value: |
+      Un CMS basé sur des fichiers résout les problèmes que les systèmes basés sur des bases de données créent:
+      <ul>
+        <li><strong>Contrôle de version</strong> — chaque article est un fichier texte. <code>git diff</code> fonctionne immédiatement.</li>
+        <li><strong>Sauvegardes</strong> — <code>tar czf backup.tar.gz contents/</code> est tout ce dont vous avez besoin.</li>
+        <li><strong>Pas de verrouillage</strong> — votre contenu est en YAML. N'importe quel outil peut le lire.</li>
+        <li><strong>Simplicité</strong> — pas de migrations de schéma, pas de pools de connexions, pas d'ORM.</li>
+      </ul>
+
+  - type: blockquote
+    value: >
+      dx5 transforme vos fichiers texte en un site web entièrement dynamique, sans base de données.
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: section_title
+    value: "Architecture principale"
+
+  - type: text
+    value: |
+      dx5 est construit sur l'écosystème Rust. La stack est délibérément minimale:
+
+  - type: pre
+    lang: toml
+    path: "Cargo.toml"
+    value: |
+      [dependencies]
+      rocket = { version = "0.5.1", features = ["json"] }
+      rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
+      serde = "1.0"
+      serde_yaml = "0.9"
+      gray_matter = "0.3.2"
+
+  - type: text
+    value: |
+      Rocket gère HTTP et le routage, Tera rend les templates HTML,
+      et serde_yaml + gray_matter analysent l'en-tête YAML.
+      L'ensemble du pipeline — chargement, analyse, rendu, service — se compile en un seul binaire.
+
+  - type: section_title
+    value: "Démarrage rapide"
+
+  - type: text
+    safe: true
+    value: |
+      Clonez le dépôt, placez un fichier YAML dans <code>contents/posts/fr/</code>,
+      et exécutez:
+
+  - type: terminal
+    title: "bash — racine du projet"
+    prompt: "$"
+    value: |
+      cargo run
+      # dx5 est maintenant accessible sur http://localhost:8000
+
+  - type: text
+    value: |
+      C'est tout le workflow. Écrivez du YAML, voyez le résultat dans votre navigateur.
+      Pas d'étape de construction, pas de base de données, pas de conteneurs.
+
+  - type: callout
+    variant: tip
+    title: "Essayez-le"
+    value: >
+      Copiez 0x00.template.yaml dans un nouveau fichier, remplissez les champs,
+      et enregistrez. Le watcher du système de fichiers de dx5 détectera le changement
+      et reconstruira l'index automatiquement.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

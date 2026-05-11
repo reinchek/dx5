@@ -1,0 +1,37 @@
+{
+  "nav": {
+    "prev": "← précédent",
+    "next": "suivant →",
+    "index": "⌗ index",
+    "back_to_posts": "← retour aux articles",
+    "home": "accueil →",
+    "breadcrumb_home": "~",
+    "breadcrumb_posts": "articles"
+  },
+  "page_title": {
+    "suffix_home": "Accueil",
+    "meta_home": "journal de développement",
+    "suffix_posts": "Articles",
+    "meta_posts": "Tous les articles"
+  },
+  "listing": {
+    "item": "élément"
+  },
+  "home": {
+    "terminal_prompt": "$",
+    "terminal_cmd": "cat home.{{ lang }}.yaml"
+  },
+  "audio": {
+    "track_placeholder": "—",
+    "btn_mute": "muet",
+    "fab_label": "lecteur audio"
+  },
+  "video": {
+    "fallback": "Votre navigateur ne supporte pas la balise vidéo.",
+    "download": "Télécharger le fichier",
+    "title_default": "Vidéo"
+  },
+  "text__explore": "explorer",
+  "post__index__no_posts_found": "aucun article trouvé",
+  "text__error__complete_backtrace": "Pour la trace complète"
+}

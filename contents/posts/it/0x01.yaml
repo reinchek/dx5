@@ -1,128 +1,111 @@
 ---
 id: "0x01"
-title: "Senza il tuo amore io sono un mostro <small>(cit. A<small><small><small><small><small>lberto_camerin</small></small></small></small></small>I)</small>"
 lang: "it"
-category: "MEM_ARCH"
-created: "2026-04-12"
-updated: "2026-04-12"
-intro: La pioggia acida batte sul portone di ferro del laboratorio in cui sono rintanato; il compilatore vomita il suo odio nei riguardi della mia approssimazione. Un LLM insiste per usare 'unsafe', ma io cerco perseveranza nella disciplina.
+title: "Cos'è dx5?"
+summary: "0x01 Un'introduzione a dx5 — un CMS basato su file scritto in Rust. Nessun database, nessuna complessità."
+category: "EXPLORE"
+created: "2026-05-01"
+status: true
+author: "Nino Marrazzo aka reinchek"
 body_fields:
-  - type: date
-    value: now
-  - type: blockquote_figure
-    value:
-      Ascolta ora, questa è un'altra storia raccolta nel tamburo metallico della notte attraverso lo scintillio del suono magico dell'altoparlante universale. È notte nella metropoli totale e non si può evadere dalla notte. Neurox dietro la corazza lo sa,...
-  - type: eol
-  - type: text
-    value: |
-      Così canta Alberto Camerini, «Neurox dietro la corazza lo sa»... sono le 00:00, in lontananza solo cani e rumori di metropoli. 
-      È tardi, ma un impulso d'idea accende la mia attenzione. È un periodo che gira in background una flebile angoscia, 
-      un rumore bianco che scava un nuovo solco nel "reparto-insicurezze" del mio cervello.
-  - type: eol
-  - type: cite
-    value: |
-      Forse mi conviene tenere traccia di quanto e come l'AI sta man mano stravolgendo il mercato.
-  - type: blockquote
-    author: Karl Marx
-    reference: Il Capitale - Libro I°, Cap. 13.
-    value: |
-      Come ogni altro sviluppo della forza produttiva del lavoro, il macchinario ha il compito di ridurre le merci più a buon mercato ed abbreviare quella parte della giornata lavorativa che l’operaio usa per se stesso, per prolungare quell’altra parte della giornata lavorativa che l’operaio dà gratuitamente al capitalista e un mezzo per la produzione di plusvalore.
-  - type: eol
-  - type: text
-    value: |
-      <b>In principio fu la Jenny</b>. Il 1756, con l'approdo della "Giannetta", una macchina filatrice a lavoro intermittente, fu investito da un profondo e radicale stravolgimento. Tale dispositivo nell'industria tessile, comportò una forte riduzione della manodopera necessaria alla produzione di filati. <b>Un operaio valeva per 8</b>.
-      <u>E gli altri 7</u>? Esercito industriale di riserva, concorrenti a più buon mercato, agenti nella lotta alla riduzione della forza contrattuale degli occupati.
-    safe: true
-  - type: eol
-  - type: text
-    value: |
-      <br>
-      Non si tratta di pisciare su di una tecnologia, bensì di porre delle osservazioni critiche nei riguardi di uno strumento impulsato dalle necessità del capitalismo di dare una svolta
-      decisiva ad un sistema produttivo, in costante mutamento e perfezionamento (dello sfruttamento), che aveva bisogno di un "game changer" per portare lo scontro su un altro livello.<br>
-  - type: eol
-  - type: text
-    value: |
-      <b>L'innovazione non è una novità</b><br>
-  - type: text_glitch
-    value: Neurox dietro la corazza, <b>ORA</b>!, lo sa... senza il suo lavoro, lui è un mostro.
-  - type: section_title
-    value: Dx5, com'è fatto?qb
-  - type: pre
-    lang: rust
-    path: src/main.rs
-    value: |
-      // dx5 — how it works, roughly
-      
-      // 1. Load configuration from dx5.toml
-      let config = Config::load("dx5.toml");
-      
-      // 2. Load field definitions from dx5.fields.toml
-      //    Each field type → Tera template + data schema
-      let fields = FieldsConfig::load("dx5.fields.toml");
-      // fields = {
-      //   "text"          → { template: "fields/text",          schema: { value, safe } }
-      //   "spotify_embed" → { template: "fields/spotify_embed", schema: { track_id }   }
-      //   ...
-      // }
-      
-      // 3. Read posts from YAML files
-      let posts = read_dir("contents/posts/")
-      .map(|file| parse_yaml_frontmatter(file))
-      .collect::<Vec<PostContext>>();
-      // post = {
-      //   id: "0x01", title: "...", category: "MEM_ARCH",
-      //   body_fields: [
-      //     { type: "text",          value: "..."           },
-      //     { type: "spotify_embed", track_id: "4uLU6hM..." },
-      //   ]
-      // }
-      
-      // 4. Pre-load all field templates into Tera at startup
-      for (field_type, def) in &fields {
-        let path = format!("templates/{}.tera", def.template);
-        tera.add_template_file(path);
-      }
-        
-      // 5. Register render_field() as a global Tera function
-      //    Called from post.html: {{ render_field(field=field, type=field.type) | safe }}
-      tera.register_function("render_field", |args| {
-        let field_type = args["type"];               // e.g. "spotify_embed"
-        let template   = fields[field_type].template; // e.g. "fields/spotify_embed"
-        
-        let mut ctx = Context::new();
-        ctx.insert("field", args["field"]);          // { track_id: "4uLU6hM..." }
-        
-        tera.render(template, &ctx)                  
-      });
-      
-      // 6. Serve routes with Rocket
-      rocket::build()
-        .mount("/",          routes![index, get_post])
-        .mount("/assets",    FileServer::from("assets"))
-        .mount("/admin",     routes![admin_ui, api_posts]) // optional
-        .attach(Template::custom(|engines| {
-        // ↑ where steps 4 and 5 actually happen
-      }))
-      .launch();
-  - type: text
-    value: |
-      Solo dopo fermentato <b>il letame</b> diventa un valido concime, così, questo sistema, oscilla tra la putrefazione e la fermentazione. In una continua corsa alla ricerca sfrenata di nuove tecniche di produzione. Produrre sempre più intensamente: è il metodo del <span class="glitch layers" data-text="plusvalore relativo!">plusvalore relativo!</span>
-      Ma il letame siamo anche noi: prodotto di questo sistema, come classe "proletaria" («ohh! termine desueto» - un cazzo!); letame fresco, <b>classe in se</b>, letame pronto, <b>classe per se</b>.
-    safe: true
 
-  - type: spotify_embed
-    track_id: 3WwPIJI08ZSnlZI6RPJ2Z6
-  - type: spotify_embed
-    track_id: 4gfb8ElwYiAv5IR0Vbcrtm
-notes: |
-  primo approccio a questo strano tecno-blog dalle atmosfere cyberpunk. <i>«Io ne ho viste cose che voi umani non potreste immaginarvi...»</i>
-  ripeterà un giorno l'N-esimo LLM, allucinato dalla mole eterogenea e sconfinata di informazioni date in promt da disperati programmatori
-  in cerca di una maggiore libertà dalla cappa oppressiva lavoro salariato. Ad aspettarli, tra gli strati nascosti della rete,
-  un aumento smodato della produttività.
-  Ho passato le ultime sei ore a tracciare i grafi di ownership per il modulo di sincronizzazione neurale.
-  L'industria 5.0 promette un'integrazione perfetta, ma la realtà è fatta di <strong>race conditions</strong>
-  e nodi fantasma che l'automa non riesce a prevedere.
-  <p>Il mio obiettivo è creare un sistema dove l'intelligenza artificiale non 'possiede' il codice,
-  ma lo serve sotto la stretta supervisione di tipi forti e garanzie di tempo di compilazione.
-  </span>
+  - type: hero_title
+    value: "Cos'è dx5?"
+    value_glitch: "C0s'è dx5?"
+    env: true
+    env_id: 1
+
+  - type: text
+    safe: true
+    value: >
+      <strong>dx5</strong> è un <strong>CMS basato su file</strong> scritto in Rust.
+      Ogni contenuto — articoli, frammenti di codice, note, la homepage —
+      è un semplice file YAML su disco. Niente database, niente pannello admin, niente vincoli.
+      Solo il tuo editor di testo e <code>cargo run</code>.
+
+  - type: callout
+    variant: note
+    title: "Filosofia"
+    value: >
+      dx5 tratta i contenuti come dati. Ogni file YAML definisce campi strutturati
+      che vengono renderizzati tramite template Tera, offrendo la flessibilità
+      di un database con la semplicità dei file flat.
+
+  - type: section_title
+    value: "Perché basato su file?"
+
+  - type: text
+    safe: true
+    value: |
+      Un CMS basato su file risolve i problemi che i sistemi basati su database creano:
+      <ul>
+        <li><strong>Controllo versione</strong> — ogni articolo è un file di testo. <code>git diff</code> funziona subito.</li>
+        <li><strong>Backup</strong> — <code>tar czf backup.tar.gz contents/</code> è tutto ciò che serve.</li>
+        <li><strong>Niente vincoli</strong> — i tuoi contenuti sono in YAML. Qualunque strumento può leggerli.</li>
+        <li><strong>Semplicità</strong> — niente migrazioni dello schema, niente pool di connessioni, niente ORM.</li>
+      </ul>
+
+  - type: blockquote
+    value: >
+      dx5 trasforma i tuoi file di testo in un sito web completamente dinamico, senza database.
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: section_title
+    value: "Architettura principale"
+
+  - type: text
+    value: |
+      dx5 è costruito sull'ecosistema Rust. Lo stack è volutamente minimale:
+
+  - type: pre
+    lang: toml
+    path: "Cargo.toml"
+    value: |
+      [dependencies]
+      rocket = { version = "0.5.1", features = ["json"] }
+      rocket_dyn_templates = { version = "0.2.0", features = ["tera"] }
+      serde = "1.0"
+      serde_yaml = "0.9"
+      gray_matter = "0.3.2"
+
+  - type: text
+    value: |
+      Rocket gestisce HTTP e il routing, Tera renderizza i template HTML,
+      e serde_yaml + gray_matter analizzano l'intestazione YAML.
+      L'intera pipeline — carica, analizza, renderizza, servi — si compila in un singolo binario.
+
+  - type: section_title
+    value: "Avvio rapido"
+
+  - type: text
+    safe: true
+    value: |
+      Clona il repository, inserisci un file YAML in <code>contents/posts/en/</code>,
+      ed esegui:
+
+  - type: terminal
+    title: "bash — project root"
+    prompt: "$"
+    value: |
+      cargo run
+      # dx5 è ora attivo su http://localhost:8000
+
+  - type: text
+    value: |
+      Questo è l'intero flusso di lavoro. Scrivi YAML, vedi il risultato nel browser.
+      Nessuna fase di build, nessun database, nessun container.
+
+  - type: callout
+    variant: tip
+    title: "Provalo"
+    value: >
+      Copia 0x00.template.yaml in un nuovo file, compila i campi,
+      e salva. Il filesystem watcher di dx5 rileverà la modifica
+      e ricostruirà l'indice automaticamente.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
 ---

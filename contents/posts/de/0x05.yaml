@@ -1,0 +1,137 @@
+---
+id: "0x05"
+lang: "de"
+title: "0x05 Admin-Panel, API und Mehrsprachigkeit"
+summary: "Erweiterte dx5-Funktionen — das integrierte Admin-SPA, die JSON-API und das i18n-System."
+category: "FORGE_LOG"
+created: "2026-05-05"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Admin-Panel, API und Mehrsprachigkeit"
+    value_glitch: "Adm1n-P4n3l, API und M3hrspr4ch1gk31t"
+    env: true
+    env_id: 7
+
+  - type: section_title
+    value: "Admin-Panel"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 enthält eine vollständige Single-Page-Admin-Oberfläche, erstellt mit
+      Alpine.js und Tailwind CSS. Sie wird aus einer einzigen
+      <code>admin_ui.html</code>-Datei ausgeliefert, die in das Rust-Binary eingebettet ist.
+      Das Admin-Panel bietet CRUD-Operationen für alle Inhaltstypen.
+
+  - type: text
+    value: |
+      Die Admin-API wird durch ein Token geschützt, das in dx5.toml konfiguriert ist.
+      In der Produktion injiziere es über eine Umgebungsvariable, anstatt
+      es in die Versionskontrolle zu übernehmen.
+
+  - type: terminal
+    title: "Admin-Endpunkte"
+    prompt: "$"
+    value: |
+      GET    /admin              → Admin-UI (SPA)
+      POST   /api/admin/contents → Inhalt erstellen
+      PUT    /api/admin/contents → Inhalt aktualisieren
+      DELETE /api/admin/contents → Inhalt löschen
+
+  - type: callout
+    variant: danger
+    title: "Sicherheit"
+    value: >
+      Ändere das Admin-Token vor dem Deployment. Verwende eine Umgebungsvariable
+      und übernimm niemals Geheimnisse in dein Repository.
+
+  - type: section_title
+    value: "JSON-API"
+
+  - type: text
+    value: |
+      Jeder Inhaltstyp stellt automatisch eine JSON-API bereit.
+      Diese wird vom SPA-Router verwendet und ist für externe Clients verfügbar.
+      Die API gibt strukturierte Inhalte einschließlich geparster body_fields zurück:
+
+  - type: terminal
+    title: "API-Nutzung"
+    prompt: "$"
+    value: |
+      curl -s http://localhost:8000/api/en/posts | jq '.'
+      curl -s http://localhost:8000/api/en/posts/0x01 | jq '.'
+
+  - type: pre
+    lang: json
+    value: |
+      {
+        "id": "0x01",
+        "title": "Field catalogue demo post",
+        "category": "SYS_CALL",
+        "created": "2026-04-12",
+        "body_fields": [
+          { "type": "date", "value": "2026-04-12" },
+          { "type": "text", "value": "..." }
+        ]
+      }
+
+  - type: section_title
+    value: "Mehrsprachige Unterstützung"
+
+  - type: text
+    value: |
+      dx5 unterstützt mehrere Sprachen direkt ab Werk. Inhalte werden
+      nach Sprachunterverzeichnissen organisiert, und UI-Strings werden über
+      JSON-Lokalisierungsdateien verwaltet.
+
+  - type: text
+    safe: true
+    value: |
+      Sprachen werden in <code>config/dx5.toml</code> deklariert:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.toml"
+    value: |
+      [languages]
+      en = "English"
+      de = "Deutsch"
+
+  - type: text
+    safe: true
+    value: |
+      UI-Übersetzungen leben in <code>config/locales/</code>:
+
+  - type: pre
+    lang: text
+    value: |
+      config/locales/
+      ├── en.json    → Englische UI-Strings
+      ├── de.json    → Deutsche UI-Strings
+      └── fr.json    → Französische UI-Strings
+
+  - type: text
+    safe: true
+    value: |
+      Templates verwenden die <code>t()</code>-Makro, um übersetzte Strings zu rendern.
+      Lokalisierungsdateien definieren auch Kategorie-Anzeigenamen und Labels,
+      die in der Navigation verwendet werden.
+
+  - type: section_title
+    value: "Dateisystem-Watcher"
+
+  - type: text
+    value: |
+      dx5 verwendet die notify-Crate, um die Inhaltsverzeichnisse auf Änderungen zu überwachen.
+      Wenn eine Datei hinzugefügt, geändert oder entfernt wird, werden der Paginierungs-Cache und
+      der Index automatisch neu aufgebaut — kein Neustart erforderlich.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

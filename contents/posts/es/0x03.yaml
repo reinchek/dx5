@@ -1,0 +1,152 @@
+---
+id: "0x03"
+lang: "es"
+title: "0x03 El Sistema de Campos"
+summary: "La característica más potente de dx5 — campos body personalizados y validados por esquema, renderizados a través de plantillas Tera."
+category: "FORGE_LOG"
+created: "2026-05-03"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "El Sistema de Campos"
+    value_glitch: "3l S1st3m4 d3 C4mp0s"
+    env: true
+    env_id: 8
+
+  - type: text
+    safe: true
+    value: |
+      Cada archivo de contenido de dx5 tiene un array <code>body_fields</code>.
+      Cada entrada es un bloque con un <code>type</code> y un conjunto de
+      atributos específicos del tipo. El tipo determina qué plantilla Tera
+      renderiza el bloque y contra qué esquema se valida.
+
+  - type: callout
+    variant: note
+    title: "Cómo funciona"
+    value: >
+      Las plantillas de campos se precargan en Tera al inicio.
+      Al renderizar una página, dx5 itera sobre body_fields,
+      busca la plantilla por tipo y renderiza cada bloque de forma independiente.
+
+  - type: section_title
+    value: "Definir un tipo de campo"
+
+  - type: text
+    value: |
+      Los tipos de campo se definen en config/dx5.fields.toml.
+      Cada campo tiene una descripción y un esquema que asigna
+      nombres de atributos a sus tipos YAML esperados:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.fields.toml"
+    value: |
+      [fields.callout]
+      description = "Nota, advertencia y sugerencias."
+      [fields.callout.schema]
+      value   = "string"
+      variant = "string"
+      title   = "string"
+      safe    = "bool"
+
+      [fields.pre]
+      description = "Bloque de código formateado con resaltado de sintaxis."
+      [fields.pre.schema]
+      lang  = "string"
+      value = "string"
+      path  = "string"
+
+      [fields.spotify_embed]
+      description = "Reproductor de Spotify integrado."
+      [fields.spotify_embed.schema]
+      track_id = "string"
+
+  - type: callout
+    variant: tip
+    title: "Bloques reutilizables"
+    value: >
+      Una vez que se define un tipo de campo, puedes usarlo en cualquier archivo de contenido.
+      Agrega un callout, integra un reproductor de Spotify o inserta un bloque de código —
+      el motor de renderizado se encarga del resto.
+
+  - type: section_title
+    value: "Plantillas de campos (Tera)"
+
+  - type: text
+    value: |
+      Cada tipo de campo se asigna a una plantilla Tera en templates/components/fields/.
+      La plantilla recibe los atributos del campo como variable de contexto.
+      Aquí está la plantilla para el campo callout:
+
+  - type: pre
+    lang: html
+    path: "templates/components/fields/callout.tera"
+    value: |
+      <div class="callout callout--{{ field.variant }}">
+        {% if field.title %}
+        <strong class="callout__title">{{ field.title }}</strong>
+        {% endif %}
+        <div class="callout__body">
+          {% if field.safe %}
+            {{ field.value | safe }}
+          {% else %}
+            {{ field.value | escape }}
+          {% endif %}
+        </div>
+      </div>
+
+  - type: section_title
+    value: "Tipos de campo integrados"
+
+  - type: text
+    value: |
+      dx5 viene con un rico conjunto de campos integrados. Aquí están los más comunes:
+
+  - type: text
+    safe: true
+    value: |
+      <table>
+        <thead>
+          <tr><th>Tipo</th><th>Propósito</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>text</code></td><td>Texto libre con HTML seguro opcional</td></tr>
+          <tr><td><code>hero_title</code></td><td>Título glitch grande con fondo</td></tr>
+          <tr><td><code>image</code></td><td>Imagen con pie de foto y texto alternativo</td></tr>
+          <tr><td><code>pre</code></td><td>Bloque de código con resaltado de sintaxis</td></tr>
+          <tr><td><code>terminal</code></td><td>Visualización de sesión shell</td></tr>
+          <tr><td><code>callout</code></td><td>Caja de nota, consejo, advertencia o peligro</td></tr>
+          <tr><td><code>blockquote</code></td><td>Cita extendida con autor</td></tr>
+          <tr><td><code>spotify_embed</code></td><td>Reproductor de Spotify integrado</td></tr>
+        </tbody>
+      </table>
+
+  - type: section_title
+    value: "Ejemplo: un bloque de texto"
+
+  - type: text
+    value: |
+      En tu archivo YAML, escribes:
+
+  - type: pre
+    lang: yaml
+    value: |
+      body_fields:
+        - type: text
+          value: |
+            Esto es renderizado por templates/components/fields/text.tera.
+          safe: true
+
+  - type: text
+    value: |
+      Esa es toda la API. Escribe YAML, define una plantilla, renderiza.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

@@ -1,0 +1,131 @@
+---
+id: "0x04"
+lang: "de"
+title: "0x04 Routing, Templates und Rendering"
+summary: "Wie dx5 URLs auf Inhalte abbildet, Seiten mit Tera rendert und das Ergebnis ausliefert."
+category: "FORGE_LOG"
+created: "2026-05-04"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Routing, Templates und Rendering"
+    value_glitch: "R0uting, T3mpl4t3s und R3nd3ring"
+    env: true
+    env_id: 2
+
+  - type: text
+    value: |
+      dx5 verwendet Rocket für HTTP-Routing und Tera für HTML-Templates.
+      Die Pipeline ist geradeaus: eine Anfrage kommt, Rocket findet die Route,
+      dx5 lädt den Inhalt von der Festplatte, Tera rendert das Template,
+      und das HTML wird zurückgesendet.
+
+  - type: section_title
+    value: "Routenstruktur"
+
+  - type: text
+    value: |
+      Routen folgen einem vorhersagbaren Muster. Jeder Inhaltstyp erhält
+      eine Index-Route und eine Einzelinhalt-Route:
+
+  - type: pre
+    lang: text
+    value: |
+      /<lang>             → Inhaltstyp-Index (Standardtyp)
+      /<lang>/page/<n>    → paginierter Index, Seite n
+      /<lang>/<type>      → Inhaltstyp-Index (nicht standard)
+      /<lang>/<type>/<id> → Einzelinhalt-Ansicht
+      /api/<lang>/<type>  → JSON-API-Endpunkt
+      /admin               → Admin-Panel
+
+  - type: callout
+    variant: note
+    title: "Standard-Inhaltstyp"
+    value: >
+      Der Typ mit is_default = true (Beiträge) wird unter /<lang>
+      statt unter /<lang>/posts ausgeliefert. Alle anderen Typen verwenden ihr Routenpräfix.
+
+  - type: section_title
+    value: "Template-Hierarchie"
+
+  - type: text
+    value: |
+      dx5 verwendet eine saubere Template-Hierarchie. Das Basis-Template stellt
+      die HTML-Hülle bereit, Inhaltstyp-Templates erweitern es, und Feld-Templates
+      rendern einzelne Blöcke:
+
+  - type: text
+    safe: true
+    value: |
+      <pre>
+      templates/
+      ├── base.html.tera          ← HTML-Hülle, Nav, Footer
+      ├── home.html.tera          ← Startseiten-Layout
+      ├── types/
+      │   ├── index.html.tera     ← Inhaltssliste (paginiert)
+      │   └── single.html.tera    ← Einzelinhalt-Ansicht
+      └── components/
+          └── fields/
+              ├── text.tera       ← jeder Body-Feldtyp
+              ├── hero_title.tera
+              ├── pre.tera
+              └── ...
+      </pre>
+
+  - type: text
+    safe: true
+    value: |
+      Das Template <code>single.html.tera</code> iteriert über
+      <code>body_fields</code> und ruft <code>render_field()</code>
+      für jeden Eintrag auf — eine globale Tera-Funktion, die beim Start registriert wird.
+
+  - type: section_title
+    value: "Die Rendering-Pipeline"
+
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      // Vereinfachte Ansicht des Rendering-Ablaufs
+      rocket::build()
+          .mount("/", routes![
+              index,           // GET /<lang>
+              get_post,        // GET /<lang>/<type>/<id>
+              paginated_index, // GET /<lang>/page/<n>
+          ])
+          .mount("/api", routes![api_index, api_single])
+          .mount("/admin", routes![admin_ui, api_posts])
+          .mount("/static", FileServer::from("static/"))
+          .attach(Template::custom(|engines| {
+              // Alle Feld-Templates in Tera vorladen
+              engines.tera.add_raw_templates(...);
+              // render_field() als globale Funktion registrieren
+              engines.tera.register_function("render_field", ...);
+          }))
+
+  - type: section_title
+    value: "SPA-Modus"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 unterstützt einen optionalen Single-Page-Application-Modus.
+      Wenn <code>spa_enabled = true</code>, fängt das clientseitige
+      <code>spa-router.js</code> die Navigation ab und ruft
+      Inhalte über die JSON-API ab, wodurch die Seite ohne vollständiges Neuladen aktualisiert wird.
+
+  - type: blockquote
+    value: >
+      Der SPA-Modus ist optional. dx5 funktioniert perfekt als traditionelle
+      servergerenderte Website. Die API ist unabhängig davon immer verfügbar.
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

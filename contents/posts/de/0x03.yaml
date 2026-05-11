@@ -1,0 +1,152 @@
+---
+id: "0x03"
+lang: "de"
+title: "0x03 Das Feldsystem"
+summary: "Die leistungsstärkste Funktion von dx5 — benutzerdefinierte, schema-validierte Body-Felder, die durch Tera-Templates gerendert werden."
+category: "FORGE_LOG"
+created: "2026-05-03"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Das Feldsystem"
+    value_glitch: "D4s F3ldsyst3m"
+    env: true
+    env_id: 8
+
+  - type: text
+    safe: true
+    value: |
+      Jede dx5-Inhaltsdatei hat ein <code>body_fields</code>-Array.
+      Jeder Eintrag ist ein Block mit einem <code>type</code> und einer Reihe von
+      typspezifischen Attributen. Der Typ bestimmt, welches Tera-Template
+      den Block rendert und gegen welches Schema er validiert wird.
+
+  - type: callout
+    variant: note
+    title: "Wie es funktioniert"
+    value: >
+      Feld-Templates werden beim Start in Tera vorgeladen.
+      Beim Rendern einer Seite iteriert dx5 über body_fields,
+      sucht das Template nach Typ und rendert jeden Block unabhängig.
+
+  - type: section_title
+    value: "Einen Feldtyp definieren"
+
+  - type: text
+    value: |
+      Feldtypen werden in config/dx5.fields.toml definiert.
+      Jedes Feld hat eine Beschreibung und ein Schema, das
+      Attributnamen auf ihre erwarteten YAML-Typen abbildet:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.fields.toml"
+    value: |
+      [fields.callout]
+      description = "Notiz, Warnung und Vorschläge."
+      [fields.callout.schema]
+      value   = "string"
+      variant = "string"
+      title   = "string"
+      safe    = "bool"
+
+      [fields.pre]
+      description = "Formatierter Code-Block mit Syntax-Highlighting."
+      [fields.pre.schema]
+      lang  = "string"
+      value = "string"
+      path  = "string"
+
+      [fields.spotify_embed]
+      description = "Eingebetteter Spotify-Player."
+      [fields.spotify_embed.schema]
+      track_id = "string"
+
+  - type: callout
+    variant: tip
+    title: "Wiederverwendbare Blöcke"
+    value: >
+      Sobald ein Feldtyp definiert ist, kannst du ihn in jeder Inhaltsdatei verwenden.
+      Füge einen Callout hinzu, bette einen Spotify-Player ein oder füge einen Code-Block ein —
+      der Renderer kümmert sich um den Rest.
+
+  - type: section_title
+    value: "Feld-Templates (Tera)"
+
+  - type: text
+    value: |
+      Jeder Feldtyp wird einem Tera-Template in templates/components/fields/ zugeordnet.
+      Das Template erhält die Feldattribute als Kontextvariable.
+      Hier ist das Template für das Callout-Feld:
+
+  - type: pre
+    lang: html
+    path: "templates/components/fields/callout.tera"
+    value: |
+      <div class="callout callout--{{ field.variant }}">
+        {% if field.title %}
+        <strong class="callout__title">{{ field.title }}</strong>
+        {% endif %}
+        <div class="callout__body">
+          {% if field.safe %}
+            {{ field.value | safe }}
+          {% else %}
+            {{ field.value | escape }}
+          {% endif %}
+        </div>
+      </div>
+
+  - type: section_title
+    value: "Integrierte Feldtypen"
+
+  - type: text
+    value: |
+      dx5 wird mit einer umfangreichen Sammlung integrierter Felder ausgeliefert. Hier sind die häufigsten:
+
+  - type: text
+    safe: true
+    value: |
+      <table>
+        <thead>
+          <tr><th>Typ</th><th>Zweck</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>text</code></td><td>Freitext mit optionalem sicheren HTML</td></tr>
+          <tr><td><code>hero_title</code></td><td>Großer Glitch-Titel mit Hintergrund</td></tr>
+          <tr><td><code>image</code></td><td>Bild mit Bildunterschrift und Alt-Text</td></tr>
+          <tr><td><code>pre</code></td><td>Code-Block mit Syntax-Highlighting</td></tr>
+          <tr><td><code>terminal</code></td><td>Shell-Sitzungsanzeige</td></tr>
+          <tr><td><code>callout</code></td><td>Notiz-, Tipp-, Warn- oder Gefahrenbox</td></tr>
+          <tr><td><code>blockquote</code></td><td>Erweitertes Zitat mit Autor</td></tr>
+          <tr><td><code>spotify_embed</code></td><td>Eingebetteter Spotify-Player</td></tr>
+        </tbody>
+      </table>
+
+  - type: section_title
+    value: "Beispiel: ein Textblock"
+
+  - type: text
+    value: |
+      In deiner YAML-Datei schreibst du:
+
+  - type: pre
+    lang: yaml
+    value: |
+      body_fields:
+        - type: text
+          value: |
+            Dies wird von templates/components/fields/text.tera gerendert.
+          safe: true
+
+  - type: text
+    value: |
+      Das ist die gesamte API. YAML schreiben, Template definieren, rendern.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

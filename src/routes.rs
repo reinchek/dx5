@@ -5,6 +5,7 @@ use crate::state::AppState;
 use gray_matter::engine::YAML;
 use gray_matter::Matter;
 use rocket::response::Redirect;
+use rocket::http::uri::Origin;
 use rocket::State;
 use rocket_dyn_templates::{context, Template};
 use tracing::error;
@@ -15,7 +16,7 @@ pub fn root() -> Redirect {
 }
 
 #[get("/<lang>", rank = 1)]
-pub fn home(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> {
+pub fn home(lang: Lang, uri: &Origin<'_>, state: &State<AppState>) -> Result<Template, Dx5Error> {
     let matter = Matter::<YAML>::new();
     let menu_items = &state.content_types.as_menu_items();
     let home = &state.app_config.0.home;
@@ -37,6 +38,7 @@ pub fn home(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> {
             fields_config: &&state.fields_config.fields,
             menu_items: &menu_items,
             playlist_data: &&state.audio.playlist_json,
+            current_path: uri.path().as_str(),
             debug_data: context! {
                 home: &home,
                 lang: &lang,
@@ -52,7 +54,7 @@ pub fn home(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> {
 }
 
 #[get("/<lang>", rank = 2)]
-pub fn index(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> {
+pub fn index(lang: Lang, uri: &Origin<'_>, state: &State<AppState>) -> Result<Template, Dx5Error> {
     let matter = Matter::<YAML>::new();
     let menu_items = &state.content_types.as_menu_items();
     let (_ct_name, ct_def) = &state.content_types.get_default().ok_or_else(|| {
@@ -82,6 +84,7 @@ pub fn index(lang: Lang, state: &State<AppState>) -> Result<Template, Dx5Error> 
             menu_items: &menu_items,
             fields_config: &state.fields_config.fields,
             playlist_data: &state.audio.playlist_json,
+            current_path: uri.path().as_str(),
             debug_data: context! {
                 items: &items.0,
                 lang: &lang,
@@ -98,6 +101,7 @@ pub fn generic_contents(
     lang: Lang,
     type_name: ContentSegment,
     page: Option<usize>,
+    uri: &Origin<'_>,
     state: &State<AppState>,
 ) -> Result<Template, Dx5Error> {
     let path = format!("{}/{}", &lang.0, &type_name.0);
@@ -146,6 +150,7 @@ pub fn generic_contents(
             fields_config: &state.fields_config.fields,
             playlist_data: &state.audio.playlist_json,
             pagination: items.1,
+            current_path: uri.path().as_str(),
         },
     ))
 }
@@ -154,6 +159,7 @@ pub fn generic_content(
     lang: Lang,
     type_name: ContentSegment,
     id: &str,
+    uri: &Origin<'_>,
     state: &State<AppState>,
 ) -> Result<Template, Dx5Error> {
     let path = format!("{}/{}/{}", lang.0.clone(), type_name.0.clone(), id);
@@ -250,6 +256,7 @@ pub fn generic_content(
             menu_items,
             fields_config: &state.fields_config.fields,
             playlist_data: &state.audio.playlist_json,
+            current_path: uri.path().as_str(),
         },
     ))
 }

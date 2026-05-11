@@ -1,0 +1,137 @@
+---
+id: "0x05"
+lang: "fr"
+title: "0x05 Panneau Admin, API et Multilingue"
+summary: "Fonctionnalités avancées de dx5 — le panneau d'administration SPA intégré, l'API JSON et le système i18n."
+category: "FORGE_LOG"
+created: "2026-05-05"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Panneau Admin, API et Multilingue"
+    value_glitch: "P4nn34u Adm1n, API et Mult1l1ngu3"
+    env: true
+    env_id: 7
+
+  - type: section_title
+    value: "Panneau d'administration"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 inclut une interface d'administration complète à page unique construite avec
+      Alpine.js et Tailwind CSS. Elle est servie à partir d'un seul
+      fichier <code>admin_ui.html</code> intégré dans le binaire Rust.
+      Le panneau d'administration fournit des opérations CRUD pour tous les types de contenu.
+
+  - type: text
+    value: |
+      L'API d'administration est protégée par un token configuré dans dx5.toml.
+      En production, injectez-le via une variable d'environnement au lieu
+      de l'engager dans le contrôle de version.
+
+  - type: terminal
+    title: "points d'accès admin"
+    prompt: "$"
+    value: |
+      GET    /admin              → interface admin (SPA)
+      POST   /api/admin/contents → créer du contenu
+      PUT    /api/admin/contents → mettre à jour du contenu
+      DELETE /api/admin/contents → supprimer du contenu
+
+  - type: callout
+    variant: danger
+    title: "Sécurité"
+    value: >
+      Changez le token admin avant le déploiement. Utilisez une variable d'environnement
+      et n'engagez jamais de secrets dans votre dépôt.
+
+  - type: section_title
+    value: "API JSON"
+
+  - type: text
+    value: |
+      Chaque type de contenu expose automatiquement une API JSON.
+      Elle est utilisée par le routeur SPA et est disponible pour les clients externes.
+      L'API renvoie du contenu structuré incluant les body_fields analysés:
+
+  - type: terminal
+    title: "Utilisation de l'API"
+    prompt: "$"
+    value: |
+      curl -s http://localhost:8000/api/en/posts | jq '.'
+      curl -s http://localhost:8000/api/en/posts/0x01 | jq '.'
+
+  - type: pre
+    lang: json
+    value: |
+      {
+        "id": "0x01",
+        "title": "Field catalogue demo post",
+        "category": "SYS_CALL",
+        "created": "2026-04-12",
+        "body_fields": [
+          { "type": "date", "value": "2026-04-12" },
+          { "type": "text", "value": "..." }
+        ]
+      }
+
+  - type: section_title
+    value: "Support multilingue"
+
+  - type: text
+    value: |
+      dx5 prend en charge plusieurs langues dès sa sortie. Le contenu est organisé
+      par sous-répertoires linguistiques et les chaînes d'interface sont gérées
+      via des fichiers JSON de localisation.
+
+  - type: text
+    safe: true
+    value: |
+      Les langues sont déclarées dans <code>config/dx5.toml</code>:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.toml"
+    value: |
+      [languages]
+      en = "English"
+      fr = "Français"
+
+  - type: text
+    safe: true
+    value: |
+      Les traductions de l'interface vivent dans <code>config/locales/</code>:
+
+  - type: pre
+    lang: text
+    value: |
+      config/locales/
+      ├── en.json    → chaînes UI anglaises
+      ├── fr.json    → chaînes UI françaises
+      └── de.json    → chaînes UI allemandes
+
+  - type: text
+    safe: true
+    value: |
+      Les templates utilisent la macro <code>t()</code> pour rendre les chaînes traduites.
+      Les fichiers de localisation définissent également les noms d'affichage des catégories
+      et les étiquettes utilisées dans la navigation.
+
+  - type: section_title
+    value: "Surveillance du système de fichiers"
+
+  - type: text
+    value: |
+      dx5 utilise la crate notify pour surveiller les répertoires de contenu pour les modifications.
+      Lorsqu'un fichier est ajouté, modifié ou supprimé, le cache de pagination et
+      l'index sont reconstruits automatiquement — aucun redémarrage requis.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

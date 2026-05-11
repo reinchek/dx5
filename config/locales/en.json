@@ -15,7 +15,7 @@
     "meta_posts": "All posts"
   },
   "listing": {
-    "item": "item",
+    "item": "item"
   },
   "home": {
     "terminal_prompt": "$",
@@ -24,7 +24,7 @@
   "audio": {
     "track_placeholder": "—",
     "btn_mute": "mute",
-    "fab_label": "audio player",
+    "fab_label": "audio player"
   },
   "video": {
     "fallback": "Your browser does not support the video tag.",

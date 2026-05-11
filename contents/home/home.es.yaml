@@ -1,0 +1,59 @@
+---
+id: home
+title: "dx5 – CMS basado en archivos"
+created: 2026-04-29
+
+body_fields:
+  - type: section_title
+    value: "🚀 Primeros pasos"
+
+  - type: text
+    value: |
+      Crea una nueva publicación copiando `0x00.template.yaml` del directorio `contents/posts/`.
+      Edita el front matter y agrega tu contenido usando los tipos de campo integrados.
+    safe: true
+
+  - type: pre
+    lang: yaml
+    path: "ejemplo/publicacion.yaml"
+    value: |
+      ---
+      id: "0x01"
+      title: "Mi primera publicación"
+      category: "MEM_ARCH"
+      date: "2026-04-29"
+      intro: "¡Bienvenido a dx5!"
+      body_fields:
+        - type: text
+          value: "Este es un bloque **dinámico**."
+          safe: true
+        - type: image
+          value: "/assets/images/example.jpg"
+          alt: "Ejemplo"
+          caption: "Una imagen de ejemplo"
+      ---
+
+  - type: section_title
+    value: "🎨 Campos personalizados"
+
+  - type: text
+    value: |
+      Puedes definir tus propios tipos de campo en <code>dx5.fields.toml</code>.  
+      Abajo hay un campo <b>Spotify embed</b> – solo agrega <code>track_id</code> a cualquier publicación.
+    safe: true
+
+#  - type: spotify_embed
+#    track_id: "4uLU6hMCjMI75M1A2tKUQC"
+
+  - type: blockquote
+    value: "dx5 convierte tus archivos de texto en un sitio web completamente dinámico, sin base de datos."
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: link
+    href: "https://github.com/your/dx5"
+    value: "⭐ Estrella en GitHub"
+    alt: "Repositorio de GitHub"
+
+  - type: eol
+---

@@ -1,0 +1,137 @@
+---
+id: "0x05"
+lang: "es"
+title: "0x05 Panel de Administración, API y Multilingüe"
+summary: "Funcionalidades avanzadas de dx5 — el panel de administración SPA integrado, la API JSON y el sistema i18n."
+category: "FORGE_LOG"
+created: "2026-05-05"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
+body_fields:
+
+  - type: hero_title
+    value: "Panel de Administración, API y Multilingüe"
+    value_glitch: "P4n3l d3 Adm1n1str4c1ón, API y Mult1l1ngü3"
+    env: true
+    env_id: 7
+
+  - type: section_title
+    value: "Panel de administración"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 incluye una interfaz de administración completa de página única construida con
+      Alpine.js y Tailwind CSS. Se sirve desde un único
+      archivo <code>admin_ui.html</code> incrustado en el binario de Rust.
+      El panel de administración proporciona operaciones CRUD para todos los tipos de contenido.
+
+  - type: text
+    value: |
+      La API de administración está protegida por un token configurado en dx5.toml.
+      En producción, inyéctalo a través de una variable de entorno en lugar
+      de comprometerlo en el control de versiones.
+
+  - type: terminal
+    title: "puntos de acceso de administración"
+    prompt: "$"
+    value: |
+      GET    /admin              → interfaz de admin (SPA)
+      POST   /api/admin/contents → crear contenido
+      PUT    /api/admin/contents → actualizar contenido
+      DELETE /api/admin/contents → eliminar contenido
+
+  - type: callout
+    variant: danger
+    title: "Seguridad"
+    value: >
+      Cambia el token de administración antes de implementar. Usa una variable de entorno
+      y nunca comprometas secretos en tu repositorio.
+
+  - type: section_title
+    value: "API JSON"
+
+  - type: text
+    value: |
+      Cada tipo de contenido expone automáticamente una API JSON.
+      Es utilizada por el enrutador SPA y está disponible para clientes externos.
+      La API devuelve contenido estructurado incluyendo body_fields analizados:
+
+  - type: terminal
+    title: "Uso de la API"
+    prompt: "$"
+    value: |
+      curl -s http://localhost:8000/api/en/posts | jq '.'
+      curl -s http://localhost:8000/api/en/posts/0x01 | jq '.'
+
+  - type: pre
+    lang: json
+    value: |
+      {
+        "id": "0x01",
+        "title": "Field catalogue demo post",
+        "category": "SYS_CALL",
+        "created": "2026-04-12",
+        "body_fields": [
+          { "type": "date", "value": "2026-04-12" },
+          { "type": "text", "value": "..." }
+        ]
+      }
+
+  - type: section_title
+    value: "Soporte multilingüe"
+
+  - type: text
+    value: |
+      dx5 soporta múltiples idiomas de forma nativa. El contenido se organiza
+      por subdirectorios de idioma, y las cadenas de la interfaz se gestionan
+      a través de archivos JSON de localización.
+
+  - type: text
+    safe: true
+    value: |
+      Los idiomas se declaran en <code>config/dx5.toml</code>:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.toml"
+    value: |
+      [languages]
+      en = "English"
+      es = "Español"
+
+  - type: text
+    safe: true
+    value: |
+      Las traducciones de la interfaz viven en <code>config/locales/</code>:
+
+  - type: pre
+    lang: text
+    value: |
+      config/locales/
+      ├── en.json    → cadenas UI en inglés
+      ├── es.json    → cadenas UI en español
+      └── de.json    → cadenas UI en alemán
+
+  - type: text
+    safe: true
+    value: |
+      Las plantillas usan la macro <code>t()</code> para renderizar cadenas traducidas.
+      Los archivos de localización también definen los nombres de visualización de las categorías
+      y las etiquetas utilizadas en la navegación.
+
+  - type: section_title
+    value: "Observador del sistema de archivos"
+
+  - type: text
+    value: |
+      dx5 usa la crate notify para monitorear los directorios de contenido en busca de cambios.
+      Cuando se añade, modifica o elimina un archivo, el caché de paginación y
+      el índice se reconstruyen automáticamente — no se requiere reinicio.
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
+---

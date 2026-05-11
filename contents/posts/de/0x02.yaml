@@ -1,8 +1,8 @@
 ---
 id: "0x02"
-lang: "it"
-title: "0x02 Tipi di Contenuto e Organizzazione"
-summary: "Come dx5 organizza i contenuti in tipi — post, codici, note — e come la struttura delle directory si mappa alle route."
+lang: "de"
+title: "0x02 Inhaltstypen und Organisation"
+summary: "Wie dx5 Inhalte in Typen organisiert — Beiträge, Codes, Notizen — und wie die Verzeichnisstruktur auf Routen abgebildet wird."
 category: "EXPLORE"
 created: "2026-05-02"
 status: true
@@ -11,25 +11,25 @@ author: "Nino Marrazzo aka reinchek"
 body_fields:
 
   - type: hero_title
-    value: "Tipi di Contenuto e Organizzazione"
-    value_glitch: "T1p1 d1 C0nt3nut0 e 0rg4n1zz4z10n3"
+    value: "Inhaltstypen und Organisation"
+    value_glitch: "1nh4ltstyp3n und 0rg4n1s4t10n"
     env: true
     env_id: 4
 
   - type: text
     value: |
-      dx5 organizza i contenuti in tipi. Ogni tipo è una directory di file YAML
-      con la propria route, voce di menu e template di visualizzazione.
-      I tipi sono definiti in un singolo file di configurazione TOML.
+      dx5 organisiert Inhalte in Typen. Jeder Typ ist ein Verzeichnis mit YAML-Dateien,
+      das eine eigene Route, Menüeintrag und Anzeigevorlage hat.
+      Typen werden in einer einzigen TOML-Konfigurationsdatei definiert.
 
   - type: section_title
-    value: "Definire i tipi di contenuto"
+    value: "Inhaltstypen definieren"
 
   - type: text
     value: |
-      I tipi di contenuto sono dichiarati in config/dx5.content_types.toml.
-      Ogni tipo specifica una directory sorgente, estensione file, route URL,
-      e metadati di navigazione:
+      Inhaltstypen werden in config/dx5.content_types.toml deklariert.
+      Jeder Typ gibt ein Quellverzeichnis, eine Dateierweiterung, eine URL-Route
+      und Navigationsmetadaten an:
 
   - type: pre
     lang: toml
@@ -64,17 +64,17 @@ body_fields:
 
   - type: callout
     variant: note
-    title: "Il flag is_default"
+    title: "Das is_default-Flag"
     value: >
-      Il tipo con is_default = true serve il suo indice alla radice
-      dell'URL della lingua (es. /en invece di /en/posts).
+      Der Typ mit is_default = true liefert seinen Index unter der
+      Sprach-URL aus (z. B. /de anstatt /de/posts).
 
   - type: section_title
-    value: "Struttura delle directory"
+    value: "Verzeichnisstruktur"
 
   - type: text
     value: |
-      All'interno di ogni directory dei tipi di contenuto, i file sono organizzati per lingua:
+      Innerhalb jedes Inhaltstyp-Verzeichnisses sind die Dateien nach Sprache organisiert:
 
   - type: pre
     lang: text
@@ -85,7 +85,7 @@ body_fields:
       │   │   ├── 0x00.template.yaml
       │   │   ├── 0x01.yaml
       │   │   └── 0x02.yaml
-      │   └── it/
+      │   └── de/
       │       ├── 0x00.template.yaml
       │       ├── 0x01.yaml
       │       └── 0x02.yaml
@@ -99,32 +99,32 @@ body_fields:
       │       └── 0x01.yaml
       └── home/
           ├── home.en.yaml
-          ├── home.it.yaml
+          ├── home.de.yaml
           └── home.de.yaml
 
   - type: text
     value: |
-      La sottodirectory della lingua determina la lingua del contenuto.
-      La homepage è speciale — vive al di fuori del sistema dei tipi
-      ed è configurata separatamente.
+      Das Sprachunterverzeichnis bestimmt die Sprache des Inhalts.
+      Die Startseite ist speziell — sie existsert außerhalb des Typsystems
+      und wird separat konfiguriert.
 
   - type: section_title
-    value: "Paginazione"
+    value: "Paginierung"
 
   - type: text
     value: |
-      I tipi di contenuto con pagination_items_per_page impostato suddividono
-      automaticamente il loro indice su più pagine. Il filesystem watcher
-      ricostruisce le cache di paginazione ogni volta che un file viene aggiunto, rimosso o modificato.
+      Inhaltstypen mit gesetztem pagination_items_per_page teilen ihren
+      Index automatisch auf mehrere Seiten auf. Der Dateisystem-Watcher
+      baut die Paginierungs-Caches neu auf, sobald eine Datei hinzugefügt, entfernt oder geändert wird.
 
   - type: terminal
-    title: "route generate automaticamente"
+    title: "automatisch generierte Routen"
     prompt: "$"
     value: |
-      /en          → posts, pagina 1
-      /en/page/2   → posts, pagina 2
-      /en/codes    → indice codici
-      /en/notes    → indice note
+      /de          → Beiträge, Seite 1
+      /de/page/2   → Beiträge, Seite 2
+      /de/codes    → Code-Index
+      /de/notes    → Notizen-Index
 
   - type: date
     value: "2026-05-07"

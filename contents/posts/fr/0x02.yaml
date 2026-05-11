@@ -1,8 +1,8 @@
 ---
 id: "0x02"
-lang: "it"
-title: "0x02 Tipi di Contenuto e Organizzazione"
-summary: "Come dx5 organizza i contenuti in tipi — post, codici, note — e come la struttura delle directory si mappa alle route."
+lang: "fr"
+title: "0x02 Types de Contenu et Organisation"
+summary: "Comment dx5 organise le contenu en types — articles, codes, notes — et comment la structure des répertoires correspond aux routes."
 category: "EXPLORE"
 created: "2026-05-02"
 status: true
@@ -11,25 +11,25 @@ author: "Nino Marrazzo aka reinchek"
 body_fields:
 
   - type: hero_title
-    value: "Tipi di Contenuto e Organizzazione"
-    value_glitch: "T1p1 d1 C0nt3nut0 e 0rg4n1zz4z10n3"
+    value: "Types de Contenu et Organisation"
+    value_glitch: "Typ3s d3 C0nt3nu et 0rg4n1s4t10n"
     env: true
     env_id: 4
 
   - type: text
     value: |
-      dx5 organizza i contenuti in tipi. Ogni tipo è una directory di file YAML
-      con la propria route, voce di menu e template di visualizzazione.
-      I tipi sono definiti in un singolo file di configurazione TOML.
+      dx5 organise le contenu en types. Chaque type est un répertoire de fichiers YAML
+      avec sa propre route, entrée de menu et template d'affichage.
+      Les types sont définis dans un seul fichier de configuration TOML.
 
   - type: section_title
-    value: "Definire i tipi di contenuto"
+    value: "Définir les types de contenu"
 
   - type: text
     value: |
-      I tipi di contenuto sono dichiarati in config/dx5.content_types.toml.
-      Ogni tipo specifica una directory sorgente, estensione file, route URL,
-      e metadati di navigazione:
+      Les types de contenu sont déclarés dans config/dx5.content_types.toml.
+      Chaque type spécifie un répertoire source, une extension de fichier, une route URL,
+      et des métadonnées de navigation:
 
   - type: pre
     lang: toml
@@ -64,17 +64,17 @@ body_fields:
 
   - type: callout
     variant: note
-    title: "Il flag is_default"
+    title: "Le drapeau is_default"
     value: >
-      Il tipo con is_default = true serve il suo indice alla radice
-      dell'URL della lingua (es. /en invece di /en/posts).
+      Le type avec is_default = true sert son index à la racine
+      de l'URL de la langue (p. ex. /fr au lieu de /fr/posts).
 
   - type: section_title
-    value: "Struttura delle directory"
+    value: "Structure des répertoires"
 
   - type: text
     value: |
-      All'interno di ogni directory dei tipi di contenuto, i file sono organizzati per lingua:
+      À l'intérieur de chaque répertoire de type de contenu, les fichiers sont organisés par langue:
 
   - type: pre
     lang: text
@@ -85,7 +85,7 @@ body_fields:
       │   │   ├── 0x00.template.yaml
       │   │   ├── 0x01.yaml
       │   │   └── 0x02.yaml
-      │   └── it/
+      │   └── fr/
       │       ├── 0x00.template.yaml
       │       ├── 0x01.yaml
       │       └── 0x02.yaml
@@ -99,32 +99,32 @@ body_fields:
       │       └── 0x01.yaml
       └── home/
           ├── home.en.yaml
-          ├── home.it.yaml
+          ├── home.fr.yaml
           └── home.de.yaml
 
   - type: text
     value: |
-      La sottodirectory della lingua determina la lingua del contenuto.
-      La homepage è speciale — vive al di fuori del sistema dei tipi
-      ed è configurata separatamente.
+      Le sous-répertoire de langue détermine la langue du contenu.
+      La page d'accueil est spéciale — elle vit en dehors du système de types
+      et est configurée séparément.
 
   - type: section_title
-    value: "Paginazione"
+    value: "Pagination"
 
   - type: text
     value: |
-      I tipi di contenuto con pagination_items_per_page impostato suddividono
-      automaticamente il loro indice su più pagine. Il filesystem watcher
-      ricostruisce le cache di paginazione ogni volta che un file viene aggiunto, rimosso o modificato.
+      Les types de contenu avec pagination_items_per_page défini divisent
+      automatiquement leur index sur plusieurs pages. Le watcher du système de fichiers
+      reconstruit les caches de pagination chaque fois qu'un fichier est ajouté, supprimé ou modifié.
 
   - type: terminal
-    title: "route generate automaticamente"
+    title: "routes générées automatiquement"
     prompt: "$"
     value: |
-      /en          → posts, pagina 1
-      /en/page/2   → posts, pagina 2
-      /en/codes    → indice codici
-      /en/notes    → indice note
+      /fr          → articles, page 1
+      /fr/page/2   → articles, page 2
+      /fr/codes    → index des codes
+      /fr/notes    → index des notes
 
   - type: date
     value: "2026-05-07"

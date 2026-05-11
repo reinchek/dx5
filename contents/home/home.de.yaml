@@ -1,0 +1,59 @@
+---
+id: home
+title: "dx5 – Dateibasiertes CMS"
+created: 2026-04-29
+
+body_fields:
+  - type: section_title
+    value: "🚀 Erste Schritte"
+
+  - type: text
+    value: |
+      Erstelle einen neuen Beitrag, indem du `0x00.template.yaml` aus dem Verzeichnis `contents/posts/` kopierst.
+      Bearbeite den Frontmatter und füge deinen Inhalt mit den integrierten Feldtypen hinzu.
+    safe: true
+
+  - type: pre
+    lang: yaml
+    path: "beispiel/beitrag.yaml"
+    value: |
+      ---
+      id: "0x01"
+      title: "Mein erster Beitrag"
+      category: "MEM_ARCH"
+      date: "2026-04-29"
+      intro: "Willkommen bei dx5!"
+      body_fields:
+        - type: text
+          value: "Dies ist ein **dynamischer** Block."
+          safe: true
+        - type: image
+          value: "/assets/images/example.jpg"
+          alt: "Beispiel"
+          caption: "Ein Beispielbild"
+      ---
+
+  - type: section_title
+    value: "🎨 Benutzerdefinierte Felder"
+
+  - type: text
+    value: |
+      Du kannst deine eigenen Feldtypen in <code>dx5.fields.toml</code> definieren.  
+      Unten ist ein <b>Spotify Embed</b>-Feld – füge einfach <code>track_id</code> zu einem beliebigen Beitrag hinzu.
+    safe: true
+
+#  - type: spotify_embed
+#    track_id: "4uLU6hMCjMI75M1A2tKUQC"
+
+  - type: blockquote
+    value: "dx5 verwandelt deine Textdateien in eine vollständig dynamische Website, ohne Datenbank."
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: link
+    href: "https://github.com/your/dx5"
+    value: "⭐ Stern auf GitHub"
+    alt: "GitHub-Repository"
+
+  - type: eol
+---

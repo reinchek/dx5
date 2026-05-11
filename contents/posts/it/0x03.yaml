@@ -1,59 +1,152 @@
 ---
 id: "0x03"
-title: "Titolo del Post"
-category: "MEM_ARCH"           # es. MEM_ARCH | SYS_CALL | NET_GHOST | CORE_DUMP
 lang: "it"
-created: "2026-04-15"
-intro: >
-  Frase introduttiva del post. Apparirà in corsivo con bordo laterale.
-  Può essere lunga, usa il blocco scalare YAML.
-has_errors: false
-error_description: ""          # Lascia vuoto se has_errors: false
-reflection: >
-  Riflessione finale. Supporta tag HTML inline come <em> e <strong>.
+title: "0x03 Il Sistema dei Campi"
+summary: "La funzionalità più potente di dx5 — campi body personalizzati e validati tramite schema, renderizzati con template Tera."
+category: "FORGE_LOG"
+created: "2026-05-03"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
 body_fields:
 
-  # --- TESTO LIBERO ---
+  - type: hero_title
+    value: "Il Sistema dei Campi"
+    value_glitch: "Il S1st3m4 d31 C4mp1"
+    env: true
+    env_id: 8
+
+  - type: text
+    safe: true
+    value: |
+      Ogni file di contenuto dx5 ha un array <code>body_fields</code>.
+      Ogni voce è un blocco con un <code>type</code> e una serie di
+      attributi specifici del tipo. Il tipo determina quale template Tera
+      renderizza il blocco e contro quale schema viene validato.
+
+  - type: callout
+    variant: note
+    title: "Come funziona"
+    value: >
+      I template dei campi sono precaricati in Tera all'avvio.
+      Quando renderizza una pagina, dx5 itera su body_fields,
+      cerca il template per tipo e renderizza ogni blocco indipendentemente.
+
+  - type: section_title
+    value: "Definire un tipo di campo"
+
   - type: text
     value: |
-      Paragrafo di testo libero.
-      Può andare su più righe.
-  # --- HERO GLITCH WITH IMAGE ---
-  - type: hero_title
-    value: Lorem ipsum dolor silent
-    value_glitch: Lorem ipsum dolor silent # often it's the same as the value
-    env: true # if env is enabled, will be shown a background environment with an image (random if no env_id specified)
-    env_id: 16 # image id (look at /static/images/post/assets/env<env_id>.jpg
-  # --- CITAZIONE INLINE ---
-  - type: cite
+      I tipi di campo sono definiti in config/dx5.fields.toml.
+      Ogni campo ha una descrizione e uno schema che mappa
+      i nomi degli attributi ai loro tipi YAML attesi:
+
+  - type: pre
+    lang: toml
+    path: "config/dx5.fields.toml"
     value: |
-      Testo della citazione breve.
+      [fields.callout]
+      description = "Note, warning e suggerimenti."
+      [fields.callout.schema]
+      value   = "string"
+      variant = "string"
+      title   = "string"
+      safe    = "bool"
 
-  # --- BLOCKQUOTE SEMPLICE ---
-  - type: blockquote
-    value: "Testo della citazione."
-    author: "Nome Autore"          # opzionale
-    reference: "Fonte / Opera"     # opzionale
+      [fields.pre]
+      description = "Blocco di codice formattato con evidenziazione della sintassi."
+      [fields.pre.schema]
+      lang  = "string"
+      value = "string"
+      path  = "string"
 
-  # --- BLOCKQUOTE CON FIGURA ---
-  - type: blockquote_figure
-    value: "Testo della citazione."
-    author: "Nome Autore"
-    reference: "Fonte / Opera"
-    figure: "/images/posts/0x00/avatar.webp"   # opzionale
+      [fields.spotify_embed]
+      description = "Player Spotify incorporato."
+      [fields.spotify_embed.schema]
+      track_id = "string"
 
-  # --- IMMAGINE ---
-  - type: image
-    value: "/images/posts/0x00/nome-immagine.webp"
-    alt: "Descrizione accessibile dell'immagine"   # opzionale
-    caption: "Didascalia visibile sotto l'immagine" # opzionale
+  - type: callout
+    variant: tip
+    title: "Blocchi riutilizzabili"
+    value: >
+      Una volta definito un tipo di campo, puoi usarlo in qualsiasi file di contenuto.
+      Aggiungi un callout, incorpora un player Spotify o inserisci un blocco di codice —
+      il renderer gestisce il resto.
 
-  # --- DATA / TIMESTAMP INLINE ---
+  - type: section_title
+    value: "Template dei campi (Tera)"
+
+  - type: text
+    value: |
+      Ogni tipo di campo corrisponde a un template Tera in templates/components/fields/.
+      Il template riceve gli attributi del campo come variabile di contesto.
+      Ecco il template per il campo callout:
+
+  - type: pre
+    lang: html
+    path: "templates/components/fields/callout.tera"
+    value: |
+      <div class="callout callout--{{ field.variant }}">
+        {% if field.title %}
+        <strong class="callout__title">{{ field.title }}</strong>
+        {% endif %}
+        <div class="callout__body">
+          {% if field.safe %}
+            {{ field.value | safe }}
+          {% else %}
+            {{ field.value | escape }}
+          {% endif %}
+        </div>
+      </div>
+
+  - type: section_title
+    value: "Tipi di campo integrati"
+
+  - type: text
+    value: |
+      dx5 include un ricco set di campi integrati. Ecco i più comuni:
+
+  - type: text
+    safe: true
+    value: |
+      <table>
+        <thead>
+          <tr><th>Tipo</th><th>Scopo</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>text</code></td><td>Testo libero con HTML sicuro opzionale</td></tr>
+          <tr><td><code>hero_title</code></td><td>Titolo glitch grande con sfondo</td></tr>
+          <tr><td><code>image</code></td><td>Immagine con didascalia e testo alternativo</td></tr>
+          <tr><td><code>pre</code></td><td>Blocco di codice con evidenziazione sintassi</td></tr>
+          <tr><td><code>terminal</code></td><td>Visualizzazione sessione shell</td></tr>
+          <tr><td><code>callout</code></td><td>Riquadro nota, suggerimento, avviso o pericolo</td></tr>
+          <tr><td><code>blockquote</code></td><td>Citazione estesa con autore</td></tr>
+          <tr><td><code>spotify_embed</code></td><td>Player Spotify incorporato</td></tr>
+        </tbody>
+      </table>
+
+  - type: section_title
+    value: "Esempio: un blocco di testo"
+
+  - type: text
+    value: |
+      Nel tuo file YAML, scrivi:
+
+  - type: pre
+    lang: yaml
+    value: |
+      body_fields:
+        - type: text
+          value: |
+            Questo viene renderizzato da templates/components/fields/text.tera.
+          safe: true
+
+  - type: text
+    value: |
+      Questa è l'intera API. Scrivi YAML, definisci un template, renderizza.
+
   - type: date
-    value: "2026-04-15"
+    value: "2026-05-07"
 
-  # --- A CAPO ---
   - type: eol
-    value: ""
-
 ---

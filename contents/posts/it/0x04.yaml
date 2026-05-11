@@ -1,13 +1,131 @@
 ---
+id: "0x04"
+lang: "it"
+title: "0x04 Routing, Template e Rendering"
+summary: "Come dx5 mappa gli URL ai contenuti, renderizza le pagine con Tera e serve il risultato."
+category: "FORGE_LOG"
+created: "2026-05-04"
+status: true
+author: "Nino Marrazzo aka reinchek"
+
 body_fields:
-- prompt: some prompt
-  title: prompt title
-  type: terminal
-  value: lorem ipsum
-category: ''
-created: 05/08/2026
-id: '0x04'
-summary: Dolor silent
-title: Lorem ipsum
-updated: 05/08/2026
+
+  - type: hero_title
+    value: "Routing, Template e Rendering"
+    value_glitch: "R0uting, T3mpl4t3 e R3nd3ring"
+    env: true
+    env_id: 2
+
+  - type: text
+    value: |
+      dx5 usa Rocket per il routing HTTP e Tera per i template HTML.
+      La pipeline è lineare: arriva una richiesta, Rocket trova la route,
+      dx5 carica il contenuto dal disco, Tera renderizza il template,
+      e l'HTML viene inviato come risposta.
+
+  - type: section_title
+    value: "Struttura delle route"
+
+  - type: text
+    value: |
+      Le route seguono uno schema prevedibile. Ogni tipo di contenuto ha
+      una route di indice e una route per contenuto singolo:
+
+  - type: pre
+    lang: text
+    value: |
+      /<lang>             → indice del tipo di contenuto (tipo predefinito)
+      /<lang>/page/<n>    → indice paginato, pagina n
+      /<lang>/<type>      → indice del tipo di contenuto (non predefinito)
+      /<lang>/<type>/<id> → vista contenuto singolo
+      /api/<lang>/<type>  → endpoint API JSON
+      /admin               → pannello admin
+
+  - type: callout
+    variant: note
+    title: "Tipo di contenuto predefinito"
+    value: >
+      Il tipo con is_default = true (post) viene servito su /<lang>
+      invece di /<lang>/posts. Tutti gli altri tipi usano il loro prefisso di route.
+
+  - type: section_title
+    value: "Gerarchia dei template"
+
+  - type: text
+    value: |
+      dx5 usa una gerarchia di template pulita. Il template base fornisce
+      la struttura HTML, i template dei tipi di contenuto lo estendono,
+      e i template dei campi renderizzano i singoli blocchi:
+
+  - type: text
+    safe: true
+    value: |
+      <pre>
+      templates/
+      ├── base.html.tera          ← struttura HTML, nav, footer
+      ├── home.html.tera          ← layout homepage
+      ├── types/
+      │   ├── index.html.tera     ← elenco contenuti (paginato)
+      │   └── single.html.tera    ← vista contenuto singolo
+      └── components/
+          └── fields/
+              ├── text.tera       ← ogni tipo di campo body
+              ├── hero_title.tera
+              ├── pre.tera
+              └── ...
+      </pre>
+
+  - type: text
+    safe: true
+    value: |
+      Il template <code>single.html.tera</code> itera su
+      <code>body_fields</code> e chiama <code>render_field()</code>
+      per ogni voce — una funzione globale Tera registrata all'avvio.
+
+  - type: section_title
+    value: "La pipeline di rendering"
+
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      // Vista semplificata del flusso di rendering
+      rocket::build()
+          .mount("/", routes![
+              index,           // GET /<lang>
+              get_post,        // GET /<lang>/<type>/<id>
+              paginated_index, // GET /<lang>/page/<n>
+          ])
+          .mount("/api", routes![api_index, api_single])
+          .mount("/admin", routes![admin_ui, api_posts])
+          .mount("/static", FileServer::from("static/"))
+          .attach(Template::custom(|engines| {
+              // Pre-carica tutti i template dei campi in Tera
+              engines.tera.add_raw_templates(...);
+              // Registra render_field() come funzione globale
+              engines.tera.register_function("render_field", ...);
+          }))
+
+  - type: section_title
+    value: "Modalità SPA"
+
+  - type: text
+    safe: true
+    value: |
+      dx5 supporta la modalità applicazione a pagina singola opzionale.
+      Quando <code>spa_enabled = true</code>, lo script lato client
+      <code>spa-router.js</code> intercetta la navigazione e recupera
+      i contenuti tramite l'API JSON, aggiornando la pagina senza un ricaricamento completo.
+
+  - type: blockquote
+    value: >
+      La modalità SPA è opzionale. dx5 funziona perfettamente come sito
+      tradizionale renderizzato lato server. L'API è sempre disponibile indipendentemente.
+    author: "dx5 core team"
+    reference: "https://dx5.dev"
+
+  - type: date
+    value: "2026-05-07"
+
+  - type: eol
 ---

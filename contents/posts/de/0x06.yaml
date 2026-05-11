@@ -1,0 +1,180 @@
+---
+id: "0x06"
+title: "0x06 Feldkatalog-Demobeitrag"
+lang: "de"
+category: "SYS_CALL"
+created: "2026-05-07"
+description: >
+  Ein lebendiger Referenzbeitrag, der jedes verfügbare Body-Feld durchspielt.
+  Verwende ihn als Smoke-Test beim Hinzufügen neuer Templates oder Anpassen des Renderers.
+
+body_fields:
+
+  # date
+  - type: date
+    value: "2026-04-12"
+
+  # hero_title
+  - type: hero_title
+    value: "Feldkatalog"
+    value_glitch: "F3ldk4t4l0g"
+    env: true
+    env_id: 8
+
+
+  - type: spreaker
+    episode_id: 71771195
+    theme: dark
+
+  # text (plain)
+  - type: text
+    value: |
+      Dieser Beitrag existiert aus einem einzigen Grund: jeder Feldtyp muss mindestens einmal vorkommen.
+      Wenn du dies in einem Browser liest und nichts kaputt aussieht, ist der Renderer gesund.
+
+  # callout · note
+  - type: callout
+    variant: note
+    title: "Wie man diesen Beitrag liest"
+    value: >
+      Die Felder werden in der Reihenfolge angezeigt, in der sie in dx5.fields.toml deklariert sind.
+      Jeder Block wird von einem section_title eingeleitet, der den Feldtyp benennt.
+
+  # section_title
+  - type: section_title
+    value: "Text und Glitch"
+
+  # text (safe — inline HTML)
+  - type: text
+    safe: true
+    value: >
+      Das <code>safe</code>-Flag ermöglicht es dir, rohes HTML inline einzubetten.
+      Verwende es sparsam — nur wenn Markdown-artiges Escapen nicht ausreicht,
+      zum Beispiel um ein Wort in ein <strong>benutzerdefiniertes Element</strong> zu packen oder
+      ein <abbr title="zero-width non-joiner">ZWNJ</abbr> einzufügen.
+
+  # text_glitch
+  - type: text_glitch
+    value: "Speicherkorrupturn erkannt."
+    value_glitch: "Sp3ich3rk0rrupturn 3rk4nnt."
+
+  # section_title
+  - type: section_title
+    value: "Zitate"
+
+  # cite
+  - type: cite
+    value: "Der Compiler lügt nie — er sagt nur harte Wahrheiten, die du noch nicht bereit warst zu hören."
+
+  # blockquote
+  - type: blockquote
+    value: >
+      Jeder Narr kann Code schreiben, den ein Computer versteht.
+      Gute Programmierer schreiben Code, den Menschen verstehen können.
+    author: "Martin Fowler"
+    reference: "Refactoring, 1999"
+
+  # blockquote_figure
+  - type: blockquote_figure
+    value: >
+      Programme müssen für Menschen geschrieben werden, die sie lesen,
+      und nur zufällig für Maschinen, die sie ausführen.
+    author: "Harold Abelson"
+    reference: "Structure and Interpretation of Computer Programs"
+    figure: "/static/images/authors/abelson.jpg"
+
+  # divider (labelled)
+  - type: divider
+    value: "§"
+
+  # section_title
+  - type: section_title
+    value: "Code und Shell"
+
+  # callout · tip
+  - type: callout
+    variant: tip
+    title: "Tipp"
+    value: >
+      Das <code>pre</code>-Feld ist für statische Code-Schnipsel.
+      Verwende <code>terminal</code>, wenn du eine interaktive Shell-Sitzung zeigen möchtest.
+
+  # pre
+  - type: pre
+    lang: rust
+    path: "src/main.rs"
+    value: |
+      #[launch]
+      fn rocket() -> _ {
+          rocket::build()
+              .mount("/", routes![index])
+              .attach(Template::fairing())
+      }
+
+  # terminal
+  - type: terminal
+    title: "bash — Projektverzeichnis"
+    prompt: "$"
+    value: |
+      cargo build --release
+      ./target/release/dx5
+      curl -s http://localhost:8000/en | head -n 5
+
+  # callout · warning
+  - type: callout
+    variant: warning
+    title: "Achtung"
+    value: "Das Ausführen des Binärs außerhalb des Projektverzeichnisses führt dazu, dass dx5.toml nicht gefunden wird."
+
+  # callout · danger
+  - type: callout
+    variant: danger
+    title: "Tue dies niemals"
+    value: >
+      Übernimm dein Admin-Token nicht in die Versionskontrolle.
+      Verwende eine Umgebungsvariable und injiziere es zum Zeitpunkt des Deployments.
+
+  # divider (plain)
+  - type: divider
+
+  # section_title
+  - type: section_title
+    value: "Medien"
+
+  # image
+  - type: image
+    value: "/static/images/post/0x00/terminal.jpg"
+    alt: "Abstrakter dunkler Terminal-Screenshot mit grünem Phosphor-Text"
+    caption: "Die Ästhetik ist die Botschaft."
+
+  # video
+  - type: video
+    src: "https://www.youtube.com/embed/iXFT0Kdfoig"
+    caption: "Ja, dies ist ein Platzhalter. Ersetze ihn durch etwas Passendes."
+    autoplay: false
+
+  # spotify_embed
+  - type: spotify_embed
+    track_id: "4uLU6hMCjMI75M1A2tKUQC"
+
+  # eol
+  - type: eol
+
+  # section_title
+  - type: section_title
+    value: "Links"
+
+  # link
+  - type: link
+    href: "https://rocket.rs/guide/"
+    value: "Rocket — Web-Framework für Rust"
+    alt: "Offizielle Rocket-Dokumentation"
+
+  - type: link
+    href: "https://keats.github.io/tera/"
+    value: "Tera — Template-Engine"
+    alt: "Tera-Dokumentation"
+
+  # eol
+  - type: eol
+---
