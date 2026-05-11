@@ -10,11 +10,11 @@ Ready for a **lite headless** approach — all content types (and home pages) ca
 
 ### Scaffolding (recommended)
 
-The dx5 CMS is served with its own `.scaffold.toml` template file ((https://github.com/iomentum/cargo-scaffold)[cargo-scaffold tool]) that allow you to bootstrap your blog with an interactive prompt — it will ask for blog title, author, language, admin credentials, and more:
+The dx5 CMS is served with its own `cargo-generate.toml` template file ([cargo-generate](https://cargo-generate.github.io/cargo-generate/)) to bootstrap your blog with an interactive prompt — it will ask for blog title, author, language, admin credentials, and more:
 
 ```bash
-cargo scaffold https://github.com/reinchek/dx5.git
-cd <given_blog_name>
+cargo generate --git https://github.com/reinchek/dx5.git --name my-blog
+cd my-blog
 # Now run it with cargo run or using docker compose up -d 
 ```
 
@@ -23,7 +23,6 @@ cd <given_blog_name>
 ```bash
 git clone https://github.com/reinchek/dx5 myblog
 cd myblog
-cp config/dx5.toml.dist config/dx5.toml
 docker compose up -d
 ```
 
@@ -130,7 +129,8 @@ myblog/
 ├── Rocket.toml
 ├── Dockerfile
 ├── docker-compose.yml
-└── .scaffold.toml                ← project scaffolding template
+├── cargo-generate.toml           ← project scaffolding template (cargo-generate)
+├── Cargo.toml.liquid             ← templated Cargo.toml for scaffolding
 ```
 
 ---
