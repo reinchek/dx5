@@ -9,7 +9,7 @@
     <div class="text-[11px] text-zinc-600 tracking-wider mb-8 flex items-center gap-2">
         <a data-spa href="/{{ lang }}" class="hover:text-zinc-400 transition-colors">~</a>
         <span>/</span>
-        <a data-spa href="/{{ lang }}/{{ type_name }}" class="hover:text-zinc-400 transition-colors">posts</a>
+        <a data-spa href="/{{ lang }}/{{ type_name }}" class="hover:text-zinc-400 transition-colors">{{ type_name | lower }}</a>
         <span>/</span>
         <span class="text-[#00e5a0]">{{ item.id }}</span>
     </div>

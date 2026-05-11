@@ -68,20 +68,6 @@ pub fn start_filesystem_watcher(dx5_config: &Dx5Config) -> Result<(), notify::Er
                     }
 
                     match event.kind {
-                        // File content modified — sync single file to .pages cache
-                        // EventKind::Modify(Data(DataChange::Any)) => {
-                        //     for p in &event.paths {
-                        //         if !is_yaml(p) {
-                        //             continue;
-                        //         }
-                        //         let file_name = match p.file_name().and_then(|s| s.to_str()) {
-                        //             Some(n) => n.to_string(),
-                        //             None => continue,
-                        //         };
-                        //         let file_path = p.to_string_lossy().to_string();
-                        //         sync_to_cache(&file_path, &file_name);
-                        //     }
-                        // }
                         // File created, deleted, or renamed (*and modified) - rebuild .pages entirely
                         EventKind::Modify(Data(DataChange::Any)) |
                         EventKind::Create(CreateKind::File) |

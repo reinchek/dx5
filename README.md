@@ -4,6 +4,8 @@ Stack: **Rust + Rocket + Tera + gray_matter**. Content is stored as YAML files. 
 
 Ready for a **lite headless** approach — all content types (and home pages) can be consumed via the JSON API, making dx5 usable as a backend for decoupled projects, SPAs, or external clients.
 
+![hippo](https://s13.gifyu.com/images/b702k.gif)
+
 ---
 
 ## Setup
