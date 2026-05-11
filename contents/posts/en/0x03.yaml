@@ -1,13 +1,13 @@
 ---
 id: "0x03"
 lang: "en"
-title: "0x06 The Field System"
+title: "0x03 The Field System"
 summary: "dx5's most powerful feature - custom, schema-validated body fields rendered through Tera templates."
 category: "FORGE_LOG"
 created: "2026-05-03"
 status: true
 author: "Nino Marrazzo aka reinchek"
----
+
 body_fields:
 
   - type: hero_title

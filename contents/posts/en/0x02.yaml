@@ -1,13 +1,13 @@
 ---
 id: "0x02"
 lang: "en"
-title: "0x05 Content Types & Organization"
+title: "0x02 Content Types & Organization"
 summary: "How dx5 organizes content into types — posts, codes, notes — and how the directory structure maps to routes."
 category: "EXPLORE"
 created: "2026-05-02"
 status: true
 author: "Nino Marrazzo aka reinchek"
----
+
 body_fields:
 
   - type: hero_title

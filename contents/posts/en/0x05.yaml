@@ -1,13 +1,13 @@
 ---
 id: "0x05"
 lang: "en"
-title: "0x08 Admin Panel, API & Multilingual"
+title: "0x05 Admin Panel, API & Multilingual"
 summary: "Advanced dx5 features — the built-in admin SPA, the JSON API, and the i18n system."
 category: "FORGE_LOG"
 created: "2026-05-05"
 status: true
 author: "Nino Marrazzo aka reinchek"
----
+
 body_fields:
 
   - type: hero_title

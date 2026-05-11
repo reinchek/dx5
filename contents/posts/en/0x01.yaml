@@ -2,7 +2,7 @@
 id: "0x01"
 lang: "en"
 title: "What is dx5?"
-summary: "An introduction to dx5 — a file‑based CMS written in Rust. No database, no complexity."
+summary: "0x01 An introduction to dx5 — a file‑based CMS written in Rust. No database, no complexity."
 category: "EXPLORE"
 created: "2026-05-01"
 status: true

@@ -1,13 +1,13 @@
 ---
 id: "0x04"
 lang: "en"
-title: "0x07 Routing, Templates & Rendering"
+title: "0x04 Routing, Templates & Rendering"
 summary: "How dx5 maps URLs to content, renders pages with Tera, and serves the result."
 category: "FORGE_LOG"
 created: "2026-05-04"
 status: true
 author: "Nino Marrazzo aka reinchek"
----
+
 body_fields:
 
   - type: hero_title
