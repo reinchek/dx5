@@ -22,4 +22,5 @@ services:
       - ./templates:/app/templates
       - ./static:/app/static
       - ./assets:/app/assets
+      - ./public:/app/public
     restart: unless-stopped
