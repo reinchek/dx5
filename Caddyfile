@@ -1,13 +1,21 @@
 # ──────────────────────────────────────────────
-# dx5 + Caddy — automatic HTTPS reverse proxy
+# dx5 + Caddy — reverse proxy
 # ──────────────────────────────────────────────
-# Replace `your-blog.com` with your actual domain.
-# Caddy will auto-provision Let's Encrypt certificates.
+# Local dev (plain HTTP on port 80):
+#   Just run: docker compose up
 #
-# For local development, use `:80` instead of a domain:
-#   :80 { reverse_proxy dx5:8000 }
+# Production (automatic HTTPS via Let's Encrypt):
+#   Uncomment the production block below,
+#   replace `your-blog.com` with your domain,
+#   and comment out the local block.
 # ──────────────────────────────────────────────
 
-your-blog.com {
+# Local development
+:80 {
     reverse_proxy dx5:8000
 }
+
+# Production — automatic HTTPS
+# your-blog.com {
+#     reverse_proxy dx5:8000
+# }
