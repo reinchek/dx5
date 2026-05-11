@@ -28,6 +28,10 @@ exclude = [
     "config/dx5.content_types.toml",
 ]
 
+[hooks]
+post = ["config/.hooks/post-welcome-guide.rhai"]
+
+
 [placeholders]
 blog_base_url = { type = "string", prompt = "What's the project's base URL? (usually, in local dev, is http://localhost)", default = "http://localhost" }
 blog_author = { type = "string", prompt = "Who's the main author blog", default = "Admin" }
